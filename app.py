@@ -46,67 +46,68 @@ st.markdown("""
         --accent-emerald: #059669;
         --accent-rose: #E11D48;
         --accent-amber: #D97706;
-        --bg-main: #F8FAFC;
+        --bg-main: #F0F4F8;
         --bg-card: #FFFFFF;
-        --border-card: #E2E8F0;
-        --text-primary: #0F172A;
-        --text-secondary: #334155;
-        --text-muted: #64748B;
+        --border-card: #DDE3EE;
+        --text-primary: #0A0F1E;
+        --text-secondary: #2D3A52;
+        --text-muted: #6B7A9A;
     }
 
     /* Light Theme Global Canvas */
     .stApp {
-        background: #F8FAFC !important;
-        color: #1E293B !important;
+        background: linear-gradient(150deg, #EEF3FB 0%, #F5F0FF 40%, #F0F9FF 100%) !important;
+        color: #1A2235 !important;
+        min-height: 100vh;
     }
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        color: #1E293B;
-        font-size: 15px;
+        color: #1A2235;
+        font-size: 15.5px;
     }
 
-    /* Increased Typography Hierarchy */
+    /* Upgraded Typography Hierarchy */
     h1 {
         font-family: 'Outfit', sans-serif !important;
-        font-weight: 800 !important;
-        font-size: 34px !important;
-        letter-spacing: -0.03em !important;
-        color: #0F172A !important;
-        margin-bottom: 8px !important;
+        font-weight: 900 !important;
+        font-size: 36px !important;
+        letter-spacing: -0.035em !important;
+        color: #0A0F1E !important;
+        margin-bottom: 10px !important;
     }
 
     h2 {
         font-family: 'Outfit', sans-serif !important;
         font-weight: 800 !important;
-        font-size: 28px !important;
-        letter-spacing: -0.025em !important;
-        color: #0F172A !important;
-        margin-top: 14px !important;
-        margin-bottom: 8px !important;
+        font-size: 29px !important;
+        letter-spacing: -0.03em !important;
+        color: #0A0F1E !important;
+        margin-top: 16px !important;
+        margin-bottom: 10px !important;
     }
 
     h3 {
         font-family: 'Outfit', sans-serif !important;
-        font-weight: 700 !important;
-        font-size: 22px !important;
-        letter-spacing: -0.02em !important;
-        color: #0F172A !important;
+        font-weight: 800 !important;
+        font-size: 23px !important;
+        letter-spacing: -0.025em !important;
+        color: #0A0F1E !important;
     }
 
     h4 {
         font-family: 'Outfit', sans-serif !important;
         font-weight: 700 !important;
-        font-size: 18px !important;
-        color: #0F172A !important;
+        font-size: 19px !important;
+        color: #0A0F1E !important;
     }
 
     p, span, label, div {
-        color: #334155;
+        color: #2D3A52;
     }
 
     strong, b {
-        color: #0F172A;
+        color: #0A0F1E;
         font-weight: 700;
     }
 
@@ -156,67 +157,68 @@ st.markdown("""
         vertical-align: middle;
     }
 
-    /* Clean Sidebar Styling with Enlarged Nav Menu */
+    /* Premium Sidebar - Bright White Frosted Panel */
     section[data-testid="stSidebar"] {
         background: #FFFFFF !important;
-        border-right: 1px solid #E2E8F0 !important;
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.03) !important;
+        border-right: 1.5px solid #DDE3EE !important;
+        box-shadow: 6px 0 28px rgba(79, 70, 229, 0.05) !important;
     }
 
     /* Enlarged Navigation Radio Buttons in Sidebar */
     section[data-testid="stSidebar"] .stRadio > div {
-        gap: 6px !important;
+        gap: 5px !important;
     }
     section[data-testid="stSidebar"] .stRadio label {
-        font-size: 15px !important;
-        font-weight: 600 !important;
+        font-size: 14.5px !important;
+        font-weight: 700 !important;
         font-family: 'Outfit', sans-serif !important;
-        color: #334155 !important;
-        padding: 10px 14px !important;
-        border-radius: 12px !important;
-        background: #F8FAFC !important;
-        border: 1px solid #E2E8F0 !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        margin-bottom: 4px !important;
+        color: #2D3A52 !important;
+        padding: 11px 16px !important;
+        border-radius: 14px !important;
+        background: #F5F7FF !important;
+        border: 1.5px solid #E4EAF6 !important;
+        transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        margin-bottom: 3px !important;
         display: flex !important;
         align-items: center !important;
         cursor: pointer !important;
     }
     section[data-testid="stSidebar"] .stRadio label:hover {
         background: #EEF2FF !important;
-        border-color: #C7D2FE !important;
-        color: #4338CA !important;
-        transform: translateX(3px) !important;
+        border-color: #B5C4FF !important;
+        color: #3730A3 !important;
+        transform: translateX(4px) !important;
+        box-shadow: 0 2px 10px rgba(79,70,229,0.1) !important;
     }
     section[data-testid="stSidebar"] .stRadio label[data-checked="true"],
     section[data-testid="stSidebar"] .stRadio div[aria-checked="true"] {
-        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
         color: #FFFFFF !important;
-        border-color: #4F46E5 !important;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+        border-color: #4338CA !important;
+        box-shadow: 0 4px 16px rgba(67, 56, 202, 0.35) !important;
     }
 
     /* Sidebar Profile Card (Light) */
     .profile-card {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        padding: 16px;
+        background: linear-gradient(135deg, #F5F7FF 0%, #FAFAFF 100%);
+        border: 1.5px solid #DDE3EE;
+        border-radius: 18px;
+        padding: 18px;
         margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.06);
     }
 
-    /* Ultra-Modern Hero Banner (Light Contrast Gradient) */
+    /* Ultra-Modern Hero Banner */
     .hero-container {
-        background: linear-gradient(135deg, #312E81 0%, #4338CA 30%, #6366F1 70%, #7C3AED 100%);
-        border-radius: 20px;
-        padding: 36px 40px;
+        background: linear-gradient(135deg, #1E1B6E 0%, #3730A3 30%, #4F46E5 70%, #6D28D9 100%);
+        border-radius: 24px;
+        padding: 40px 44px;
         color: white !important;
-        margin-bottom: 24px;
-        box-shadow: 0 16px 36px -10px rgba(79, 70, 229, 0.35);
+        margin-bottom: 26px;
+        box-shadow: 0 20px 50px -12px rgba(67, 56, 202, 0.45);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.15);
     }
     .hero-container h1, .hero-container p, .hero-container span {
         color: white !important;
@@ -224,11 +226,22 @@ st.markdown("""
     .hero-container::before {
         content: '';
         position: absolute;
-        top: -60%;
-        right: -15%;
-        width: 420px;
-        height: 420px;
-        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+        top: -50%;
+        right: -12%;
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+    .hero-container::after {
+        content: '';
+        position: absolute;
+        bottom: -40%;
+        left: -10%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, rgba(124,58,237,0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -236,18 +249,18 @@ st.markdown("""
     /* Premium Light Cards */
     .glass-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 24px;
+        border: 1.5px solid #DDE3EE;
+        border-radius: 20px;
+        padding: 26px;
         margin-bottom: 18px;
-        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
-        transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 4px 24px -4px rgba(79, 70, 229, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
     }
     .glass-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 14px 30px -4px rgba(0, 0, 0, 0.1), 0 0 15px rgba(99, 102, 241, 0.12);
-        border-color: #C7D2FE;
+        transform: translateY(-5px);
+        box-shadow: 0 16px 36px -6px rgba(79, 70, 229, 0.16), 0 0 18px rgba(99, 102, 241, 0.1);
+        border-color: #B5C4FF;
     }
 
     /* Quick Revision Specific Cards (Light) */
@@ -264,45 +277,45 @@ st.markdown("""
     /* Enlarged Metric KPI Box */
     .metric-box {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 22px 20px;
+        border: 1.5px solid #DDE3EE;
+        border-radius: 20px;
+        padding: 24px 22px;
         display: flex;
         align-items: center;
-        gap: 18px;
-        box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.05);
-        transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+        gap: 20px;
+        box-shadow: 0 4px 20px -2px rgba(79, 70, 229, 0.07);
+        transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .metric-box:hover {
-        transform: translateY(-3px);
-        border-color: #C7D2FE;
-        box-shadow: 0 10px 25px -4px rgba(79, 70, 229, 0.15);
+        transform: translateY(-4px);
+        border-color: #B5C4FF;
+        box-shadow: 0 12px 30px -4px rgba(79, 70, 229, 0.18);
     }
     .metric-icon {
-        font-size: 30px;
-        width: 58px;
-        height: 58px;
-        border-radius: 16px;
+        font-size: 34px;
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
     }
     .metric-val {
-        font-size: 32px;
-        font-weight: 800;
+        font-size: 34px;
+        font-weight: 900;
         font-family: 'Outfit', sans-serif;
-        color: #0F172A;
+        color: #0A0F1E;
         line-height: 1.1;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.03em;
     }
     .metric-label {
-        font-size: 13px;
-        color: #64748B;
+        font-size: 12.5px;
+        color: #6B7A9A;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.06em;
-        margin-top: 3px;
+        letter-spacing: 0.07em;
+        margin-top: 4px;
     }
 
     /* Vibrant Badges & Pills */
@@ -423,67 +436,73 @@ st.markdown("""
         flex-shrink: 0;
     }
 
-    /* Square Portal Tile (Horizontal Grid) */
+    /* Square Portal Tile (Horizontal Grid) - ENLARGED LOGOS */
     .square-portal-tile {
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 20px 16px;
+        border: 1.5px solid #DDE3EE;
+        border-radius: 22px;
+        padding: 26px 18px 22px;
         text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        min-height: 145px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-        transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+        min-height: 185px;
+        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.06);
+        transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
     }
     .square-portal-tile:hover {
-        transform: translateY(-4px);
-        border-color: #4F46E5;
-        box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.18);
+        transform: translateY(-6px);
+        border-color: #7C6BE8;
+        box-shadow: 0 16px 36px -6px rgba(79, 70, 229, 0.24);
+        background: linear-gradient(160deg, #FAFBFF 0%, #F5F0FF 100%);
     }
     .square-logo-box {
-        width: 52px;
-        height: 52px;
-        border-radius: 14px;
+        width: 80px;
+        height: 80px;
+        border-radius: 22px;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 26px;
-        margin-bottom: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        font-size: 40px;
+        margin-bottom: 14px;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        transition: transform 0.22s ease;
+    }
+    .square-portal-tile:hover .square-logo-box {
+        transform: scale(1.08);
     }
     .square-portal-title {
-        font-size: 15px;
+        font-size: 15.5px;
         font-weight: 800;
-        color: #0F172A;
-        margin-bottom: 4px;
-        line-height: 1.2;
+        color: #0A0F1E;
+        margin-bottom: 5px;
+        line-height: 1.25;
     }
     .square-portal-sub {
-        font-size: 12px;
-        color: #64748B;
-        font-weight: 500;
+        font-size: 12.5px;
+        color: #6B7A9A;
+        font-weight: 600;
     }
 
     /* Square Subject Cards (Horizontal Layout) */
     .square-subject-tile {
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
-        border-radius: 18px;
-        padding: 18px;
+        border: 1.5px solid #DDE3EE;
+        border-radius: 20px;
+        padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 160px;
-        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
-        transition: all 0.24s ease;
+        min-height: 185px;
+        box-shadow: 0 4px 18px rgba(79, 70, 229, 0.05);
+        transition: all 0.26s ease;
     }
     .square-subject-tile:hover {
-        transform: translateY(-3px);
-        border-color: #818CF8;
-        box-shadow: 0 10px 22px rgba(79, 70, 229, 0.12);
+        transform: translateY(-4px);
+        border-color: #8B80F9;
+        box-shadow: 0 12px 28px rgba(79, 70, 229, 0.15);
     }
 
     /* Concept of the Day Spotlight */
@@ -512,21 +531,22 @@ st.markdown("""
 
     /* Streamlit Global Widget Polish */
     .stButton > button {
-        border-radius: 12px !important;
-        font-weight: 700 !important;
+        border-radius: 14px !important;
+        font-weight: 800 !important;
         font-size: 15px !important;
         font-family: 'Outfit', sans-serif !important;
-        padding: 10px 22px !important;
-        border: 1px solid #4F46E5 !important;
-        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+        padding: 11px 24px !important;
+        border: 1.5px solid #4338CA !important;
+        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
         color: white !important;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: 0 5px 18px rgba(67, 56, 202, 0.35) !important;
+        transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        letter-spacing: 0.01em !important;
     }
     .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45) !important;
-        background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%) !important;
+        transform: translateY(-3px) !important;
+        box-shadow: 0 10px 26px rgba(67, 56, 202, 0.5) !important;
+        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 100%) !important;
     }
     .stButton > button:active {
         transform: translateY(0px) !important;
@@ -569,24 +589,24 @@ st.markdown("""
     /* Enlarged Tabs Styling (Light) */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: #F1F5F9;
-        padding: 6px;
-        border-radius: 14px;
-        border: 1px solid #E2E8F0;
+        background: #EEF2FF;
+        padding: 7px;
+        border-radius: 16px;
+        border: 1.5px solid #D4DBFF;
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 10px;
-        padding: 10px 20px;
+        border-radius: 12px;
+        padding: 10px 22px;
         font-weight: 700;
-        font-size: 15px;
+        font-size: 14.5px;
         font-family: 'Outfit', sans-serif;
-        color: #64748B;
-        transition: all 0.2s ease;
+        color: #5060A0;
+        transition: all 0.22s ease;
     }
     .stTabs [aria-selected="true"] {
-        background: #4F46E5 !important;
+        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+        box-shadow: 0 5px 16px rgba(67, 56, 202, 0.38);
     }
 
     /* Inputs Polish (Light Theme) */
@@ -1729,17 +1749,13 @@ if "Home Dashboard" in nav_option:
     
     with sub_col1:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #3B82F6;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EFF6FF; color: #2563EB; margin: 0;">🐍</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Python Programming</div>
-                    <span style="font-size: 12px; color: #64748B;">Dr. Ananya Ray</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">OOP concepts, Decorators, Generators, File I/O &amp; NumPy arrays.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">4 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #3B82F6; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EFF6FF; color: #2563EB; margin: 0 auto 12px;">🐍</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Python Programming</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. Ananya Ray</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">OOP concepts, Decorators, Generators, File I/O &amp; NumPy arrays.</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">4 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
@@ -1747,17 +1763,13 @@ if "Home Dashboard" in nav_option:
 
     with sub_col2:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #4F46E5;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EEF2FF; color: #4F46E5; margin: 0;">🌳</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Data Structures &amp; Algorithms</div>
-                    <span style="font-size: 12px; color: #64748B;">Dr. Ramesh Verma</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Trees, BST, AVL Rotations, Sorting Algorithms &amp; Graph Traversals.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">6 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #4F46E5; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EEF2FF; color: #4F46E5; margin: 0 auto 12px;">🌳</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Data Structures &amp; Algorithms</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. Ramesh Verma</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Trees, BST, AVL Rotations, Sorting Algorithms &amp; Graph Traversals.</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">6 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
@@ -1765,17 +1777,13 @@ if "Home Dashboard" in nav_option:
 
     with sub_col3:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #0284C7;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #E0F2FE; color: #0284C7; margin: 0;">💻</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Operating Systems</div>
-                    <span style="font-size: 12px; color: #64748B;">Prof. Sneha Kulkarni</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Process sync, Semaphore, Deadlocks, Paging &amp; Virtual Memory.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">5 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #0284C7; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #E0F2FE; color: #0284C7; margin: 0 auto 12px;">💻</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Operating Systems</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Sneha Kulkarni</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Process sync, Semaphore, Deadlocks, Paging &amp; Virtual Memory.</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">5 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
@@ -1786,17 +1794,13 @@ if "Home Dashboard" in nav_option:
     sub_col4, sub_col5, sub_col6 = st.columns(3)
     with sub_col4:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #059669;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #D1FAE5; color: #059669; margin: 0;">🗄️</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Database Systems (DBMS)</div>
-                    <span style="font-size: 12px; color: #64748B;">Prof. Rajesh Kumar</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">ER diagrams, Relational Algebra, SQL queries &amp; Normalization (1NF-BCNF).</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">4 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #059669; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #D1FAE5; color: #059669; margin: 0 auto 12px;">🗄️</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Database Systems (DBMS)</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Rajesh Kumar</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">ER diagrams, Relational Algebra, SQL queries &amp; Normalization (1NF-BCNF).</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">4 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
@@ -1804,17 +1808,13 @@ if "Home Dashboard" in nav_option:
 
     with sub_col5:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #D97706;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #FEF3C7; color: #D97706; margin: 0;">📐</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Mathematics-III (Discrete)</div>
-                    <span style="font-size: 12px; color: #64748B;">Dr. M. S. Iyer</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Propositional logic, Set theory, Graph theory, Trees &amp; Combinatorics.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">3 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #D97706; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #FEF3C7; color: #D97706; margin: 0 auto 12px;">📐</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Mathematics-III (Discrete)</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. M. S. Iyer</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Propositional logic, Set theory, Graph theory, Trees &amp; Combinatorics.</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">3 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
@@ -1822,17 +1822,13 @@ if "Home Dashboard" in nav_option:
 
     with sub_col6:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 4px solid #7C3AED;">
-            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
-                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EDE9FE; color: #7C3AED; margin: 0;">🔷</div>
-                <div>
-                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">C / C++ Core Systems</div>
-                    <span style="font-size: 12px; color: #64748B;">Prof. Ankit S.</span>
-                </div>
-            </div>
-            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Pointers, Memory allocation, STL containers &amp; template metaprogramming.</p>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-                <span class="tag-chip">5 Notes Available</span>
+        <div class="square-subject-tile" style="border-top: 5px solid #7C3AED; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EDE9FE; color: #7C3AED; margin: 0 auto 12px;">🔷</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">C / C++ Core Systems</div>
+            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Ankit S.</div>
+            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Pointers, Memory allocation, STL containers &amp; template metaprogramming.</p>
+            <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
+                <span class="tag-chip">5 Notes</span>
                 <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
             </div>
         </div>
