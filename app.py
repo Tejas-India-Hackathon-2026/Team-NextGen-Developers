@@ -3,6 +3,8 @@ import os
 import json
 import base64
 import hashlib
+import math
+import re
 from datetime import datetime
 
 # ==================================================
@@ -1558,6 +1560,65 @@ def get_pdf_base64(file_path):
         return base64_pdf
     except Exception:
         return None
+
+def safe_calculate(expression: str, angle_mode="Degrees"):
+    """Safely evaluate mathematical expressions for standard and scientific calculation."""
+    if not expression or not str(expression).strip():
+        return None, "Please enter an expression to calculate."
+    
+    expr = str(expression).strip()
+    
+    # Human-friendly symbol replacements
+    expr = expr.replace("×", "*").replace("÷", "/").replace("−", "-").replace("π", "math.pi").replace("PI", "math.pi").replace("e", "math.e").replace("^", "**")
+    
+    # Safe namespace
+    safe_dict = {
+        "abs": abs,
+        "round": round,
+        "min": min,
+        "max": max,
+        "sum": sum,
+        "pow": pow,
+        "math": math,
+        "pi": math.pi,
+        "e": math.e,
+        "sqrt": math.sqrt,
+        "cbrt": lambda x: x ** (1/3),
+        "factorial": math.factorial,
+        "fact": math.factorial,
+        "log": math.log,
+        "log10": math.log10,
+        "log2": math.log2,
+        "ln": math.log,
+        "exp": math.exp,
+        "sin": lambda x: math.sin(math.radians(x)) if angle_mode == "Degrees" else math.sin(x),
+        "cos": lambda x: math.cos(math.radians(x)) if angle_mode == "Degrees" else math.cos(x),
+        "tan": lambda x: math.tan(math.radians(x)) if angle_mode == "Degrees" else math.tan(x),
+        "asin": lambda x: math.degrees(math.asin(x)) if angle_mode == "Degrees" else math.asin(x),
+        "acos": lambda x: math.degrees(math.acos(x)) if angle_mode == "Degrees" else math.acos(x),
+        "atan": lambda x: math.degrees(math.atan(x)) if angle_mode == "Degrees" else math.atan(x),
+    }
+    
+    # Security filter
+    disallowed = ["__", "import", "exec", "eval", "compile", "open", "globals", "locals", "getattr", "setattr", "delattr", "system", "os", "sys"]
+    for word in disallowed:
+        if word in expr.lower():
+            return None, f"Security: Operation '{word}' is not allowed."
+            
+    try:
+        result = eval(expr, {"__builtins__": {}}, safe_dict)
+        if isinstance(result, float):
+            if result.is_integer():
+                result = int(result)
+            else:
+                result = round(result, 8)
+        return result, None
+    except ZeroDivisionError:
+        return None, "Error: Division by zero is undefined."
+    except ValueError as ve:
+        return None, f"Math Domain Error: {str(ve)}"
+    except Exception as err:
+        return None, f"Syntax / Math Error: {str(err)}"
 
 
 # ==================================================
@@ -4266,12 +4327,240 @@ elif "Student Tools" in nav_option:
     st.header("🧰 Student Productivity Suite")
     st.write("Interactive utilities to calculate SGPA, safeguard attendance, run focus sessions, and test tech knowledge.")
 
-    tool_tab1, tool_tab2, tool_tab3, tool_tab4 = st.tabs([
+    tool_tab_calc, tool_tab1, tool_tab2, tool_tab3, tool_tab4 = st.tabs([
+        "🧮 Math & Scientific Calculator",
         "🎓 SGPA & CGPA Planner",
         "📊 75% Attendance Guard",
         "⏱️ Pomodoro Focus Studio",
         "🧠 Daily Tech Quiz Mini-Game"
     ])
+
+    # --- TOOL 0: MATH & SCIENTIFIC CALCULATOR ---
+    with tool_tab_calc:
+        st.subheader("🧮 Interactive Math & Scientific Calculator")
+        st.write("Perform standard arithmetic, algebra, percentages, engineering trigonometry, and base conversions for your coursework.")
+
+        # Initialize session state for calculator
+        if "calc_expr" not in st.session_state:
+            st.session_state["calc_expr"] = ""
+        if "calc_last_result" not in st.session_state:
+            st.session_state["calc_last_result"] = None
+        if "calc_history" not in st.session_state:
+            st.session_state["calc_history"] = []
+
+        calc_col_main, calc_col_side = st.columns([1.3, 1])
+
+        with calc_col_main:
+            # Display Screen & Input Box
+            angle_unit = st.radio("Trig Angle Unit", ["Degrees", "Radians"], horizontal=True, key="calc_angle_mode")
+
+            calc_input = st.text_input(
+                "Expression",
+                value=st.session_state["calc_expr"],
+                placeholder="e.g. 125 * (48 + 16) / 5  or  sqrt(144) + 2^4",
+                key="calc_main_input",
+                label_visibility="collapsed"
+            )
+            # Sync user typing back to state
+            st.session_state["calc_expr"] = calc_input
+
+            # Compute current expression on enter / submit
+            current_eval = None
+            eval_error = None
+            if st.session_state["calc_expr"].strip():
+                current_eval, eval_error = safe_calculate(st.session_state["calc_expr"], angle_mode=angle_unit)
+
+            # High-Contrast Result Screen
+            res_display = str(current_eval) if current_eval is not None else "0"
+            expr_display = st.session_state["calc_expr"] if st.session_state["calc_expr"] else "Enter numbers & operators"
+
+            st.markdown(f"""
+            <div class="glass-card" style="background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border: 2px solid #C7D2FE; border-radius: 18px; padding: 20px 24px; margin-bottom: 16px;">
+                <div style="font-size: 13px; color: #64748B; font-family: 'JetBrains Mono', monospace; min-height: 20px; overflow-x: auto; white-space: nowrap;">
+                    {expr_display}
+                </div>
+                <div style="font-size: 38px; font-weight: 900; font-family: 'Outfit', sans-serif; color: #1E1B4B; margin-top: 4px; overflow-x: auto; white-space: nowrap;">
+                    = {res_display}
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if eval_error and st.session_state["calc_expr"].strip():
+                st.caption(f"ℹ️ {eval_error}")
+
+            # ── Keypad Grid ──────────────────────────────
+            st.markdown("##### ⌨️ Interactive Keypad:")
+
+            def append_to_calc(token):
+                if token == "C":
+                    st.session_state["calc_expr"] = ""
+                elif token == "DEL":
+                    st.session_state["calc_expr"] = st.session_state["calc_expr"][:-1]
+                elif token == "=":
+                    res, err = safe_calculate(st.session_state["calc_expr"], angle_mode=angle_unit)
+                    if res is not None:
+                        # Log to history
+                        st.session_state["calc_history"].insert(0, {
+                            "expr": st.session_state["calc_expr"],
+                            "result": res,
+                            "time": datetime.now().strftime("%H:%M:%S")
+                        })
+                        st.session_state["calc_history"] = st.session_state["calc_history"][:8]
+                        st.session_state["calc_last_result"] = res
+                        st.session_state["calc_expr"] = str(res)
+                else:
+                    st.session_state["calc_expr"] += str(token)
+                st.rerun()
+
+            # Scientific Row
+            s1, s2, s3, s4, s5, s6 = st.columns(6)
+            with s1:
+                if st.button("√", key="btn_sqrt", use_container_width=True):
+                    append_to_calc("sqrt(")
+            with s2:
+                if st.button("x²", key="btn_sq", use_container_width=True):
+                    append_to_calc("**2")
+            with s3:
+                if st.button("xʸ", key="btn_pow", use_container_width=True):
+                    append_to_calc("^")
+            with s4:
+                if st.button("π", key="btn_pi", use_container_width=True):
+                    append_to_calc("pi")
+            with s5:
+                if st.button("sin", key="btn_sin", use_container_width=True):
+                    append_to_calc("sin(")
+            with s6:
+                if st.button("cos", key="btn_cos", use_container_width=True):
+                    append_to_calc("cos(")
+
+            # Row 1
+            k1, k2, k3, k4 = st.columns(4)
+            with k1:
+                if st.button("C", key="btn_c", use_container_width=True):
+                    append_to_calc("C")
+            with k2:
+                if st.button("(", key="btn_lp", use_container_width=True):
+                    append_to_calc("(")
+            with k3:
+                if st.button(")", key="btn_rp", use_container_width=True):
+                    append_to_calc(")")
+            with k4:
+                if st.button("÷", key="btn_div", use_container_width=True):
+                    append_to_calc(" / ")
+
+            # Row 2
+            k5, k6, k7, k8 = st.columns(4)
+            with k5:
+                if st.button("7", key="btn_7", use_container_width=True):
+                    append_to_calc("7")
+            with k6:
+                if st.button("8", key="btn_8", use_container_width=True):
+                    append_to_calc("8")
+            with k7:
+                if st.button("9", key="btn_9", use_container_width=True):
+                    append_to_calc("9")
+            with k8:
+                if st.button("×", key="btn_mul", use_container_width=True):
+                    append_to_calc(" * ")
+
+            # Row 3
+            k9, k10, k11, k12 = st.columns(4)
+            with k9:
+                if st.button("4", key="btn_4", use_container_width=True):
+                    append_to_calc("4")
+            with k10:
+                if st.button("5", key="btn_5", use_container_width=True):
+                    append_to_calc("5")
+            with k11:
+                if st.button("6", key="btn_6", use_container_width=True):
+                    append_to_calc("6")
+            with k12:
+                if st.button("−", key="btn_sub", use_container_width=True):
+                    append_to_calc(" - ")
+
+            # Row 4
+            k13, k14, k15, k16 = st.columns(4)
+            with k13:
+                if st.button("1", key="btn_1", use_container_width=True):
+                    append_to_calc("1")
+            with k14:
+                if st.button("2", key="btn_2", use_container_width=True):
+                    append_to_calc("2")
+            with k15:
+                if st.button("3", key="btn_3", use_container_width=True):
+                    append_to_calc("3")
+            with k16:
+                if st.button("+", key="btn_add", use_container_width=True):
+                    append_to_calc(" + ")
+
+            # Row 5
+            k17, k18, k19, k20 = st.columns(4)
+            with k17:
+                if st.button("0", key="btn_0", use_container_width=True):
+                    append_to_calc("0")
+            with k18:
+                if st.button(".", key="btn_dot", use_container_width=True):
+                    append_to_calc(".")
+            with k19:
+                if st.button("DEL ⌫", key="btn_del", use_container_width=True):
+                    append_to_calc("DEL")
+            with k20:
+                if st.button("= Calculate", key="btn_eq", use_container_width=True, type="primary"):
+                    append_to_calc("=")
+
+        with calc_col_side:
+            # ── Quick Utility 1: Percentage & Marks ───
+            st.markdown("#### 📊 Percentage & Marks Tool")
+            with st.expander("📝 Calculate Marks & Percentage", expanded=True):
+                pm_tab1, pm_tab2 = st.tabs(["% of Value", "Marks %"])
+                with pm_tab1:
+                    p_val1 = st.number_input("Find percentage (%)", value=18.0, step=1.0, key="pm_pct_val")
+                    p_val2 = st.number_input("Of total number", value=500.0, step=10.0, key="pm_tot_val")
+                    p_res = (p_val1 / 100.0) * p_val2
+                    st.success(f"**{p_val1}% of {p_val2}** = **{round(p_res, 4)}**")
+
+                with pm_tab2:
+                    m_obtained = st.number_input("Marks Obtained", min_value=0.0, value=74.0, step=1.0, key="pm_m_obt")
+                    m_max = st.number_input("Maximum Marks", min_value=1.0, value=100.0, step=10.0, key="pm_m_tot")
+                    m_pct = (m_obtained / m_max) * 100.0
+                    st.info(f"Score: **{m_obtained} / {m_max}** = **{round(m_pct, 2)}%**")
+
+            # ── Quick Utility 2: Number Base Converter (CS) ───
+            with st.expander("🔢 Base Converter (Binary, Octal, Hex)", expanded=False):
+                base_dec = st.number_input("Decimal Integer", value=42, step=1, key="base_dec_input")
+                dec_int = int(base_dec)
+                st.markdown(f"""
+                <div style="font-family:'JetBrains Mono', monospace; font-size:13.5px; background:#F8FAFC; border:1px solid #E2E8F0; padding:12px; border-radius:10px;">
+                    <strong>Decimal:</strong> {dec_int}<br>
+                    <strong>Binary:</strong> <code>{bin(dec_int)}</code><br>
+                    <strong>Hexadecimal:</strong> <code>{hex(dec_int).upper()}</code><br>
+                    <strong>Octal:</strong> <code>{oct(dec_int)}</code>
+                </div>
+                """, unsafe_allow_html=True)
+
+            # ── Quick Utility 3: Calculation History ───
+            st.markdown("#### 🕒 Calculation History")
+            if not st.session_state["calc_history"]:
+                st.caption("No calculations recorded yet. Keypad results will be logged here.")
+            else:
+                for h_idx, h_item in enumerate(st.session_state["calc_history"]):
+                    h_col1, h_col2 = st.columns([3, 1.2])
+                    with h_col1:
+                        st.markdown(f"""
+                        <div style="font-size: 12.5px; color: #334155; font-family: 'JetBrains Mono', monospace;">
+                            <span style="color:#64748B;">[{h_item['time']}]</span> {h_item['expr']} = <strong style="color:#4F46E5;">{h_item['result']}</strong>
+                        </div>
+                        """, unsafe_allow_html=True)
+                    with h_col2:
+                        if st.button("Use", key=f"use_h_{h_idx}", use_container_width=True):
+                            st.session_state["calc_expr"] = str(h_item['result'])
+                            st.rerun()
+
+                if st.button("🗑️ Clear History", key="clear_calc_hist", use_container_width=True):
+                    st.session_state["calc_history"] = []
+                    st.rerun()
+
+        st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
 
     # --- TOOL 1: SGPA & CGPA CALCULATOR ---
     with tool_tab1:
