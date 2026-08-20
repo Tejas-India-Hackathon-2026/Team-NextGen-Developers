@@ -388,6 +388,60 @@ st.markdown("""
         margin-bottom: 4px;
     }
 
+    /* Home Dashboard Quick Action Launchpad */
+    .quick-action-tile {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 16px;
+        padding: 16px 18px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+        cursor: pointer;
+    }
+    .quick-action-tile:hover {
+        transform: translateY(-3px);
+        border-color: #818CF8;
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.12);
+        background: #F8FAFC;
+    }
+    .quick-action-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+    }
+
+    /* Concept of the Day Spotlight */
+    .concept-card {
+        background: linear-gradient(135deg, #EEF2FF 0%, #FAF5FF 100%);
+        border: 1.5px solid #C7D2FE;
+        border-radius: 18px;
+        padding: 22px 26px;
+        margin-bottom: 22px;
+        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.06);
+    }
+
+    /* Interactive Academic Milestone Card */
+    .task-box {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-bottom: 10px;
+        transition: all 0.2s ease;
+    }
+    .task-box:hover {
+        background: #FFFFFF;
+        border-color: #CBD5E1;
+    }
+
     /* Streamlit Global Widget Polish */
     .stButton > button {
         border-radius: 12px !important;
@@ -1104,26 +1158,81 @@ with st.sidebar:
 # ==================================================
 
 if "Home Dashboard" in nav_option:
-    # Contextual Time Greeting
+    # Contextual Time & Date Greeting
     current_hour = datetime.now().hour
     time_greeting = "Good morning 🌅" if current_hour < 12 else "Good afternoon ☀️" if current_hour < 17 else "Good evening 🌙"
+    today_str = datetime.now().strftime("%A, %d %B %Y")
     
-    # Hero Banner
+    # ── 1. HERO BANNER ─────────────────────────────────
     st.markdown(f"""
     <div class="hero-container">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
             <div>
-                <span style="background: rgba(255,255,255,0.18); backdrop-filter: blur(8px); padding: 4px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid rgba(255,255,255,0.2);">Campus Portal · AY 2026</span>
-                <h1 style="margin: 12px 0 6px 0; font-size: 32px; font-weight: 900; letter-spacing: -0.02em;">{time_greeting}, {student_name}! 🚀</h1>
-                <p style="margin: 0; opacity: 0.95; font-size: 15px; max-width: 680px; line-height: 1.55; color: #E0E7FF;">
-                    Your centralized college workspace for <strong>{semester}</strong> ({branch}). Access verified notes, rapid cheatsheets, post missing material requests, and track campus updates in real time.
+                <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.2); backdrop-filter: blur(8px); padding: 5px 16px; border-radius: 9999px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; border: 1px solid rgba(255,255,255,0.25);">
+                    <span class="live-pulse"></span> Academic Portal · {today_str}
+                </div>
+                <h1 style="margin: 14px 0 8px 0; font-size: 34px; font-weight: 900; letter-spacing: -0.02em;">{time_greeting}, {student_name}! 🚀</h1>
+                <p style="margin: 0; font-size: 16px; max-width: 720px; line-height: 1.6; color: #EEF2FF; opacity: 0.95;">
+                    Welcome to your centralized academic workspace for <strong>{semester}</strong> ({branch}). Access verified lecture notes, rapid exam cheatsheets, post missing material requests, and track semester progress.
                 </p>
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 600;">🏛️ {branch.split('(')[0].strip()}</span>
+                    <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 600;">📅 {semester}</span>
+                    <span style="background: rgba(16,185,129,0.3); border: 1px solid rgba(16,185,129,0.5); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 700;">✨ Verified Active Scholar</span>
+                </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Key KPI Metric Cards
+    # ── 2. QUICK ACTIONS LAUNCHPAD ─────────────────────
+    st.markdown("#### ⚡ Quick Actions Launchpad")
+    qa_col1, qa_col2, qa_col3, qa_col4 = st.columns(4)
+
+    with qa_col1:
+        st.markdown("""
+        <div class="quick-action-tile">
+            <div class="quick-action-icon" style="background: #EEF2FF; color: #4F46E5;">📚</div>
+            <div>
+                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Browse Notes</div>
+                <div style="font-size: 12px; color: #64748B;">Search verified PDFs</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with qa_col2:
+        st.markdown("""
+        <div class="quick-action-tile">
+            <div class="quick-action-icon" style="background: #FEF3C7; color: #D97706;">⚡</div>
+            <div>
+                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Revision Vault</div>
+                <div style="font-size: 12px; color: #64748B;">1-page cheatsheets</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with qa_col3:
+        st.markdown("""
+        <div class="quick-action-tile">
+            <div class="quick-action-icon" style="background: #E0F2FE; color: #0284C7;">🙋</div>
+            <div>
+                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Request Material</div>
+                <div style="font-size: 12px; color: #64748B;">Ask community & faculty</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with qa_col4:
+        st.markdown("""
+        <div class="quick-action-tile">
+            <div class="quick-action-icon" style="background: #FCE7F3; color: #DB2777;">⏱️</div>
+            <div>
+                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Focus Studio</div>
+                <div style="font-size: 12px; color: #64748B;">25-min Pomodoro timer</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+
+    # ── 3. KEY KPI METRIC CARDS ────────────────────────
     total_materials = len(materials_meta)
     open_requests_count = len([r for r in material_requests_data if r.get("status") == "Open"])
     total_announcements = len(announcements_data)
@@ -1133,7 +1242,7 @@ if "Home Dashboard" in nav_option:
     with kpi1:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(99,102,241,0.25) 0%, rgba(79,70,229,0.15) 100%); border-color:rgba(99,102,241,0.4);">📚</div>
+            <div class="metric-icon" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📚</div>
             <div>
                 <div class="metric-val">{total_materials}</div>
                 <div class="metric-label">Study Materials</div>
@@ -1143,27 +1252,27 @@ if "Home Dashboard" in nav_option:
     with kpi2:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(217,119,6,0.15) 100%); border-color:rgba(245,158,11,0.4);">⚡</div>
+            <div class="metric-icon" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⚡</div>
             <div>
-                <div class="metric-val">5</div>
-                <div class="metric-label">Revision Decks</div>
+                <div class="metric-val">5 Decks</div>
+                <div class="metric-label">Exam Cheatsheets</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with kpi3:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(14,165,233,0.15) 100%); border-color:rgba(6,182,212,0.4);">🙋</div>
+            <div class="metric-icon" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
             <div>
                 <div class="metric-val">{open_requests_count}</div>
-                <div class="metric-label">Open Requests</div>
+                <div class="metric-label">Open Wishlist</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with kpi4:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(244,63,94,0.25) 0%, rgba(225,29,72,0.15) 100%); border-color:rgba(244,63,94,0.4);">❤️</div>
+            <div class="metric-icon" style="background: #FFE4E6; color: #E11D48; border: 1px solid #FECDD3;">❤️</div>
             <div>
                 <div class="metric-val">{total_likes}</div>
                 <div class="metric-label">Peer Upvotes</div>
@@ -1171,37 +1280,62 @@ if "Home Dashboard" in nav_option:
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
 
-    # Urgent Notices Alert Ticker
+    # ── 4. URGENT NOTICES TICKER ───────────────────────
     urgent_notices = [a for a in announcements_data if a.get("priority", "").lower() == "urgent"]
     if urgent_notices:
         for u in urgent_notices:
             st.error(f"🚨 **URGENT NOTICE:** **{u.get('title')}** — {u.get('message')} *(Posted by {u.get('author', 'Admin')} on {u.get('date', 'Today')})*")
 
-    # Quick Revision Spotlight Banner
-    st.markdown("""
-    <div class="revision-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
-        <div>
-            <h4 style="margin: 0 0 4px 0; color: #4338CA; font-size: 19px; font-weight: 800;">⚡ Need Rapid Exam Prep?</h4>
-            <p style="margin: 0; font-size: 14px; color: #475569;">Review 1-page formula summaries, sorting complexity matrices, and core OOP cheatsheets.</p>
+    # ── 5. CONCEPT OF THE DAY (INTERACTIVE MICRO-LESSON) ─
+    with st.expander("💡 **Concept of the Day: AVL Tree Self-Balancing & Rotations**", expanded=False):
+        st.markdown("""
+        <div class="concept-card">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                <div>
+                    <h4 style="margin: 0 0 6px 0; color: #4338CA; font-size: 18px; font-weight: 800;">🌳 Data Structures Byte: AVL Tree Balance Factor</h4>
+                    <p style="margin: 0; font-size: 14px; color: #334155; line-height: 1.5;">
+                        An AVL tree is a self-balancing Binary Search Tree where the difference between heights of left and right subtrees for any node cannot be more than 1.
+                    </p>
+                </div>
+                <span class="tag-new" style="font-size: 13px;">Exam Core Concept</span>
+            </div>
+            <div style="margin-top: 14px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; font-size: 14px; color: #1E293B;">
+                <strong>Key Rotation Rules:</strong><br>
+                • <strong>Left-Left (LL) Heavy:</strong> Perform single <strong>Right Rotation</strong>.<br>
+                • <strong>Right-Right (RR) Heavy:</strong> Perform single <strong>Left Rotation</strong>.<br>
+                • <strong>Left-Right (LR) Heavy:</strong> Left rotate left child, then Right rotate root.<br>
+                • <strong>Right-Left (RL) Heavy:</strong> Right rotate right child, then Left rotate root.<br>
+                • <strong>Lookup &amp; Insertion Time Complexity:</strong> <code>O(log N)</code> guaranteed in worst-case.
+            </div>
         </div>
-        <div>
-            <span class="tag-new" style="font-size: 14px; padding: 6px 14px;">🔥 2026 Batch Cheatsheets Ready</span>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
-    # 2-Column Home Layout
+    # ── 6. 2-COLUMN MAIN FEED ─────────────────────────
     dash_col_left, dash_col_right = st.columns([3, 2])
 
     with dash_col_left:
         st.subheader("🔥 Latest Notes & Verified Uploads")
-        if not materials_meta:
-            st.info("No study materials found. Be the first student to upload!")
+        
+        # Interactive in-place subject quick filter
+        home_filter_sub = st.selectbox(
+            "Filter Feed by Subject",
+            ["All Subjects", "C Programming", "C++ Programming", "Python", "Data Structures", "Operating Systems", "Mathematics", "Database Systems"],
+            key="home_subject_filter_feed",
+            label_visibility="collapsed"
+        )
+
+        filtered_home_materials = {}
+        for fname, info in materials_meta.items():
+            if home_filter_sub == "All Subjects" or info.get("subject") == home_filter_sub:
+                filtered_home_materials[fname] = info
+
+        if not filtered_home_materials:
+            st.info(f"No materials found for '{home_filter_sub}'. Check other subjects or contribute one!")
         else:
             recent_items = sorted(
-                materials_meta.items(),
+                filtered_home_materials.items(),
                 key=lambda x: (x[1].get("upload_date", ""), x[1].get("likes", 0)),
                 reverse=True
             )[:4]
@@ -1249,7 +1383,8 @@ if "Home Dashboard" in nav_option:
                             st.rerun()
 
     with dash_col_right:
-        st.subheader("🙋 Top Requested Student Materials")
+        # Top Material Requests
+        st.subheader("🙋 Top Community Requests")
         open_requests = [r for r in material_requests_data if r.get("status") == "Open"]
         sorted_requests = sorted(open_requests, key=lambda x: x.get("upvotes", 0), reverse=True)[:3]
         
@@ -1274,6 +1409,20 @@ if "Home Dashboard" in nav_option:
                         save_material_requests(material_requests_data)
                         st.toast("Upvote registered! This helps prioritize material uploads.", icon="👍")
                         st.rerun()
+
+        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+        # Interactive Daily Academic Goals Widget
+        st.subheader("🎯 Daily Academic Goals")
+        st.markdown("""
+        <div class="task-box">
+            <span style="font-size:13px; color:#475569; font-weight:600;">Track your daily milestones:</span>
+        </div>
+        """, unsafe_allow_html=True)
+        st.checkbox("📖 Review 1 Lecture PDF from Study Materials", value=True, key="goal_chk_1")
+        st.checkbox("⚡ Check Big-O Sorting Cheatsheet", value=False, key="goal_chk_2")
+        st.checkbox("⏱️ Complete one 25-minute Pomodoro focus cycle", value=False, key="goal_chk_3")
+        st.checkbox("📊 Verify Attendance in 75% Guard", value=False, key="goal_chk_4")
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.subheader("💡 Contributor Leaderboard")
