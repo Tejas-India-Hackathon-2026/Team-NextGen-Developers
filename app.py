@@ -421,6 +421,69 @@ st.markdown("""
         flex-shrink: 0;
     }
 
+    /* Square Portal Tile (Horizontal Grid) */
+    .square-portal-tile {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 18px;
+        padding: 20px 16px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 145px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .square-portal-tile:hover {
+        transform: translateY(-4px);
+        border-color: #4F46E5;
+        box-shadow: 0 12px 24px -4px rgba(79, 70, 229, 0.18);
+    }
+    .square-logo-box {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .square-portal-title {
+        font-size: 15px;
+        font-weight: 800;
+        color: #0F172A;
+        margin-bottom: 4px;
+        line-height: 1.2;
+    }
+    .square-portal-sub {
+        font-size: 12px;
+        color: #64748B;
+        font-weight: 500;
+    }
+
+    /* Square Subject Cards (Horizontal Layout) */
+    .square-subject-tile {
+        background: #FFFFFF;
+        border: 1.5px solid #E2E8F0;
+        border-radius: 18px;
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 160px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+        transition: all 0.24s ease;
+    }
+    .square-subject-tile:hover {
+        transform: translateY(-3px);
+        border-color: #818CF8;
+        box-shadow: 0 10px 22px rgba(79, 70, 229, 0.12);
+    }
+
     /* Concept of the Day Spotlight */
     .concept-card {
         background: linear-gradient(135deg, #EEF2FF 0%, #FAF5FF 100%);
@@ -1333,6 +1396,7 @@ if "Home Dashboard" in nav_option:
     current_hour = datetime.now().hour
     time_greeting = "Good morning 🌅" if current_hour < 12 else "Good afternoon ☀️" if current_hour < 17 else "Good evening 🌙"
     today_str = datetime.now().strftime("%A, %d %B %Y")
+    today_day_name = datetime.now().strftime("%A")
     
     # ── 1. HERO BANNER ─────────────────────────────────
     st.markdown(f"""
@@ -1343,8 +1407,8 @@ if "Home Dashboard" in nav_option:
                     <span class="live-pulse"></span> Academic Portal · {today_str}
                 </div>
                 <h1 style="margin: 14px 0 8px 0; font-size: 34px; font-weight: 900; letter-spacing: -0.02em;">{time_greeting}, {student_name}! 🚀</h1>
-                <p style="margin: 0; font-size: 16px; max-width: 720px; line-height: 1.6; color: #EEF2FF; opacity: 0.95;">
-                    Welcome to your centralized academic workspace for <strong>{semester}</strong> ({branch}). Access verified lecture notes, rapid exam cheatsheets, post missing material requests, and track semester progress.
+                <p style="margin: 0; font-size: 16px; max-width: 780px; line-height: 1.6; color: #EEF2FF; opacity: 0.95;">
+                    Welcome to your centralized academic workspace for <strong>{semester}</strong> ({branch}). Access verified lecture notes, timetable routine, attendance tracking, 1-page formula cheatsheets, and peer requests.
                 </p>
                 <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 600;">🏛️ {branch.split('(')[0].strip()}</span>
@@ -1356,59 +1420,207 @@ if "Home Dashboard" in nav_option:
     </div>
     """, unsafe_allow_html=True)
 
-    # ── 2. QUICK ACTIONS LAUNCHPAD ─────────────────────
-    st.markdown("#### ⚡ Quick Actions Launchpad")
-    qa_col1, qa_col2, qa_col3, qa_col4 = st.columns(4)
-
-    with qa_col1:
+    # ── 2. HORIZONTAL SQUARE PORTAL LAUNCHPAD (8 MODULES) ─────────
+    st.markdown("#### 🧭 Academic Portals & Modules")
+    
+    # Row 1 (4 Square Cards)
+    p_col1, p_col2, p_col3, p_col4 = st.columns(4)
+    with p_col1:
         st.markdown("""
-        <div class="quick-action-tile">
-            <div class="quick-action-icon" style="background: #EEF2FF; color: #4F46E5;">📚</div>
-            <div>
-                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Browse Notes</div>
-                <div style="font-size: 12px; color: #64748B;">Search verified PDFs</div>
-            </div>
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📚</div>
+            <div class="square-portal-title">Study Materials</div>
+            <div class="square-portal-sub">Notes, Books &amp; PYQs</div>
         </div>
         """, unsafe_allow_html=True)
-    with qa_col2:
+    with p_col2:
         st.markdown("""
-        <div class="quick-action-tile">
-            <div class="quick-action-icon" style="background: #D1FAE5; color: #059669;">📊</div>
-            <div>
-                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Track Attendance</div>
-                <div style="font-size: 12px; color: #64748B;">75% Criteria &amp; Safe Bunks</div>
-            </div>
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE;">📅</div>
+            <div class="square-portal-title">Class Timetable</div>
+            <div class="square-portal-sub">Live Routine &amp; Labs</div>
         </div>
         """, unsafe_allow_html=True)
-    with qa_col3:
+    with p_col3:
         st.markdown("""
-        <div class="quick-action-tile">
-            <div class="quick-action-icon" style="background: #FEF3C7; color: #D97706;">⚡</div>
-            <div>
-                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Revision Vault</div>
-                <div style="font-size: 12px; color: #64748B;">1-page cheatsheets</div>
-            </div>
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">📊</div>
+            <div class="square-portal-title">Attendance Tracker</div>
+            <div class="square-portal-sub">75% Safe Bunk Guard</div>
         </div>
         """, unsafe_allow_html=True)
-    with qa_col4:
+    with p_col4:
         st.markdown("""
-        <div class="quick-action-tile">
-            <div class="quick-action-icon" style="background: #E0F2FE; color: #0284C7;">🙋</div>
-            <div>
-                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Request Material</div>
-                <div style="font-size: 12px; color: #64748B;">Ask community &amp; faculty</div>
-            </div>
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⚡</div>
+            <div class="square-portal-title">Revision Vault</div>
+            <div class="square-portal-sub">1-Page Formula Sheets</div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
 
-    # ── 3. KEY KPI METRIC CARDS ────────────────────────
+    # Row 2 (4 Square Cards)
+    p_col5, p_col6, p_col7, p_col8 = st.columns(4)
+    with p_col5:
+        st.markdown("""
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
+            <div class="square-portal-title">Peer Wishlist</div>
+            <div class="square-portal-sub">Community Requests</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with p_col6:
+        st.markdown("""
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #FCE7F3; color: #DB2777; border: 1px solid #FBCFE8;">🧰</div>
+            <div class="square-portal-title">Student Tools</div>
+            <div class="square-portal-sub">SGPA, Guard &amp; Timer</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with p_col7:
+        st.markdown("""
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">🔗</div>
+            <div class="square-portal-title">Useful Resources</div>
+            <div class="square-portal-sub">Roadmaps &amp; LeetCode</div>
+        </div>
+        """, unsafe_allow_html=True)
+    with p_col8:
+        st.markdown("""
+        <div class="square-portal-tile">
+            <div class="square-logo-box" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA;">📢</div>
+            <div class="square-portal-title">Notice Board</div>
+            <div class="square-portal-sub">Campus Notices &amp; News</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
+
+    # ── 3. HORIZONTAL CORE SUBJECTS SQUARE GRID (6 SUBJECTS) ───────
+    st.markdown("#### 📖 Semester Core Subjects & Reference Decks")
+    sub_col1, sub_col2, sub_col3 = st.columns(3)
+    
+    with sub_col1:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #3B82F6;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EFF6FF; color: #2563EB; margin: 0;">🐍</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Python Programming</div>
+                    <span style="font-size: 12px; color: #64748B;">Dr. Ananya Ray</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">OOP concepts, Decorators, Generators, File I/O &amp; NumPy arrays.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">4 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_col2:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #4F46E5;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EEF2FF; color: #4F46E5; margin: 0;">🌳</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Data Structures &amp; Algorithms</div>
+                    <span style="font-size: 12px; color: #64748B;">Dr. Ramesh Verma</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Trees, BST, AVL Rotations, Sorting Algorithms &amp; Graph Traversals.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">6 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_col3:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #0284C7;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #E0F2FE; color: #0284C7; margin: 0;">💻</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Operating Systems</div>
+                    <span style="font-size: 12px; color: #64748B;">Prof. Sneha Kulkarni</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Process sync, Semaphore, Deadlocks, Paging &amp; Virtual Memory.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">5 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+
+    sub_col4, sub_col5, sub_col6 = st.columns(3)
+    with sub_col4:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #059669;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #D1FAE5; color: #059669; margin: 0;">🗄️</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Database Systems (DBMS)</div>
+                    <span style="font-size: 12px; color: #64748B;">Prof. Rajesh Kumar</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">ER diagrams, Relational Algebra, SQL queries &amp; Normalization (1NF-BCNF).</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">4 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_col5:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #D97706;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #FEF3C7; color: #D97706; margin: 0;">📐</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">Mathematics-III (Discrete)</div>
+                    <span style="font-size: 12px; color: #64748B;">Dr. M. S. Iyer</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Propositional logic, Set theory, Graph theory, Trees &amp; Combinatorics.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">3 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with sub_col6:
+        st.markdown("""
+        <div class="square-subject-tile" style="border-top: 4px solid #7C3AED;">
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                <div class="square-logo-box" style="width: 44px; height: 44px; font-size: 22px; background: #EDE9FE; color: #7C3AED; margin: 0;">🔷</div>
+                <div>
+                    <div style="font-weight: 800; font-size: 16px; color: #0F172A;">C / C++ Core Systems</div>
+                    <span style="font-size: 12px; color: #64748B;">Prof. Ankit S.</span>
+                </div>
+            </div>
+            <p style="font-size: 13px; color: #475569; margin: 6px 0; line-height: 1.4;">Pointers, Memory allocation, STL containers &amp; template metaprogramming.</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+                <span class="tag-chip">5 Notes Available</span>
+                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
+
+    # ── 4. HORIZONTAL KEY KPI STATS BAR (4 EQUAL TILES) ────────────
     total_materials = len(materials_meta)
     open_requests_count = len([r for r in material_requests_data if r.get("status") == "Open"])
     total_announcements = len(announcements_data)
     total_likes = sum(item.get("likes", 0) for item in materials_meta.values()) + sum(r.get("upvotes", 0) for r in material_requests_data)
 
+    st.markdown("#### 📊 Academic Performance & Community Health")
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
     with kpi1:
         st.markdown(f"""
@@ -1416,7 +1628,7 @@ if "Home Dashboard" in nav_option:
             <div class="metric-icon" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📚</div>
             <div>
                 <div class="metric-val">{total_materials}</div>
-                <div class="metric-label">Study Materials</div>
+                <div class="metric-label">Study Materials Vault</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1436,7 +1648,7 @@ if "Home Dashboard" in nav_option:
             <div class="metric-icon" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
             <div>
                 <div class="metric-val">{open_requests_count}</div>
-                <div class="metric-label">Open Wishlist</div>
+                <div class="metric-label">Open Peer Wishlist</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1446,116 +1658,48 @@ if "Home Dashboard" in nav_option:
             <div class="metric-icon" style="background: #FFE4E6; color: #E11D48; border: 1px solid #FECDD3;">❤️</div>
             <div>
                 <div class="metric-val">{total_likes}</div>
-                <div class="metric-label">Peer Upvotes</div>
+                <div class="metric-label">Peer Karma Upvotes</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
 
-    # ── 4. URGENT NOTICES TICKER ───────────────────────
-    urgent_notices = [a for a in announcements_data if a.get("priority", "").lower() == "urgent"]
-    if urgent_notices:
-        for u in urgent_notices:
-            st.error(f"🚨 **URGENT NOTICE:** **{u.get('title')}** — {u.get('message')} *(Posted by {u.get('author', 'Admin')} on {u.get('date', 'Today')})*")
-
-    # ── 5. CONCEPT OF THE DAY (INTERACTIVE MICRO-LESSON) ─
-    with st.expander("💡 **Concept of the Day: AVL Tree Self-Balancing & Rotations**", expanded=False):
-        st.markdown("""
-        <div class="concept-card">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                <div>
-                    <h4 style="margin: 0 0 6px 0; color: #4338CA; font-size: 18px; font-weight: 800;">🌳 Data Structures Byte: AVL Tree Balance Factor</h4>
-                    <p style="margin: 0; font-size: 14px; color: #334155; line-height: 1.5;">
-                        An AVL tree is a self-balancing Binary Search Tree where the difference between heights of left and right subtrees for any node cannot be more than 1.
-                    </p>
-                </div>
-                <span class="tag-new" style="font-size: 13px;">Exam Core Concept</span>
-            </div>
-            <div style="margin-top: 14px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 12px; padding: 14px; font-size: 14px; color: #1E293B;">
-                <strong>Key Rotation Rules:</strong><br>
-                • <strong>Left-Left (LL) Heavy:</strong> Perform single <strong>Right Rotation</strong>.<br>
-                • <strong>Right-Right (RR) Heavy:</strong> Perform single <strong>Left Rotation</strong>.<br>
-                • <strong>Left-Right (LR) Heavy:</strong> Left rotate left child, then Right rotate root.<br>
-                • <strong>Right-Left (RL) Heavy:</strong> Right rotate right child, then Left rotate root.<br>
-                • <strong>Lookup &amp; Insertion Time Complexity:</strong> <code>O(log N)</code> guaranteed in worst-case.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-
-    # ── 6. 2-COLUMN MAIN FEED ─────────────────────────
-    dash_col_left, dash_col_right = st.columns([3, 2])
+    # ── 5. BALANCED HORIZONTAL SPLIT (TODAY'S SCHEDULE & LATEST NOTES) ─
+    dash_col_left, dash_col_right = st.columns([1, 1])
 
     with dash_col_left:
-        st.subheader("🔥 Latest Notes & Verified Uploads")
-        
-        # Interactive in-place subject quick filter
-        home_filter_sub = st.selectbox(
-            "Filter Feed by Subject",
-            ["All Subjects", "C Programming", "C++ Programming", "Python", "Data Structures", "Operating Systems", "Mathematics", "Database Systems"],
-            key="home_subject_filter_feed",
-            label_visibility="collapsed"
-        )
+        st.subheader(f"📍 Today's Live Schedule ({today_day_name})")
+        timetable_data_home = load_timetable(curr_user if 'curr_user' in locals() else st.session_state.get("username", "admin"))
+        today_home_slots = timetable_data_home.get(today_day_name, [])
 
-        filtered_home_materials = {}
-        for fname, info in materials_meta.items():
-            if home_filter_sub == "All Subjects" or info.get("subject") == home_filter_sub:
-                filtered_home_materials[fname] = info
-
-        if not filtered_home_materials:
-            st.info(f"No materials found for '{home_filter_sub}'. Check other subjects or contribute one!")
+        if not today_home_slots or today_day_name == "Sunday":
+            st.info(f"🎉 No lectures scheduled for {today_day_name}. Enjoy your study break!")
         else:
-            recent_items = sorted(
-                filtered_home_materials.items(),
-                key=lambda x: (x[1].get("upload_date", ""), x[1].get("likes", 0)),
-                reverse=True
-            )[:4]
-
-            for filename, info in recent_items:
-                file_path = os.path.join(MATERIAL_FOLDER, filename)
-                with st.container():
-                    st.markdown(f"""
-                    <div class="glass-card" style="padding: 18px; margin-bottom: 14px;">
-                        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                            <div>
-                                <h4 style="margin: 0 0 6px 0; color: #0F172A; font-size: 18px; font-weight: 800;">📄 {info.get('title', filename)}</h4>
-                                <span class="tag-new">🆕 Latest</span>
-                                <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
-                                <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
-                                <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
-                            </div>
-                            <div style="text-align: right; font-size: 13px; color: #64748B; font-weight: 600;">
-                                💾 {info.get('size_kb', 0)} KB<br>
-                                ❤️ {info.get('likes', 0)} Upvotes
-                            </div>
+            for s_idx, slot in enumerate(today_home_slots[:4]):
+                stype = slot.get("type", "Lecture")
+                type_bg = "#EDE9FE" if stype == "Practical" else "#FEF3C7" if stype == "Break" else "#EEF2FF"
+                type_color = "#6D28D9" if stype == "Practical" else "#D97706" if stype == "Break" else "#4338CA"
+                
+                st.markdown(f"""
+                <div class="glass-card" style="padding: 14px 18px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: #4F46E5; background: #EEF2FF; padding: 2px 6px; border-radius: 4px;">
+                                ⏰ {slot.get('time')}
+                            </span>
+                            <strong style="margin-left: 8px; font-size: 15px; color: #0F172A;">{slot.get('subject')}</strong>
                         </div>
-                        <p style="font-size: 14px; color: #334155; margin: 10px 0 12px 0; line-height: 1.5;">{info.get('description', '')}</p>
+                        <span style="background: {type_bg}; color: {type_color}; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 700;">{stype}</span>
                     </div>
-                    """, unsafe_allow_html=True)
-
-                    btn_c1, btn_c2 = st.columns([1, 1])
-                    with btn_c1:
-                        if os.path.exists(file_path):
-                            with open(file_path, "rb") as f:
-                                if st.download_button(
-                                    label="⬇️ Download PDF",
-                                    data=f,
-                                    file_name=filename,
-                                    mime="application/pdf",
-                                    key=f"dash_dl_{filename}",
-                                    use_container_width=True
-                                ):
-                                    materials_meta[filename]["downloads"] = materials_meta[filename].get("downloads", 0) + 1
-                                    save_materials_meta(materials_meta)
-                    with btn_c2:
-                        if st.button(f"❤️ Upvote ({info.get('likes', 0)})", key=f"dash_like_{filename}", use_container_width=True):
-                            materials_meta[filename]["likes"] = materials_meta[filename].get("likes", 0) + 1
-                            save_materials_meta(materials_meta)
-                            st.rerun()
+                    <div style="font-size: 12px; color: #64748B; margin-top: 4px;">
+                        🏛️ Venue: <strong>{slot.get('room', 'LH-302')}</strong> &nbsp;|&nbsp; 👨‍🏫 <strong>{slot.get('faculty')}</strong>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
 
     with dash_col_right:
-        # Top Material Requests
-        st.subheader("🙋 Top Community Requests")
+        st.subheader("🔥 Top Material Requests")
         open_requests = [r for r in material_requests_data if r.get("status") == "Open"]
         sorted_requests = sorted(open_requests, key=lambda x: x.get("upvotes", 0), reverse=True)[:3]
         
@@ -1565,13 +1709,13 @@ if "Home Dashboard" in nav_option:
             for req in sorted_requests:
                 with st.container():
                     st.markdown(f"""
-                    <div class="glass-card" style="padding: 16px; margin-bottom: 12px; border-left: 4px solid #4F46E5;">
+                    <div class="glass-card" style="padding: 14px 18px; margin-bottom: 10px; border-left: 4px solid #4F46E5;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <strong style="color: #0F172A; font-size: 16px;">📌 {req.get('title')}</strong>
+                            <strong style="color: #0F172A; font-size: 15px;">📌 {req.get('title')}</strong>
                             <span class="tag-chip" style="margin: 0; font-weight:700;">👍 {req.get('upvotes', 0)}</span>
                         </div>
-                        <div style="font-size: 13px; color: #64748B; margin-top: 6px;">
-                            📚 {req.get('subject')} • 🎓 {req.get('semester')} • Requested by <strong>{req.get('requester')}</strong>
+                        <div style="font-size: 12px; color: #64748B; margin-top: 4px;">
+                            📚 {req.get('subject')} • 🎓 {req.get('semester')} • By <strong>{req.get('requester')}</strong>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -1580,20 +1724,6 @@ if "Home Dashboard" in nav_option:
                         save_material_requests(material_requests_data)
                         st.toast("Upvote registered! This helps prioritize material uploads.", icon="👍")
                         st.rerun()
-
-        st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-
-        # Interactive Daily Academic Goals Widget
-        st.subheader("🎯 Daily Academic Goals")
-        st.markdown("""
-        <div class="task-box">
-            <span style="font-size:13px; color:#475569; font-weight:600;">Track your daily milestones:</span>
-        </div>
-        """, unsafe_allow_html=True)
-        st.checkbox("📖 Review 1 Lecture PDF from Study Materials", value=True, key="goal_chk_1")
-        st.checkbox("⚡ Check Big-O Sorting Cheatsheet", value=False, key="goal_chk_2")
-        st.checkbox("⏱️ Complete one 25-minute Pomodoro focus cycle", value=False, key="goal_chk_3")
-        st.checkbox("📊 Verify Attendance in 75% Guard", value=False, key="goal_chk_4")
 
         st.markdown("<br>", unsafe_allow_html=True)
         st.subheader("💡 Contributor Leaderboard")
