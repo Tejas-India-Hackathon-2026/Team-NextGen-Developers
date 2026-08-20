@@ -30,6 +30,9 @@ TIMETABLE_FILE = "timetable.json"
 EXAM_SCHEDULE_FILE = "exam_schedule.json"
 SHARED_RESOURCES_FILE = "shared_resources.json"
 GOVT_EXAMS_FILE = "govt_exams.json"
+COLLABORATIONS_FILE = "collaborations.json"
+CREATOR_PRODUCTS_FILE = "creator_products.json"
+MENTORSHIPS_FILE = "mentorship_slots.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -1555,6 +1558,205 @@ def save_govt_exams(data):
     with open(GOVT_EXAMS_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+def load_collaborations():
+    """Load project gigs, student bounties, and revenue-share collaboration listings."""
+    default_collabs = [
+        {
+            "id": "collab_1",
+            "title": "Full-Stack Campus Food & Snack Delivery Platform",
+            "category": "Web & Mobile Dev",
+            "type": "Revenue Share + Bounty",
+            "compensation": "₹8,000 Bounty + 15% Monthly Net Profit Split",
+            "posted_by": "Aman Verma (CS 6th Sem)",
+            "date": "2026-08-15",
+            "deadline": "2026-09-30",
+            "skills_required": ["React", "FastAPI / Node.js", "PostgreSQL", "Razorpay Integration"],
+            "description": "Building a hyperlocal quick-commerce snack & night-canteen delivery app for hostel students. Seeking a frontend lead and backend engineer to ship MVP before mid-sems.",
+            "team_size": "2 / 4 Members Joined",
+            "status": "Recruiting",
+            "applicants": [
+                {"name": "Siddharth Rao", "role": "Frontend Dev", "quote": "Experienced in React Native & Tailwind", "date": "2026-08-16"}
+            ]
+        },
+        {
+            "id": "collab_2",
+            "title": "AI Mid-Sem Question Generator & Automated Grading SaaS",
+            "category": "AI / Machine Learning",
+            "type": "Fixed Bounty + Token Royalty",
+            "compensation": "₹12,500 Milestone Bounty + 20% Subscription Royalty",
+            "posted_by": "Prof. S. Narayanan & Tech Club",
+            "date": "2026-08-18",
+            "deadline": "2026-10-15",
+            "skills_required": ["Python", "LangChain / LlamaIndex", "FastAPI", "OpenAI / Gemini API"],
+            "description": "Developing an automated syllabus parser that generates high-yield unit mock papers from uploaded professor lecture notes. Need an ML enthusiast to fine-tune prompts and RAG pipeline.",
+            "team_size": "1 / 3 Members Joined",
+            "status": "Recruiting",
+            "applicants": []
+        },
+        {
+            "id": "collab_3",
+            "title": "College Fest 'TechKrithi 2026' Official Merchandise & Ticketing Portal",
+            "category": "UI/UX & Web Dev",
+            "type": "Fixed Project Bounty",
+            "compensation": "₹6,000 Flat Bounty + 5% Merch Revenue Split",
+            "posted_by": "Cultural & Tech Committee",
+            "date": "2026-08-12",
+            "deadline": "2026-09-10",
+            "skills_required": ["Figma UI/UX", "Next.js / HTML5", "Payment Gateway", "QR Code Generation"],
+            "description": "Design dynamic high-converting landing page, pass booking system with dynamic QR generation for entry gates, and official merchandise e-store.",
+            "team_size": "3 / 3 Members Joined",
+            "status": "Active Project",
+            "applicants": []
+        },
+        {
+            "id": "collab_4",
+            "title": "Autonomous Drone Path-Planning for Campus Security & Surveillance",
+            "category": "Robotics & Embedded",
+            "type": "Hackathon Prize Pool Share",
+            "compensation": "50-50 Split on ₹1,00,000 Hackathon Grand Prize + Patent Co-Inventorship",
+            "posted_by": "Devika Nair (ECE 7th Sem)",
+            "date": "2026-08-19",
+            "deadline": "2026-09-25",
+            "skills_required": ["ROS / ROS2", "Computer Vision (OpenCV)", "YOLOv8", "C++ / Python"],
+            "description": "Collaborate to build an obstacle avoidance & person tracking drone system for Smart India Hackathon 2026. Hardware prototype already assembled, need CV/ROS engineer.",
+            "team_size": "2 / 4 Members Joined",
+            "status": "Recruiting",
+            "applicants": []
+        }
+    ]
+
+    if not os.path.exists(COLLABORATIONS_FILE):
+        with open(COLLABORATIONS_FILE, "w") as f:
+            json.dump(default_collabs, f, indent=4)
+        return default_collabs
+
+    try:
+        with open(COLLABORATIONS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return default_collabs
+
+def save_collaborations(data):
+    """Save collaborations data to JSON."""
+    with open(COLLABORATIONS_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+def load_creator_products():
+    """Load creator monetization products, premium notes, code repos, and digital bundles."""
+    default_products = [
+        {
+            "id": "prod_1",
+            "title": "Complete DSA & LeetCode Visual Patterns Master-Deck (250+ Solved in C++ & Python)",
+            "author": "Rohan Sharma (Placed at Microsoft / 9.6 CGPA)",
+            "author_branch": "Computer Science 7th Sem",
+            "price_inr": 149,
+            "category": "Coding & DSA Vault",
+            "rating": 4.9,
+            "sales_count": 64,
+            "description": "Comprehensive visual roadmap with patterns (Two Pointers, Sliding Window, Monotonic Stack, DP States) with clean interview-ready code templates.",
+            "includes": "PDF Cheatsheet (120 Pages) + GitHub Repo Access + 15 Video Breakdowns",
+            "file": "materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"
+        },
+        {
+            "id": "prod_2",
+            "title": "GATE CS 2026 Topper's 1-Page Formula Sheets & Rapid Revision Numerical Vault",
+            "author": "Ananya Mishra (GATE Rank 42)",
+            "author_branch": "Information Technology Alumna",
+            "price_inr": 99,
+            "category": "Competitive Exams",
+            "rating": 4.8,
+            "sales_count": 112,
+            "description": "High-yield formula compilation covering all 10 core subjects with previous 15-year numerical shortcut tricks.",
+            "includes": "10 Subject PDF Cheatcards + 3 Full-Length Mock Question PDFs",
+            "file": "materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"
+        },
+        {
+            "id": "prod_3",
+            "title": "Operating Systems & DBMS End-Sem Solved Answer Banks (With 10-Year Subjective Questions)",
+            "author": "Prof. Sneha Kulkarni & Academic Scholars",
+            "author_branch": "Core CS Faculty",
+            "price_inr": 79,
+            "category": "Semester PYQs",
+            "rating": 4.9,
+            "sales_count": 89,
+            "description": "Step-by-step solved answers with architectural diagrams for Deadlock prevention, Banker's algorithm, Paging numericals, and BCNF decompositions.",
+            "includes": "5 Complete Solved Paper PDFs + Diagram Mastersheet",
+            "file": "materials/OS_and_DBMS_Exam_CheatSheet.pdf"
+        },
+        {
+            "id": "prod_4",
+            "title": "Production-Ready Full-Stack MERN + Stripe Authentication SaaS Starter Template",
+            "author": "Vikram Patel (Full-Stack Dev)",
+            "author_branch": "ECE 7th Sem",
+            "price_inr": 199,
+            "category": "Software Starter Packs",
+            "rating": 5.0,
+            "sales_count": 38,
+            "description": "Clean, scalable boilerplate with JWT auth, payment gateway integration, responsive UI components, and Docker containerization.",
+            "includes": "Complete Source Code ZIP + Architecture Documentation + Deployment Guide",
+            "file": "materials/Python_Complete_Programming_Handbook.pdf"
+        }
+    ]
+
+    if not os.path.exists(CREATOR_PRODUCTS_FILE):
+        with open(CREATOR_PRODUCTS_FILE, "w") as f:
+            json.dump(default_products, f, indent=4)
+        return default_products
+
+    try:
+        with open(CREATOR_PRODUCTS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return default_products
+
+def save_creator_products(data):
+    """Save creator products database to JSON."""
+    with open(CREATOR_PRODUCTS_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
+def load_mentorship_slots():
+    """Load 1-on-1 peer tutoring and consultation booking listings."""
+    default_mentors = [
+        {
+            "id": "mentor_1",
+            "name": "Rohan Sharma",
+            "expertise": "DSA, LeetCode Hard, System Design & Tech Interviews",
+            "fee_inr": 99,
+            "duration": "30 Minutes",
+            "rating": 4.9,
+            "sessions_completed": 28,
+            "available_slots": ["Tomorrow 6:00 PM", "Tomorrow 8:00 PM", "Saturday 11:00 AM"],
+            "bio": "Placed at Tier-1 tech company. Can review your resume, debug DSA approaches, and run mock technical interviews."
+        },
+        {
+            "id": "mentor_2",
+            "name": "Ananya Mishra",
+            "expertise": "GATE CS Preparation Strategy & Engineering Mathematics",
+            "fee_inr": 129,
+            "duration": "45 Minutes",
+            "rating": 5.0,
+            "sessions_completed": 45,
+            "available_slots": ["Friday 5:30 PM", "Saturday 4:00 PM", "Sunday 10:00 AM"],
+            "bio": "GATE AIR 42. I help you build realistic 90-day study schedules, tackle weak subjects, and master previous year papers."
+        }
+    ]
+
+    if not os.path.exists(MENTORSHIPS_FILE):
+        with open(MENTORSHIPS_FILE, "w") as f:
+            json.dump(default_mentors, f, indent=4)
+        return default_mentors
+
+    try:
+        with open(MENTORSHIPS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return default_mentors
+
+def save_mentorship_slots(data):
+    """Save mentorship listings to JSON."""
+    with open(MENTORSHIPS_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
 def get_pdf_base64(file_path):
     """Read PDF file and return base64 string for embedded preview."""
     try:
@@ -1645,6 +1847,7 @@ with st.sidebar:
         "Navigation Menu",
         [
             "🏠 Home Dashboard",
+            "💼 Collab & Revenue Hub",
             "🏛️ Govt Exam Hub",
             "🤝 Resource Sharing Hub",
             "📅 Timetable & Schedule",
@@ -1754,9 +1957,9 @@ if "Home Dashboard" in nav_option:
     with p_col3:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #F5F3FF; color: #7C3AED; border: 1.5px solid #DDD6FE;">🤝</div>
-            <div class="square-portal-title">Resource Sharing</div>
-            <div class="square-portal-sub">P2P Swap &amp; 6-Digit Codes</div>
+            <div class="square-logo-box" style="background: #ECFDF5; color: #059669; border: 1.5px solid #A7F3D0;">💼</div>
+            <div class="square-portal-title">Collab &amp; Revenue</div>
+            <div class="square-portal-sub">Gigs, Bounties &amp; Rev Share</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col4:
@@ -2032,7 +2235,362 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 🏛️ GOVERNMENT & COMPETITIVE EXAMS PLATFORM
+# 2. 💼 COLLABORATION & REVENUE GENERATION HUB
+# ==================================================
+
+elif "Collab & Revenue" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_display_name = st.session_state.get("student_name", "Student Scholar")
+    branch_name = st.session_state.get("user_branch", "Computer Science & Engg")
+    sem_name = st.session_state.get("user_semester", "3rd Semester")
+
+    collabs_data = load_collaborations()
+    products_data = load_creator_products()
+    mentors_data = load_mentorship_slots()
+
+    # Session state for student creator wallet
+    if "student_wallet" not in st.session_state:
+        st.session_state["student_wallet"] = {
+            "balance_inr": 2840,
+            "total_earned": 5600,
+            "sales_count": 18,
+            "active_gigs": 2
+        }
+
+    st.header("💼 Campus Collaboration & Revenue Generation Hub")
+    st.write(f"Empowering students to collaborate on funded tech projects, earn revenue-share royalties, sell premium study packs, and book 1-on-1 mentorship.")
+
+    # ── Top Hero Stats Banner ─────────────────────────
+    total_bounty_inr = sum(
+        int(''.join(filter(str.isdigit, c.get("compensation", "0")))) if any(char.isdigit() for char in c.get("compensation", "")) else 5000 
+        for c in collabs_data
+    )
+    total_sales_market = sum(p.get("sales_count", 0) for p in products_data)
+
+    st.markdown(f"""
+    <div class="hero-container" style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 40%, #16A34A 85%, #059669 100%); margin-bottom: 22px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span style="background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25); padding: 5px 16px; border-radius: 9999px; font-size: 12px; font-weight: 800; text-transform: uppercase;">
+                    <span class="live-pulse"></span> Student Micro-Economy &amp; Venture Network
+                </span>
+                <h2 style="margin: 12px 0 6px 0; color: white !important; font-size: 32px; font-weight: 900;">
+                    Monetize Skills &amp; Build Funded Ventures 🚀
+                </h2>
+                <p style="margin: 0; font-size: 15.5px; max-width: 760px; line-height: 1.6; color: #F1F5F9; opacity: 0.95;">
+                    Team up on startup MVPs, split hackathon prize bounties, earn royalties from your semester study guides, or offer paid 1-on-1 peer mentoring.
+                </p>
+                <div style="margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 700;">💼 {len(collabs_data)} Active Project Gigs</span>
+                    <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 700;">💰 ₹{total_bounty_inr:,}+ Bounty Pool</span>
+                    <span style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 4px 12px; font-size: 13px; font-weight: 700;">💎 {total_sales_market}+ Digital Sales</span>
+                </div>
+            </div>
+            <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 16px; padding: 16px 20px; text-align: center; min-width: 170px;">
+                <div style="font-size: 12px; text-transform: uppercase; font-weight: 800; opacity: 0.85;">Your Creator Balance</div>
+                <div style="font-size: 32px; font-weight: 900; color: #FEF08A; margin: 4px 0;">₹{st.session_state['student_wallet']['balance_inr']:,}</div>
+                <span style="background: #16A34A; color: white; padding: 3px 10px; border-radius: 6px; font-size: 11px; font-weight: 800;">85% Revenue Share</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Tabs ──────────────────────────────────────────
+    c_tab_gigs, c_tab_market, c_tab_mentorship, c_tab_wallet, c_tab_post = st.tabs([
+        "🚀 Project Gigs & Revenue Splits",
+        "💎 Premium Notes & Code Market",
+        "🎓 1-on-1 Paid Mentorship",
+        "💰 Creator Earnings & Wallet",
+        "➕ Post New Collab / Gig"
+    ])
+
+    # ── TAB 1: PROJECT GIGS & REVENUE SPLITS ──────────
+    with c_tab_gigs:
+        st.subheader("🚀 Campus Project Gigs & Revenue-Share Opportunities")
+        st.write("Join active software projects, startup teams, or research initiatives offering milestone bounties or profit-sharing percentages.")
+
+        col_f1, col_f2 = st.columns([1.5, 1])
+        with col_f1:
+            gig_cat_filter = st.selectbox(
+                "Filter by Project Domain",
+                ["All Domains", "Web & Mobile Dev", "AI / Machine Learning", "UI/UX & Web Dev", "Robotics & Embedded"],
+                key="gig_cat_flt"
+            )
+        with col_f2:
+            gig_sort = st.selectbox("Sort By", ["Latest First", "Highest Bounty / Compensation"], key="gig_sort_flt")
+
+        filtered_collabs = collabs_data if gig_cat_filter == "All Domains" else [c for c in collabs_data if c.get("category") == gig_cat_filter]
+
+        st.markdown(f"**Showing {len(filtered_collabs)} active collaboration opportunity(s)**")
+
+        for gig in filtered_collabs:
+            gig_id = gig.get("id")
+            is_recruiting = gig.get("status") == "Recruiting"
+            status_badge = "badge-open" if is_recruiting else "badge-fulfilled"
+            status_text = "🟢 Recruiting Collaborators" if is_recruiting else "🔵 Active Team"
+
+            st.markdown(f"""
+            <div class="glass-card" style="border-left: 5px solid #2563EB; padding: 24px; margin-bottom: 18px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <span class="tag-chip" style="background:#EFF6FF; color:#1D4ED8; font-weight:800;">{gig.get('category')}</span>
+                        <span class="tag-chip" style="background:#FEF3C7; color:#B45309; font-weight:800;">{gig.get('type')}</span>
+                        <h3 style="margin: 8px 0 6px 0; font-size: 21px; font-weight: 900; color: #0F172A;">
+                            {gig.get('title')}
+                        </h3>
+                    </div>
+                    <div style="text-align: right;">
+                        <span class="{status_badge}">{status_text}</span>
+                        <div style="margin-top: 6px; font-size: 17px; font-weight: 900; color: #059669; font-family: 'Outfit', sans-serif;">
+                            💵 {gig.get('compensation')}
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size: 14.5px; color: #334155; line-height: 1.6; margin: 10px 0 14px 0;">
+                    {gig.get('description')}
+                </p>
+                <div style="margin-bottom: 12px;">
+                    <strong style="font-size: 13px; color: #64748B; text-transform: uppercase;">Required Skills:</strong><br>
+                    {' '.join([f'<span class="tag-chip" style="background:#F1F5F9; color:#1E293B; border:1px solid #CBD5E1; font-weight:700;">🛠️ {s}</span>' for s in gig.get('skills_required', [])])}
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; font-size: 13px; color: #64748B; border-top: 1px solid #F1F5F9; padding-top: 10px;">
+                    <span>👤 Posted by: <strong style="color:#0F172A;">{gig.get('posted_by')}</strong> on {gig.get('date')}</span>
+                    <span>👥 Team Progress: <strong style="color:#2563EB;">{gig.get('team_size')}</strong> &nbsp;|&nbsp; ⏳ Deadline: {gig.get('deadline')}</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            with st.expander(f"🤝 Apply to Join '{gig.get('title')}'"):
+                with st.form(f"apply_gig_form_{gig_id}", clear_on_submit=True):
+                    app_c1, app_c2 = st.columns(2)
+                    with app_c1:
+                        app_name = st.text_input("Your Full Name", value=student_display_name, key=f"app_n_{gig_id}")
+                        app_role = st.text_input("Proposed Role / Contribution", placeholder="e.g. Frontend Developer / ML Pipeline Engineer", key=f"app_r_{gig_id}")
+                    with app_c2:
+                        app_links = st.text_input("GitHub / Portfolio / LinkedIn Link", placeholder="https://github.com/yourhandle", key=f"app_l_{gig_id}")
+                        app_rev_pref = st.selectbox("Preferred Terms", ["Standard Listed Bounty / Split", "Custom Milestone Negotiation", "Pro-Bono / Experience & Certificate"], key=f"app_p_{gig_id}")
+                    
+                    app_pitch = st.text_area("Why are you the best fit for this project?", placeholder="Briefly describe past projects or skills matching this stack...", key=f"app_m_{gig_id}")
+                    
+                    submit_app = st.form_submit_button("📩 Submit Collab Application & Connect", use_container_width=True)
+
+                    if submit_app:
+                        if not app_role.strip() or not app_pitch.strip():
+                            st.error("Please provide both your proposed role and a short pitch.")
+                        else:
+                            gig.setdefault("applicants", []).append({
+                                "name": app_name,
+                                "role": app_role,
+                                "quote": app_pitch[:120],
+                                "date": datetime.now().strftime("%Y-%m-%d")
+                            })
+                            save_collaborations(collabs_data)
+                            st.balloons()
+                            st.success(f"🎉 Application submitted to {gig.get('posted_by')}! They will review your profile.")
+
+    # ── TAB 2: PREMIUM NOTES & CODE MARKET ────────────
+    with c_tab_market:
+        st.subheader("💎 Creator Monetization Market — Buy & Sell Premium Packs")
+        st.write("Verified high-yield semester study decks, 1-page formula blueprints, and full-stack software templates crafted by campus toppers.")
+
+        m_col1, m_col2 = st.columns(2)
+
+        for idx, prod in enumerate(products_data):
+            target_col = m_col1 if idx % 2 == 0 else m_col2
+            prod_id = prod.get("id")
+
+            with target_col:
+                st.markdown(f"""
+                <div class="glass-card" style="padding: 22px; margin-bottom: 16px; border-top: 4px solid #10B981;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px;">
+                        <span class="tag-chip" style="background:#ECFDF5; color:#059669; font-weight:800;">{prod.get('category')}</span>
+                        <div style="text-align: right;">
+                            <span style="font-size: 22px; font-weight: 900; color: #059669; font-family: 'Outfit', sans-serif;">₹{prod.get('price_inr')}</span>
+                        </div>
+                    </div>
+                    <h4 style="margin: 8px 0 6px 0; font-size: 18px; font-weight: 800; color: #0F172A;">{prod.get('title')}</h4>
+                    <div style="font-size: 12.5px; color: #64748B; margin-bottom: 8px;">
+                        ✍️ Created by <strong style="color:#0F172A;">{prod.get('author')}</strong> ({prod.get('author_branch')})
+                    </div>
+                    <p style="font-size: 13.5px; color: #334155; line-height: 1.5; margin-bottom: 10px;">
+                        {prod.get('description')}
+                    </p>
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 8px 12px; border-radius: 8px; font-size: 12px; color: #475569; margin-bottom: 12px;">
+                        📦 <strong>Includes:</strong> {prod.get('includes')}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; color: #64748B;">
+                        <span>⭐ <strong style="color:#D97706;">{prod.get('rating')} / 5.0</strong> &nbsp;|&nbsp; 📥 <strong>{prod.get('sales_count')}</strong> copies sold</span>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                b_col1, b_col2 = st.columns([1.2, 1])
+                with b_col1:
+                    if st.button(f"⚡ Unlock Bundle (₹{prod.get('price_inr')})", key=f"buy_btn_{prod_id}", use_container_width=True):
+                        prod["sales_count"] = prod.get("sales_count", 0) + 1
+                        save_creator_products(products_data)
+                        st.session_state["student_wallet"]["balance_inr"] += int(prod.get("price_inr", 99) * 0.85)
+                        st.balloons()
+                        st.success(f"🎉 **{prod.get('title')}** unlocked! Instant download ready below.")
+                with b_col2:
+                    if os.path.exists(prod.get("file", "")):
+                        with open(prod.get("file"), "rb") as f:
+                            st.download_button(
+                                "📥 Download PDF",
+                                f,
+                                file_name=f"{prod.get('id')}_verified_bundle.pdf",
+                                mime="application/pdf",
+                                key=f"dl_prod_{prod_id}",
+                                use_container_width=True
+                            )
+
+    # ── TAB 3: 1-ON-1 PAID MENTORSHIP ─────────────────
+    with c_tab_mentorship:
+        st.subheader("🎓 1-on-1 Peer Mentorship & Code Review Consultations")
+        st.write("Book focused 30-min consultation slots with placed seniors, GATE top scorers, and tech mentors.")
+
+        for mentor in mentors_data:
+            m_id = mentor.get("id")
+            st.markdown(f"""
+            <div class="glass-card" style="padding: 22px; margin-bottom: 16px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                    <div style="display: flex; gap: 14px; align-items: center;">
+                        <div style="width: 54px; height: 54px; border-radius: 16px; background: #EFF6FF; border: 1px solid #BFDBFE; display: flex; align-items: center; justify-content: center; font-size: 26px;">
+                            👨‍🏫
+                        </div>
+                        <div>
+                            <h3 style="margin: 0; font-size: 20px; font-weight: 800; color: #0F172A;">{mentor.get('name')}</h3>
+                            <span style="font-size: 13px; color: #2563EB; font-weight: 700;">🎯 {mentor.get('expertise')}</span>
+                        </div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 24px; font-weight: 900; color: #059669; font-family: 'Outfit', sans-serif;">₹{mentor.get('fee_inr')} <span style="font-size:13px; color:#64748B; font-weight:600;">/ {mentor.get('duration')}</span></div>
+                        <span style="font-size: 12px; color: #D97706; font-weight: 700;">⭐ {mentor.get('rating')} ({mentor.get('sessions_completed')} sessions)</span>
+                    </div>
+                </div>
+                <p style="font-size: 14px; color: #334155; line-height: 1.5; margin: 12px 0;">
+                    {mentor.get('bio')}
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            with st.expander(f"📅 Book 1-on-1 Consultation with {mentor.get('name')}"):
+                with st.form(f"book_mentor_form_{m_id}", clear_on_submit=True):
+                    b_c1, b_c2 = st.columns(2)
+                    with b_c1:
+                        b_slot = st.selectbox("Select Preferred Slot", mentor.get("available_slots", ["Saturday 6:00 PM"]), key=f"slot_{m_id}")
+                        b_agenda = st.selectbox("Session Focus Area", ["Mock DSA Technical Interview", "Resume & Portfolio Review", "Exam Sprint Strategy & Doubts", "Project Architecture Guidance"], key=f"ag_{m_id}")
+                    with b_c2:
+                        b_phone = st.text_input("Your WhatsApp Number (for Google Meet Link)", placeholder="+91 98765 43210", key=f"ph_{m_id}")
+                        b_notes = st.text_input("Specific Questions or LeetCode Links", placeholder="e.g. Need help with Dynamic Programming Trees", key=f"nt_{m_id}")
+                    
+                    submit_booking = st.form_submit_button(f"💳 Confirm Booking & Reserve Slot (₹{mentor.get('fee_inr')})", use_container_width=True)
+
+                    if submit_booking:
+                        st.balloons()
+                        st.success(f"🎉 Consultation confirmed with {mentor.get('name')} for **{b_slot}**! A calendar invite & Google Meet link has been dispatched.")
+
+    # ── TAB 4: CREATOR EARNINGS & WALLET ──────────────
+    with c_tab_wallet:
+        st.subheader("💰 Student Creator Earnings & Payout Wallet")
+        st.write("Track revenue generated from your study pack sales, completed gig milestones, and mentorship consultations.")
+
+        w1, w2, w3 = st.columns(3)
+        with w1:
+            st.markdown(f"""
+            <div class="glass-card" style="text-align: center;">
+                <div style="font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase;">Available Balance</div>
+                <div style="font-size: 38px; font-weight: 900; color: #059669; margin: 6px 0;">₹{st.session_state['student_wallet']['balance_inr']:,}</div>
+                <span class="tag-chip" style="background:#ECFDF5; color:#059669; font-weight:700;">Ready for Payout</span>
+            </div>
+            """, unsafe_allow_html=True)
+        with w2:
+            st.markdown(f"""
+            <div class="glass-card" style="text-align: center;">
+                <div style="font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase;">Lifetime Earnings</div>
+                <div style="font-size: 38px; font-weight: 900; color: #2563EB; margin: 6px 0;">₹{st.session_state['student_wallet']['total_earned']:,}</div>
+                <span class="tag-chip" style="background:#EFF6FF; color:#1D4ED8; font-weight:700;">Gross Revenue</span>
+            </div>
+            """, unsafe_allow_html=True)
+        with w3:
+            st.markdown(f"""
+            <div class="glass-card" style="text-align: center;">
+                <div style="font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase;">Creator Tier</div>
+                <div style="font-size: 26px; font-weight: 900; color: #D97706; margin: 12px 0;">🥇 Gold Creator</div>
+                <span class="tag-chip" style="background:#FEF3C7; color:#B45309; font-weight:700;">Top 5% on Campus</span>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with st.expander("💸 Request Payout Withdrawal to UPI / Bank Account", expanded=True):
+            with st.form("payout_form"):
+                p_c1, p_c2 = st.columns(2)
+                with p_c1:
+                    p_amt = st.number_input("Withdrawal Amount (₹)", min_value=100, max_value=st.session_state['student_wallet']['balance_inr'], value=min(1000, st.session_state['student_wallet']['balance_inr']), step=100)
+                    p_mode = st.selectbox("Payout Channel", ["UPI ID (Google Pay / PhonePe / Paytm)", "IMPS / NEFT Bank Transfer"])
+                with p_c2:
+                    p_upi = st.text_input("UPI ID or Bank Account No.", placeholder="username@okhdfcbank or 1234567890")
+                    p_ifsc = st.text_input("Account Holder Name / IFSC Code", placeholder="Aman Verma / HDFC0001234")
+
+                req_payout = st.form_submit_button("🚀 Submit Withdrawal Request", use_container_width=True)
+
+                if req_payout:
+                    if not p_upi.strip():
+                        st.error("Please provide valid UPI or bank account details.")
+                    else:
+                        st.session_state['student_wallet']['balance_inr'] -= int(p_amt)
+                        st.balloons()
+                        st.success(f"✅ Withdrawal of **₹{p_amt:,}** submitted! Transferred to {p_upi} within 2-4 business hours.")
+                        st.rerun()
+
+    # ── TAB 5: POST NEW COLLAB / GIG ─────────────────
+    with c_tab_post:
+        st.subheader("➕ Post a Project Gig, Funded Bounty, or Revenue-Share Collab")
+        st.write("Recruit talented student developers, designers, or researchers from your campus network.")
+
+        with st.form("post_collab_gig_form", clear_on_submit=True):
+            cg_c1, cg_c2 = st.columns(2)
+            with cg_c1:
+                cg_title = st.text_input("Project / Gig Title *", placeholder="e.g. AI-Powered Smart Campus Parking & Analytics Dashboard")
+                cg_cat = st.selectbox("Domain Category *", ["Web & Mobile Dev", "AI / Machine Learning", "UI/UX & Web Dev", "Robotics & Embedded", "Research & Content Writing", "Other"])
+                cg_type = st.selectbox("Collaboration Model *", ["Revenue Share + Bounty", "Fixed Milestone Bounty", "Hackathon Prize Pool Share", "Equity Co-Founder Match"])
+            with cg_c2:
+                cg_comp = st.text_input("Compensation / Bounty Terms *", placeholder="e.g. ₹10,000 Milestone Bounty + 20% Net Profit Share")
+                cg_skills = st.text_input("Required Tech Stack (comma separated) *", placeholder="e.g. React, Node.js, OpenCV, Docker")
+                cg_deadline = st.text_input("Project Deadline / Target Launch", placeholder="e.g. 2026-10-31")
+
+            cg_desc = st.text_area("Detailed Project Scope & Deliverables *", placeholder="Describe the problem you are solving, what features the team must build, and how revenue will be generated...")
+
+            submit_collab = st.form_submit_button("🚀 Publish Collab Listing to Campus Marketplace", use_container_width=True)
+
+            if submit_collab:
+                if not cg_title.strip() or not cg_desc.strip():
+                    st.error("Please fill in both the project title and detailed description.")
+                else:
+                    new_collab_entry = {
+                        "id": f"collab_{int(datetime.now().timestamp())}",
+                        "title": cg_title.strip(),
+                        "category": cg_cat,
+                        "type": cg_type,
+                        "compensation": cg_comp.strip() if cg_comp.strip() else "Revenue Share Split",
+                        "posted_by": f"{student_display_name} ({branch_name})",
+                        "date": datetime.now().strftime("%Y-%m-%d"),
+                        "deadline": cg_deadline.strip() if cg_deadline.strip() else "Ongoing",
+                        "skills_required": [s.strip() for s in cg_skills.split(",") if s.strip()] if cg_skills else ["General Engineering"],
+                        "description": cg_desc.strip(),
+                        "team_size": "1 / 4 Members Joined",
+                        "status": "Recruiting",
+                        "applicants": []
+                    }
+                    collabs_data.insert(0, new_collab_entry)
+                    save_collaborations(collabs_data)
+
+                    st.balloons()
+                    st.success("🎉 Collab listing published live! Campus peers can now view and apply.")
+                    st.rerun()
+
+
+# ==================================================
+# 3. 🏛️ GOVERNMENT & COMPETITIVE EXAMS PLATFORM
 # ==================================================
 
 elif "Govt Exam" in nav_option:
