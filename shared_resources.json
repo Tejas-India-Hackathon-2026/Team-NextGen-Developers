@@ -1,0 +1,94 @@
+[
+    {
+        "id": "res_201",
+        "share_code": "DSA-842",
+        "title": "Complete Handwritten DSA Master Formula Book & Tree Cheatsheet",
+        "subject": "Data Structures",
+        "category": "Handwritten Notes",
+        "format": "PDF Document",
+        "resource_url": "materials/data_structures_cheatsheet.pdf",
+        "uploader_name": "Rohan Sharma",
+        "uploader_username": "rohan_cs",
+        "uploader_contact": "rohan.cs@campus.edu",
+        "description": "Handwritten summary covering AVL Rotations, Red-Black Trees, Graph Traversals, and Big-O space-time complexity tables.",
+        "semester": "3rd Semester",
+        "date": "2026-08-18",
+        "likes": 28,
+        "reviews": [
+            {
+                "user": "Ananya",
+                "rating": 5,
+                "comment": "Best notes for quick exam revision!",
+                "date": "2026-08-19"
+            },
+            {
+                "user": "Vikram",
+                "rating": 5,
+                "comment": "Tree rotation diagrams are super clean.",
+                "date": "2026-08-19"
+            }
+        ],
+        "status": "Available"
+    },
+    {
+        "id": "res_202",
+        "share_code": "OS-319",
+        "title": "Operating Systems - Solved Previous 5-Year Question Papers (2021-2025)",
+        "subject": "Operating Systems",
+        "category": "PYQ Solution Deck",
+        "format": "PDF Document",
+        "resource_url": "materials/operating_systems_cheatsheet.pdf",
+        "uploader_name": "Priya Verma",
+        "uploader_username": "priya_v",
+        "uploader_contact": "priya.verma@campus.edu",
+        "description": "Step-by-step solved numericals on Banker's Algorithm, Semaphore synchronization, and Page Replacement (FIFO, LRU, Optimal).",
+        "semester": "4th Semester",
+        "date": "2026-08-15",
+        "likes": 35,
+        "reviews": [
+            {
+                "user": "Amit",
+                "rating": 5,
+                "comment": "Direct questions appeared from this in mid-sems.",
+                "date": "2026-08-17"
+            }
+        ],
+        "status": "Available"
+    },
+    {
+        "id": "res_203",
+        "share_code": "PY-705",
+        "title": "Python & NumPy Lab Assignment Solutions with Output Screenshots",
+        "subject": "Python",
+        "category": "Lab Code & Manual",
+        "format": "GitHub Repo / Link",
+        "resource_url": "https://github.com/topics/python-lab-solutions",
+        "uploader_name": "Ananya Ray",
+        "uploader_username": "ananya_r",
+        "uploader_contact": "ananya.r@campus.edu",
+        "description": "Complete 15 lab experiments code with explanations and error-handling routines.",
+        "semester": "1st Semester",
+        "date": "2026-08-12",
+        "likes": 19,
+        "reviews": [],
+        "status": "Available"
+    },
+    {
+        "id": "res_204",
+        "share_code": "BOOK-109",
+        "title": "Database System Concepts (Silberschatz 7th Ed) - Hardcopy Book Swap",
+        "subject": "Database Systems",
+        "category": "Physical Textbook Swap",
+        "format": "Physical Textbook (Lending)",
+        "resource_url": "Campus Library / LH-302",
+        "uploader_name": "Vikram Patel",
+        "uploader_username": "vikram_p",
+        "uploader_contact": "vikram.patel@campus.edu / Discord: @vikram_p",
+        "description": "Original hardcover book available for lending throughout 3rd/4th semester. Looking to swap for Computer Networks book if possible.",
+        "semester": "3rd Semester",
+        "date": "2026-08-10",
+        "likes": 12,
+        "reviews": [],
+        "status": "Available"
+    }
+]
