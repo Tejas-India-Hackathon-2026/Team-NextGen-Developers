@@ -332,11 +332,16 @@ def load_materials_meta():
             file_size_kb = round(os.path.getsize(file_path) / 1024, 1)
             
             inferred_subject = "Other"
-            if "py" in filename.lower() or "python" in filename.lower():
+            fl = filename.lower()
+            if "cpp" in fl or "c++" in fl:
+                inferred_subject = "C++ Programming"
+            elif fl.startswith("c_") or "c_prog" in fl:
+                inferred_subject = "C Programming"
+            elif "py" in fl or "python" in fl:
                 inferred_subject = "Python"
-            elif "ds" in filename.lower() or "algo" in filename.lower() or "data" in filename.lower():
+            elif "ds" in fl or "algo" in fl or "data" in fl:
                 inferred_subject = "Data Structures"
-            elif "math" in filename.lower():
+            elif "math" in fl:
                 inferred_subject = "Mathematics"
 
             meta[filename] = {
@@ -742,7 +747,7 @@ elif "Study Materials" in nav_option:
             search_query = st.text_input("🔎 Search by Title, Keyword, or Uploader", placeholder="e.g. Python, Trees, Calculus, DBMS...")
 
         with f_col2:
-            all_subjects = ["All Subjects"] + sorted(list(set(info.get("subject", "Other") for info in materials_meta.values()) | {"Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"}))
+            all_subjects = ["All Subjects"] + sorted(list(set(info.get("subject", "Other") for info in materials_meta.values()) | {"C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"}))
             selected_subject = st.selectbox("Subject", all_subjects)
 
         with f_col3:
@@ -850,6 +855,8 @@ elif "Study Materials" in nav_option:
                 doc_subject = st.selectbox(
                     "Academic Subject *",
                     [
+                        "C Programming",
+                        "C++ Programming",
                         "Python",
                         "Data Structures",
                         "Mathematics",
@@ -924,7 +931,7 @@ elif "Study Materials" in nav_option:
             qr_col1, qr_col2 = st.columns(2)
             with qr_col1:
                 qr_title = st.text_input("Requested Topic / Material Title *", placeholder="e.g. Unit 3 - Memory Management & Paging Notes")
-                qr_subject = st.selectbox("Subject *", ["Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"], key="qr_sub")
+                qr_subject = st.selectbox("Subject *", ["C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"], key="qr_sub")
                 qr_semester = st.selectbox("Semester *", [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)], index=2, key="qr_sem")
             with qr_col2:
                 qr_type = st.selectbox("Resource Type", ["Lecture Notes", "Previous Year Question Paper (PYQ)", "Lab Manual", "Reference Book / Summary", "Assignment Solutions"], key="qr_type")
@@ -1156,7 +1163,7 @@ elif "Request Materials" in nav_option:
             r_col1, r_col2 = st.columns(2)
             with r_col1:
                 r_title = st.text_input("Topic / Material Title *", placeholder="e.g. Unit 2 - Process Scheduling & Semaphores Notes")
-                r_subject = st.selectbox("Academic Subject *", ["Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Software Engineering", "Other"], key="post_req_sub")
+                r_subject = st.selectbox("Academic Subject *", ["C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Software Engineering", "Other"], key="post_req_sub")
                 r_semester = st.selectbox("Academic Semester *", [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)], index=2, key="post_req_sem")
 
             with r_col2:
