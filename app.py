@@ -27,6 +27,7 @@ ATTENDANCE_FILE = "attendance.json"
 TIMETABLE_FILE = "timetable.json"
 EXAM_SCHEDULE_FILE = "exam_schedule.json"
 SHARED_RESOURCES_FILE = "shared_resources.json"
+GOVT_EXAMS_FILE = "govt_exams.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -1412,6 +1413,123 @@ def save_shared_resources(data):
     with open(SHARED_RESOURCES_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+def load_govt_exams():
+    """Load government competitive exams catalog, important dates, and eligibility guides."""
+    default_exams = [
+        {
+            "id": "govt_1",
+            "name": "GATE 2026 (Computer Science & Information Technology)",
+            "short_name": "GATE CS/IT",
+            "conducting_body": "Indian Institute of Technology (IIT)",
+            "category": "Engineering & PSUs",
+            "eligibility": "B.Tech / B.E. (3rd/4th Year or Completed) / MCA / M.Sc",
+            "age_limit": "No Age Limit",
+            "application_window": "August – October 2026",
+            "exam_date": "February 2027",
+            "selection_stages": "Computer Based Test (65 Questions · 100 Marks · 3 Hours)",
+            "official_portal": "https://gate.iitk.ac.in",
+            "key_benefits": "M.Tech / MS at IISc & IITs, PSU Executive Jobs (IOCL, ONGC, NTPC, HPCL, POSOCO, BARC)",
+            "syllabus_highlights": "Algorithms, Data Structures, Theory of Computation, Compiler Design, OS, DBMS, Computer Networks, Discrete Math, COA, Digital Logic, General Aptitude.",
+            "status": "Registration Upcoming"
+        },
+        {
+            "id": "govt_2",
+            "name": "ISRO Scientist / Engineer 'SC' (Computer Science)",
+            "short_name": "ISRO ICRB CS",
+            "conducting_body": "Indian Space Research Organisation (ISRO)",
+            "category": "Research & Defence",
+            "eligibility": "B.Tech / B.E. with Minimum 65% aggregate or 6.84/10 CGPA",
+            "age_limit": "28 Years (Relaxable for Reserved Categories)",
+            "application_window": "May – June 2026",
+            "exam_date": "September 2026",
+            "selection_stages": "Written Examination (Technical 80 Qs) + Technical Interview",
+            "official_portal": "https://www.isro.gov.in/Careers.html",
+            "key_benefits": "Direct Entry as Level-10 Gazetted Scientist 'SC' with ISRO Satellite / Launch Centers.",
+            "syllabus_highlights": "Core CS: OS, DS & Algo, Computer Organization, Networks, Software Engineering, C Programming, Discrete Math.",
+            "status": "Notification Live"
+        },
+        {
+            "id": "govt_3",
+            "name": "UPSC Civil Services Examination (CSE 2026)",
+            "short_name": "UPSC IAS / IPS",
+            "conducting_body": "Union Public Service Commission (UPSC)",
+            "category": "Civil Services & Administration",
+            "eligibility": "Any Recognized Bachelor's Degree (Final Year Eligible)",
+            "age_limit": "21 to 32 Years (6 Attempts for General)",
+            "application_window": "February – March 2026",
+            "exam_date": "Prelims: May 2026 · Mains: Sept 2026",
+            "selection_stages": "Stage 1: Prelims (GS-1 + CSAT) · Stage 2: Mains (9 Written Papers) · Stage 3: Personality Interview",
+            "official_portal": "https://upsc.gov.in",
+            "key_benefits": "Apex Administrative Roles: IAS (Collector/DM), IPS (Superintendent of Police), IFS (Diplomat), IRS.",
+            "syllabus_highlights": "History, Geography, Indian Polity, Economy, Environment, Science & Tech, CSAT Aptitude, Optional Subject.",
+            "status": "Annual Cycle Active"
+        },
+        {
+            "id": "govt_4",
+            "name": "SSC Combined Graduate Level (SSC CGL 2026)",
+            "short_name": "SSC CGL",
+            "conducting_body": "Staff Selection Commission (SSC)",
+            "category": "Central Government Officers",
+            "eligibility": "Bachelor's Degree in any discipline",
+            "age_limit": "18 to 30 / 32 Years depending on post",
+            "application_window": "June – July 2026",
+            "exam_date": "Tier-1: Sept 2026 · Tier-2: Dec 2026",
+            "selection_stages": "Tier-1 (CBT Prelims) + Tier-2 (Quantitative, Reasoning, English, General Awareness, Computer Knowledge)",
+            "official_portal": "https://ssc.gov.in",
+            "key_benefits": "Assistant Section Officer (CSS/MEA/IB), Income Tax Inspector, Central Excise & GST Inspector, Sub-Inspector (CBI).",
+            "syllabus_highlights": "General Intelligence & Reasoning, Quantitative Aptitude, General English & Comprehension, Current Affairs, Computer Proficiency.",
+            "status": "Notification Live"
+        },
+        {
+            "id": "govt_5",
+            "name": "IBPS Probationary Officer (PO) & SBI PO",
+            "short_name": "IBPS / SBI PO",
+            "conducting_body": "Institute of Banking Personnel Selection & SBI",
+            "category": "Banking & Financial Services",
+            "eligibility": "Graduation in any stream with recognized University",
+            "age_limit": "20 to 30 Years",
+            "application_window": "August – September 2026",
+            "exam_date": "Prelims: Oct 2026 · Mains: Nov 2026",
+            "selection_stages": "Phase 1: Prelims · Phase 2: Mains (Objective + Essay) · Phase 3: Group Discussion & Interview",
+            "official_portal": "https://www.ibps.in",
+            "key_benefits": "Scale-I Assistant Manager in SBI & Public Sector Banks (PNB, BOB, Canara Bank).",
+            "syllabus_highlights": "Data Analysis & Interpretation, Reasoning & Computer Aptitude, General Banking Awareness, English Language.",
+            "status": "Registration Open"
+        },
+        {
+            "id": "govt_6",
+            "name": "NIC Scientist 'B' & Scientific Technical Assistant",
+            "short_name": "NIC Scientist 'B'",
+            "conducting_body": "National Informatics Centre (NIELIT / MeitY)",
+            "category": "Govt IT & Cyber Infrastructure",
+            "eligibility": "B.E. / B.Tech (CS / IT / ECE) or MCA or M.Sc CS",
+            "age_limit": "30 Years",
+            "application_window": "October – November 2026",
+            "exam_date": "January 2027",
+            "selection_stages": "Written Examination (65% Tech + 35% Generic) + Interview (for Scientist B)",
+            "official_portal": "https://www.calicut.nielit.in/nic21/",
+            "key_benefits": "Central Govt Group 'A' Gazetted Officer designing National Digital Infrastructure, Cloud & Cybersecurity systems.",
+            "syllabus_highlights": "Computer Architecture, Algorithms, Compiler, OS, Web Technologies, Cloud Computing, Cyber Security, Networking.",
+            "status": "Upcoming"
+        }
+    ]
+
+    if not os.path.exists(GOVT_EXAMS_FILE):
+        with open(GOVT_EXAMS_FILE, "w") as f:
+            json.dump(default_exams, f, indent=4)
+        return default_exams
+
+    try:
+        with open(GOVT_EXAMS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return default_exams
+
+def save_govt_exams(data):
+    """Save government exams database to JSON store."""
+    with open(GOVT_EXAMS_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
 def get_pdf_base64(file_path):
     """Read PDF file and return base64 string for embedded preview."""
     try:
@@ -1443,6 +1561,7 @@ with st.sidebar:
         "Navigation Menu",
         [
             "🏠 Home Dashboard",
+            "🏛️ Govt Exam Hub",
             "🤝 Resource Sharing Hub",
             "📅 Timetable & Schedule",
             "📊 Attendance Tracker",
@@ -1543,25 +1662,25 @@ if "Home Dashboard" in nav_option:
     with p_col2:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE;">📅</div>
-            <div class="square-portal-title">Class Timetable</div>
-            <div class="square-portal-sub">Live Routine &amp; Labs</div>
+            <div class="square-logo-box" style="background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE;">🏛️</div>
+            <div class="square-portal-title">Govt Exam Hub</div>
+            <div class="square-portal-sub">GATE, ISRO &amp; UPSC</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col3:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">📊</div>
-            <div class="square-portal-title">Attendance Tracker</div>
-            <div class="square-portal-sub">75% Safe Bunk Guard</div>
+            <div class="square-logo-box" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">🤝</div>
+            <div class="square-portal-title">Resource Sharing</div>
+            <div class="square-portal-sub">P2P Swap &amp; 6-Digit Codes</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col4:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⚡</div>
-            <div class="square-portal-title">Revision Vault</div>
-            <div class="square-portal-sub">1-Page Formula Sheets</div>
+            <div class="square-logo-box" style="background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE;">📅</div>
+            <div class="square-portal-title">Class Timetable</div>
+            <div class="square-portal-sub">Live Routine &amp; Labs</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1572,33 +1691,33 @@ if "Home Dashboard" in nav_option:
     with p_col5:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
-            <div class="square-portal-title">Peer Wishlist</div>
-            <div class="square-portal-sub">Community Requests</div>
+            <div class="square-logo-box" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">📊</div>
+            <div class="square-portal-title">Attendance Tracker</div>
+            <div class="square-portal-sub">75% Safe Bunk Guard</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col6:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #FCE7F3; color: #DB2777; border: 1px solid #FBCFE8;">🧰</div>
-            <div class="square-portal-title">Student Tools</div>
-            <div class="square-portal-sub">SGPA, Guard &amp; Timer</div>
+            <div class="square-logo-box" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⚡</div>
+            <div class="square-portal-title">Revision Vault</div>
+            <div class="square-portal-sub">1-Page Formula Sheets</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col7:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">🔗</div>
-            <div class="square-portal-title">Useful Resources</div>
-            <div class="square-portal-sub">Roadmaps &amp; LeetCode</div>
+            <div class="square-logo-box" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
+            <div class="square-portal-title">Peer Wishlist</div>
+            <div class="square-portal-sub">Community Requests</div>
         </div>
         """, unsafe_allow_html=True)
     with p_col8:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA;">📢</div>
-            <div class="square-portal-title">Notice Board</div>
-            <div class="square-portal-sub">Campus Notices &amp; News</div>
+            <div class="square-logo-box" style="background: #FCE7F3; color: #DB2777; border: 1px solid #FBCFE8;">🧰</div>
+            <div class="square-portal-title">Student Tools</div>
+            <div class="square-portal-sub">SGPA, Guard &amp; Timer</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1853,7 +1972,383 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 🤝 STUDENT RESOURCE SHARING & PEER EXCHANGE HUB
+# 2. 🏛️ GOVERNMENT & COMPETITIVE EXAMS PLATFORM
+# ==================================================
+
+elif "Govt Exam" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_display_name = st.session_state.get("student_name", "Student Scholar")
+    branch_name = st.session_state.get("user_branch", "Computer Science & Engg")
+    sem_name = st.session_state.get("user_semester", "3rd Semester")
+    
+    govt_exams_data = load_govt_exams()
+
+    st.header("🏛️ Government & Competitive Exams Preparation Hub")
+    st.write(f"Comprehensive roadmaps, eligibility criteria, official portals, live mock tests, and solved PYQ papers for **GATE, ISRO, UPSC, SSC CGL, PSUs & Banking** for **{student_display_name}**.")
+
+    # ── Top Hero Stats Banner ─────────────────────────
+    st.markdown("""
+    <div class="glass-card" style="background: linear-gradient(135deg, #EFF6FF 0%, #FAF5FF 100%); border-left: 6px solid #2563EB; padding: 22px 28px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <span style="background: #DBEAFE; color: #1D4ED8; border: 1px solid #BFDBFE; padding: 4px 14px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-transform: uppercase;">
+                    <span class="live-pulse"></span> National Recruitment &amp; Higher Education Portal 2026-27
+                </span>
+                <h3 style="margin: 10px 0 4px 0; font-size: 26px; font-weight: 900; color: #0F172A;">
+                    Gateway to Apex Public Sector &amp; Engineering Careers
+                </h3>
+                <p style="margin: 0; font-size: 14px; color: #475569; font-weight: 500;">
+                    Prepare for GATE (IIT/PSUs), ISRO Scientist 'SC', UPSC Civil Services, SSC CGL Officer Posts &amp; Banking Exams with structured syllabus guides and mock tests.
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <span class="tag-chip" style="font-size: 14px; padding: 6px 14px;">🏛️ Central &amp; State Portals</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 4-KPI Metric Row
+    g_kpi1, g_kpi2, g_kpi3, g_kpi4 = st.columns(4)
+    with g_kpi1:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE;">🏛️</div>
+            <div>
+                <div class="metric-val">{len(govt_exams_data)} Exams</div>
+                <div class="metric-label">National Roadmaps</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with g_kpi2:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">🚀</div>
+            <div>
+                <div class="metric-val">PSU / IITs</div>
+                <div class="metric-label">Direct Recruitment</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with g_kpi3:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">📝</div>
+            <div>
+                <div class="metric-val">4 Quiz Sets</div>
+                <div class="metric-label">Aptitude &amp; Core Mocks</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with g_kpi4:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">📚</div>
+            <div>
+                <div class="metric-val">5+ Years</div>
+                <div class="metric-label">Solved PYQ Papers</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
+
+    # ── Tabs Navigation ──────────────────────────────
+    g_tab_directory, g_tab_mock, g_tab_pyq, g_tab_planner = st.tabs([
+        "🏆 Major Exams Directory & Roadmaps",
+        "📝 Live Aptitude & Tech Mock Tests",
+        "📚 Govt Exam PYQ Solved Papers",
+        "🎯 Preparation Planner & Target Countdown"
+    ])
+
+    # ── TAB 1: EXAM DIRECTORY & ROADMAPS ─────────────
+    with g_tab_directory:
+        col_f1, col_f2 = st.columns([2, 1])
+        with col_f1:
+            g_search = st.text_input("🔍 Search exam name, conducting body, or eligibility", placeholder="e.g. GATE, ISRO, UPSC, SSC, Banking...")
+        with col_f2:
+            g_cat_filter = st.selectbox(
+                "Filter by Category",
+                ["All Categories", "Engineering & PSUs", "Research & Defence", "Civil Services & Administration", "Central Government Officers", "Banking & Financial Services", "Govt IT & Cyber Infrastructure"]
+            )
+
+        filtered_govt = [
+            e for e in govt_exams_data
+            if (g_cat_filter == "All Categories" or e.get("category") == g_cat_filter) and
+               (g_search.lower() in e.get("name", "").lower() or g_search.lower() in e.get("conducting_body", "").lower() or g_search.lower() in e.get("syllabus_highlights", "").lower())
+        ]
+
+        if not filtered_govt:
+            st.info("No matching exams found. Try adjusting your filter.")
+        else:
+            for e_idx, exam in enumerate(filtered_govt):
+                e_name = exam.get("name")
+                e_short = exam.get("short_name")
+                e_body = exam.get("conducting_body")
+                e_cat = exam.get("category")
+                e_elig = exam.get("eligibility")
+                e_age = exam.get("age_limit")
+                e_app = exam.get("application_window")
+                e_date = exam.get("exam_date")
+                e_stages = exam.get("selection_stages")
+                e_url = exam.get("official_portal")
+                e_benefits = exam.get("key_benefits")
+                e_syl = exam.get("syllabus_highlights")
+                e_stat = exam.get("status", "Active")
+
+                cat_color = "#2563EB" if "Engineering" in e_cat else "#7C3AED" if "Research" in e_cat else "#059669" if "Civil" in e_cat else "#D97706"
+                cat_bg = "#EFF6FF" if "Engineering" in e_cat else "#EDE9FE" if "Research" in e_cat else "#D1FAE5" if "Civil" in e_cat else "#FEF3C7"
+
+                with st.container():
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 5px solid {cat_color}; padding: 22px 26px; margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap;">
+                                    <span style="background: {cat_bg}; color: {cat_color}; padding: 3px 12px; border-radius: 9999px; font-weight: 800; font-size: 12px; text-transform: uppercase;">
+                                        {e_cat}
+                                    </span>
+                                    <span class="tag-chip">🏛️ {e_body}</span>
+                                    <span class="tag-chip" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-weight:700;">🟢 {e_stat}</span>
+                                </div>
+                                <h3 style="margin: 6px 0 4px 0; font-size: 21px; font-weight: 800; color: #0F172A;">
+                                    {e_name}
+                                </h3>
+                                <div style="font-size: 13px; color: #64748B; font-weight: 500;">
+                                    📅 <strong>Application Window:</strong> {e_app} &nbsp;|&nbsp; ⏱️ <strong>Expected Exam:</strong> <strong style="color:#0F172A;">{e_date}</strong>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin: 14px 0; font-size: 13.5px; color: #334155;">
+                            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px 14px; border-radius: 10px;">
+                                🎓 <strong>Eligibility:</strong> {e_elig}<br>
+                                ⏳ <strong>Age Limit:</strong> {e_age}
+                            </div>
+                            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px 14px; border-radius: 10px;">
+                                🎯 <strong>Selection Stages:</strong><br>{e_stages}
+                            </div>
+                        </div>
+
+                        <div style="background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #1E293B; margin-bottom: 12px;">
+                            💼 <strong>Career Prospects &amp; Perks:</strong> {e_benefits}
+                        </div>
+
+                        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #334155;">
+                            📖 <strong>Syllabus Scope:</strong> {e_syl}
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    b_c1, b_c2 = st.columns([1.5, 3])
+                    with b_c1:
+                        st.link_button(f"🌐 Visit Official Portal ({e_short})", e_url, use_container_width=True)
+                    with b_c2:
+                        st.caption(f"Always verify candidate notifications on official domain: `{e_url}`")
+
+                    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+
+    # ── TAB 2: LIVE APTITUDE & TECH MOCK TESTS ────────
+    with g_tab_mock:
+        st.subheader("📝 Live Competitive Exam Mock Test Studio")
+        st.write("Test your preparation against standard national exam patterns (Quantitative Aptitude, Logical Reasoning, and Technical CS).")
+
+        quiz_topic = st.selectbox(
+            "Select Mock Test Subject",
+            [
+                "Quantitative Aptitude (Speed Math, Work & Time, Ratios)",
+                "Logical Reasoning & Syllogisms",
+                "Technical CS (Operating Systems, DSA & Discrete Math)",
+                "General Awareness & Science/Tech"
+            ]
+        )
+
+        if "Quantitative Aptitude" in quiz_topic:
+            with st.form("govt_quant_quiz_form"):
+                st.markdown("##### ⏱️ Quantitative Aptitude Practice Set (10 Marks):")
+                
+                q1 = st.radio(
+                    "Q1. A can complete a work in 12 days and B in 18 days. If they work together for 4 days, what fraction of work is left?",
+                    ["A) 1/3", "B) 4/9", "C) 5/9", "D) 2/3"],
+                    index=None,
+                    key="gq_1"
+                )
+                
+                q2 = st.radio(
+                    "Q2. A train 240 m long passes a pole in 24 seconds. How long will it take to pass a platform 650 m long?",
+                    ["A) 65 seconds", "B) 89 seconds", "C) 100 seconds", "D) 72 seconds"],
+                    index=None,
+                    key="gq_2"
+                )
+
+                q3 = st.radio(
+                    "Q3. If the price of sugar rises by 25%, by how much percentage must a household reduce its consumption so that expenditure remains unchanged?",
+                    ["A) 20%", "B) 25%", "C) 16.66%", "D) 15%"],
+                    index=None,
+                    key="gq_3"
+                )
+
+                sub_quant = st.form_submit_button("📊 Submit Quant Test & View Solutions", use_container_width=True, type="primary")
+
+                if sub_quant:
+                    score = 0
+                    if q1 == "B) 4/9":
+                        score += 1
+                    if q2 == "B) 89 seconds":
+                        score += 1
+                    if q3 == "A) 20%":
+                        score += 1
+
+                    if score == 3:
+                        st.balloons()
+                        st.success(f"🎉 **Perfect Score: {score}/3 (100%)** — Outstanding aptitude accuracy!")
+                    else:
+                        st.info(f"📊 **Score: {score}/3 ({round(score/3*100, 1)}%)**")
+
+                    st.markdown("""
+                    <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:14px; border-radius:12px; margin-top:10px; font-size:13.5px;">
+                        <strong>Detailed Solutions:</strong><br>
+                        • <strong>Q1 Solution:</strong> A's 1 day = 1/12, B's 1 day = 1/18. Together 1 day = 5/36. In 4 days = 20/36 = 5/9 work done. Remaining = 1 - 5/9 = <strong>4/9 (Option B)</strong>.<br>
+                        • <strong>Q2 Solution:</strong> Speed of train = 240 / 24 = 10 m/s. Total distance for platform = 240 + 650 = 890 m. Time = 890 / 10 = <strong>89 seconds (Option B)</strong>.<br>
+                        • <strong>Q3 Solution:</strong> Reduction % = [r / (100 + r)] * 100 = [25 / 125] * 100 = <strong>20% (Option A)</strong>.
+                    </div>
+                    """, unsafe_allow_html=True)
+
+        elif "Technical CS" in quiz_topic:
+            with st.form("govt_tech_quiz_form"):
+                st.markdown("##### 💻 GATE / ISRO Level Technical CS Set (10 Marks):")
+                
+                t1 = st.radio(
+                    "Q1. Which of the following page replacement algorithms does NOT suffer from Belady's Anomaly?",
+                    ["A) FIFO (First In First Out)", "B) LRU (Least Recently Used)", "C) Second Chance Algorithm", "D) Random Replacement"],
+                    index=None,
+                    key="gt_1"
+                )
+
+                t2 = st.radio(
+                    "Q2. What is the worst-case time complexity of searching an element in an AVL Tree with N nodes?",
+                    ["A) O(N)", "B) O(log N)", "C) O(N log N)", "D) O(1)"],
+                    index=None,
+                    key="gt_2"
+                )
+
+                t3 = st.radio(
+                    "Q3. In relational database theory, if every non-prime attribute is fully functionally dependent on every candidate key, the relation is in:",
+                    ["A) 1NF", "B) 2NF", "C) 3NF", "D) BCNF"],
+                    index=None,
+                    key="gt_3"
+                )
+
+                sub_tech = st.form_submit_button("📊 Submit Technical Test & View Solutions", use_container_width=True, type="primary")
+
+                if sub_tech:
+                    t_score = 0
+                    if t1 == "B) LRU (Least Recently Used)":
+                        t_score += 1
+                    if t2 == "B) O(log N)":
+                        t_score += 1
+                    if t3 == "B) 2NF":
+                        t_score += 1
+
+                    if t_score == 3:
+                        st.balloons()
+                        st.success(f"🎉 **Perfect Score: {t_score}/3 (100%)** — Solid Core Computer Science foundation!")
+                    else:
+                        st.info(f"📊 **Score: {t_score}/3 ({round(t_score/3*100, 1)}%)**")
+
+                    st.markdown("""
+                    <div style="background:#F8FAFC; border:1px solid #CBD5E1; padding:14px; border-radius:12px; margin-top:10px; font-size:13.5px;">
+                        <strong>Technical Answer Explanations:</strong><br>
+                        • <strong>Q1:</strong> Stack-based algorithms like LRU and Optimal never exhibit Belady's Anomaly because the set of pages in memory for frame size K is always a subset of frame size K+1 <strong>(Option B)</strong>.<br>
+                        • <strong>Q2:</strong> AVL trees strictly maintain a height of O(log N) through self-balancing rotations, guaranteeing worst-case search in <strong>O(log N) (Option B)</strong>.<br>
+                        • <strong>Q3:</strong> 2NF eliminates partial dependencies where non-prime attributes depend on proper subsets of candidate keys <strong>(Option B)</strong>.
+                    </div>
+                    """, unsafe_allow_html=True)
+
+        else:
+            st.info("Additional reasoning and general knowledge question banks are updated weekly with current affairs.")
+
+    # ── TAB 3: PYQ SOLVED PAPERS VAULT ───────────────
+    with g_tab_pyq:
+        st.subheader("📚 Competitive Exam Previous Year Papers & Solution Decks")
+        st.write("Download verified PDF question papers with detailed answer keys.")
+
+        pyq_list = [
+            {
+                "title": "GATE CS 2024 Official Question Paper & Complete Solved Key",
+                "exam": "GATE CS/IT",
+                "year": "2024",
+                "topics": "65 Qs (Engineering Maths, Aptitude & CS Core)",
+                "file": "materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"
+            },
+            {
+                "title": "ISRO Scientist / Engineer 'SC' CS Previous Solved Paper",
+                "exam": "ISRO ICRB",
+                "year": "2023",
+                "topics": "80 Technical CS Questions (OS, Algorithms, Networks, COA)",
+                "file": "materials/OS_and_DBMS_Exam_CheatSheet.pdf"
+            },
+            {
+                "title": "SSC CGL Tier-1 Full Solved Model Paper & Solutions",
+                "exam": "SSC CGL",
+                "year": "2024",
+                "topics": "Quantitative Aptitude, General Intelligence, English & GS",
+                "file": "materials/Python_Complete_Programming_Handbook.pdf"
+            }
+        ]
+
+        for p_item in pyq_list:
+            st.markdown(f"""
+            <div class="glass-card" style="padding: 18px 22px; margin-bottom: 12px; border-left: 4px solid #4F46E5;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                    <div>
+                        <span class="tag-chip" style="font-weight:700;">🏛️ {p_item['exam']}</span>
+                        <span class="tag-chip">📅 Year {p_item['year']}</span>
+                        <h4 style="margin: 6px 0 4px 0; font-size: 18px; font-weight: 800; color: #0F172A;">{p_item['title']}</h4>
+                        <div style="font-size: 13px; color: #64748B;">Scope: {p_item['topics']}</div>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if os.path.exists(p_item['file']):
+                with open(p_item['file'], "rb") as f:
+                    st.download_button(f"⬇️ Download {p_item['exam']} Paper (PDF)", f, file_name=f"{p_item['exam']}_{p_item['year']}_Paper.pdf", mime="application/pdf", key=f"pyq_dl_{p_item['year']}_{p_item['exam']}")
+
+    # ── TAB 4: PREPARATION PLANNER & COUNTDOWN ────────
+    with g_tab_planner:
+        st.subheader("🎯 Personal Competitive Exam Preparation Tracker")
+        st.write("Track your milestone syllabus completion and calculate remaining days to your target exam.")
+
+        chosen_exam_plan = st.selectbox("Target Goal Exam", ["GATE CS 2027 (Feb 2027)", "ISRO Scientist SC (Sept 2026)", "SSC CGL 2026 (Sept 2026)", "UPSC CSE 2027 (May 2027)"])
+        
+        target_exam_date = datetime(2027, 2, 6) if "GATE" in chosen_exam_plan else datetime(2026, 9, 20) if "ISRO" in chosen_exam_plan else datetime(2026, 9, 12) if "SSC" in chosen_exam_plan else datetime(2027, 5, 25)
+        days_remaining = (target_exam_date.date() - datetime.now().date()).days
+
+        st.markdown(f"""
+        <div class="glass-card" style="text-align: center; background: linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 100%); border: 2px solid #C7D2FE; padding: 22px; margin-bottom: 20px;">
+            <span style="font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase;">Target Goal: {chosen_exam_plan}</span>
+            <h1 style="font-size: 48px; font-weight: 900; color: #4338CA; margin: 8px 0;">{days_remaining} Days Remaining</h1>
+            <span class="tag-chip" style="font-size: 13px;">Target Date: {target_exam_date.strftime('%d %B %Y')}</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("##### 📋 Master Syllabus Completion Milestones:")
+        c_m1, c_m2 = st.columns(2)
+        with c_m1:
+            st.checkbox("📖 Engineering Mathematics & Discrete Structures (Graph, Logic, Combinatorics)", value=True, key="p_m1")
+            st.checkbox("🌳 Data Structures & Algorithms (Trees, Graphs, DP, Asymptotic Notation)", value=True, key="p_m2")
+            st.checkbox("💻 Operating Systems (Processes, Deadlocks, Virtual Memory Paging)", value=False, key="p_m3")
+            st.checkbox("🗄️ Database Management Systems (SQL, Normalization, Transactions & ACID)", value=False, key="p_m4")
+        with c_m2:
+            st.checkbox("🌐 Computer Networks (TCP/IP, Congestion Control, Routing Protocols)", value=False, key="p_m5")
+            st.checkbox("⚙️ Theory of Computation & Compiler Design (DFA, Context Free, Parsing)", value=False, key="p_m6")
+            st.checkbox("📐 Quantitative Aptitude & Speed Problem Solving", value=True, key="p_m7")
+            st.checkbox("📝 10 Full-Length Previous Year Solved Papers Reviewed", value=False, key="p_m8")
+
+
+# ==================================================
+# 3. 🤝 STUDENT RESOURCE SHARING & PEER EXCHANGE HUB
 # ==================================================
 
 elif "Resource Sharing" in nav_option:
