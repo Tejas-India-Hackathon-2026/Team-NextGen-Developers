@@ -24,6 +24,8 @@ METADATA_FILE = "materials_meta.json"
 REQUESTS_FILE = "material_requests.json"
 USERS_FILE = "users.json"
 ATTENDANCE_FILE = "attendance.json"
+TIMETABLE_FILE = "timetable.json"
+EXAM_SCHEDULE_FILE = "exam_schedule.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -977,6 +979,132 @@ def save_attendance(username, data):
     with open(ATTENDANCE_FILE, "w") as f:
         json.dump(store, f, indent=4)
 
+def load_timetable(username="admin"):
+    """Load per-student weekly routine timetable with realistic semester defaults."""
+    default_routine = {
+        "Monday": [
+            {"id": "tt_m1", "time": "09:00 AM - 10:00 AM", "subject": "Data Structures & Algorithms", "faculty": "Dr. Ramesh Verma", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_m2", "time": "10:00 AM - 11:00 AM", "subject": "Operating Systems", "faculty": "Prof. Sneha Kulkarni", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_m3", "time": "11:15 AM - 12:15 PM", "subject": "Mathematics-III (Discrete)", "faculty": "Dr. M. S. Iyer", "room": "LH-301", "type": "Tutorial"},
+            {"id": "tt_m4", "time": "01:00 PM - 02:00 PM", "subject": "🥪 Lunch & Refreshment", "faculty": "Campus", "room": "Cafeteria", "type": "Break"},
+            {"id": "tt_m5", "time": "02:00 PM - 04:00 PM", "subject": "Data Structures Lab (Batch A)", "faculty": "Dr. Ramesh Verma", "room": "Computer Lab 4", "type": "Practical"}
+        ],
+        "Tuesday": [
+            {"id": "tt_t1", "time": "09:00 AM - 10:00 AM", "subject": "Python Programming", "faculty": "Dr. Ananya Ray", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_t2", "time": "10:00 AM - 11:00 AM", "subject": "Database Management Systems", "faculty": "Prof. Rajesh Kumar", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_t3", "time": "11:15 AM - 12:15 PM", "subject": "Operating Systems", "faculty": "Prof. Sneha Kulkarni", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_t4", "time": "01:00 PM - 02:00 PM", "subject": "🥪 Lunch & Refreshment", "faculty": "Campus", "room": "Cafeteria", "type": "Break"},
+            {"id": "tt_t5", "time": "02:00 PM - 04:00 PM", "subject": "Python & NumPy Lab (Batch A)", "faculty": "Dr. Ananya Ray", "room": "AI/ML Lab 2", "type": "Practical"}
+        ],
+        "Wednesday": [
+            {"id": "tt_w1", "time": "09:00 AM - 10:00 AM", "subject": "Mathematics-III (Discrete)", "faculty": "Dr. M. S. Iyer", "room": "LH-301", "type": "Lecture"},
+            {"id": "tt_w2", "time": "10:00 AM - 11:00 AM", "subject": "Data Structures & Algorithms", "faculty": "Dr. Ramesh Verma", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_w3", "time": "11:15 AM - 12:15 PM", "subject": "Database Management Systems", "faculty": "Prof. Rajesh Kumar", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_w4", "time": "01:00 PM - 02:00 PM", "subject": "🥪 Lunch & Refreshment", "faculty": "Campus", "room": "Cafeteria", "type": "Break"},
+            {"id": "tt_w5", "time": "02:00 PM - 04:00 PM", "subject": "DBMS SQL & Schema Lab", "faculty": "Prof. Rajesh Kumar", "room": "Database Lab 1", "type": "Practical"}
+        ],
+        "Thursday": [
+            {"id": "tt_th1", "time": "09:00 AM - 10:00 AM", "subject": "Operating Systems", "faculty": "Prof. Sneha Kulkarni", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_th2", "time": "10:00 AM - 11:00 AM", "subject": "Python Programming", "faculty": "Dr. Ananya Ray", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_th3", "time": "11:15 AM - 12:15 PM", "subject": "Data Structures & Algorithms", "faculty": "Dr. Ramesh Verma", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_th4", "time": "01:00 PM - 02:00 PM", "subject": "🥪 Lunch & Refreshment", "faculty": "Campus", "room": "Cafeteria", "type": "Break"},
+            {"id": "tt_th5", "time": "02:00 PM - 03:30 PM", "subject": "Technical Communication & Soft Skills", "faculty": "Prof. Meena Sen", "room": "Seminar Hall B", "type": "Seminar"}
+        ],
+        "Friday": [
+            {"id": "tt_f1", "time": "09:00 AM - 10:00 AM", "subject": "Database Management Systems", "faculty": "Prof. Rajesh Kumar", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_f2", "time": "10:00 AM - 11:00 AM", "subject": "Mathematics-III (Discrete)", "faculty": "Dr. M. S. Iyer", "room": "LH-301", "type": "Lecture"},
+            {"id": "tt_f3", "time": "11:15 AM - 12:15 PM", "subject": "Python Programming", "faculty": "Dr. Ananya Ray", "room": "LH-302", "type": "Lecture"},
+            {"id": "tt_f4", "time": "01:00 PM - 02:00 PM", "subject": "🥪 Lunch & Refreshment", "faculty": "Campus", "room": "Cafeteria", "type": "Break"},
+            {"id": "tt_f5", "time": "02:00 PM - 04:00 PM", "subject": "OS Linux & Shell Scripting Lab", "faculty": "Prof. Sneha Kulkarni", "room": "Open Source Lab", "type": "Practical"}
+        ],
+        "Saturday": [
+            {"id": "tt_s1", "time": "09:30 AM - 11:00 AM", "subject": "Competitive Coding & Project Mentorship", "faculty": "Tech Society & Seniors", "room": "Incubation Center", "type": "Workshop"},
+            {"id": "tt_s2", "time": "11:15 AM - 01:00 PM", "subject": "Open Hackathon & Doubt Solving Session", "faculty": "Faculty Mentors", "room": "Central Library Hall", "type": "Remedial"}
+        ]
+    }
+
+    if not os.path.exists(TIMETABLE_FILE):
+        store = {username: default_routine}
+        with open(TIMETABLE_FILE, "w") as f:
+            json.dump(store, f, indent=4)
+        return default_routine
+
+    try:
+        with open(TIMETABLE_FILE, "r") as f:
+            store = json.load(f)
+        if username not in store or not store[username]:
+            store[username] = default_routine
+            with open(TIMETABLE_FILE, "w") as f:
+                json.dump(store, f, indent=4)
+        return store[username]
+    except Exception:
+        return default_routine
+
+def save_timetable(username, data):
+    """Save student timetable data back to JSON store."""
+    store = {}
+    if os.path.exists(TIMETABLE_FILE):
+        try:
+            with open(TIMETABLE_FILE, "r") as f:
+                store = json.load(f)
+        except Exception:
+            store = {}
+    store[username] = data
+    with open(TIMETABLE_FILE, "w") as f:
+        json.dump(store, f, indent=4)
+
+def load_exam_schedule():
+    """Load college exam schedule and important milestone dates."""
+    default_exams = [
+        {
+            "id": "exam_1",
+            "title": "Data Structures & Algorithms - Mid-Semester Exam",
+            "date": "2026-09-04",
+            "time": "10:00 AM - 01:00 PM",
+            "hall": "Examination Hall A (Seats 1-60)",
+            "syllabus": "Units 1 to 3 (Arrays, Linked Lists, Stacks, Queues, Trees & BST)",
+            "type": "Mid-Sem Theory"
+        },
+        {
+            "id": "exam_2",
+            "title": "Operating Systems - Mid-Semester Exam",
+            "date": "2026-09-08",
+            "time": "10:00 AM - 01:00 PM",
+            "hall": "Examination Hall B (Seats 61-120)",
+            "syllabus": "Processes, CPU Scheduling, Deadlocks & Memory Management",
+            "type": "Mid-Sem Theory"
+        },
+        {
+            "id": "exam_3",
+            "title": "Database Management Systems (DBMS) - Theory Exam",
+            "date": "2026-09-12",
+            "time": "02:00 PM - 05:00 PM",
+            "hall": "LH-302",
+            "syllabus": "ER Modeling, Relational Algebra, SQL Queries & Normalization",
+            "type": "Mid-Sem Theory"
+        },
+        {
+            "id": "exam_4",
+            "title": "Python & Data Structures Lab Evaluation",
+            "date": "2026-09-16",
+            "time": "09:00 AM - 12:00 PM",
+            "hall": "Computer Lab 4",
+            "syllabus": "Hands-on coding, viva voce, and record submission",
+            "type": "Lab Practical"
+        }
+    ]
+
+    if not os.path.exists(EXAM_SCHEDULE_FILE):
+        with open(EXAM_SCHEDULE_FILE, "w") as f:
+            json.dump(default_exams, f, indent=4)
+        return default_exams
+
+    try:
+        with open(EXAM_SCHEDULE_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return default_exams
+
 def load_materials_meta():
     """Load material metadata, auto-indexing any existing untracked PDFs in materials/."""
     meta = {}
@@ -1146,6 +1274,7 @@ with st.sidebar:
         "Navigation Menu",
         [
             "🏠 Home Dashboard",
+            "📅 Timetable & Schedule",
             "📊 Attendance Tracker",
             "📚 Study Materials",
             "⚡ Quick Revision & Cheatsheets",
@@ -1487,7 +1616,296 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 📊 STUDENT ATTENDANCE TRACKER & 75% GUARD
+# 2. 📅 CLASS TIMETABLE & SCHEDULE MANAGER
+# ==================================================
+
+elif "Timetable & Schedule" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_display_name = st.session_state.get("student_name", "Student Scholar")
+    branch_name = st.session_state.get("user_branch", "Computer Science & Engg")
+    sem_name = st.session_state.get("user_semester", "3rd Semester")
+    
+    timetable_data = load_timetable(curr_user)
+    exam_schedule_data = load_exam_schedule()
+    attendance_data = load_attendance(curr_user)
+
+    today_day = datetime.now().strftime("%A")
+    today_date_str = datetime.now().strftime("%d %B %Y")
+
+    st.header("📅 Class Timetable & Academic Routine")
+    st.write(f"Official weekly timetable, today's live lecture sequence, classroom directions, and upcoming exam schedule for **{student_display_name}** ({sem_name}).")
+
+    # ── Today's Live Schedule Alert Card ─────────────
+    today_slots = timetable_data.get(today_day, [])
+    
+    st.markdown(f"""
+    <div class="glass-card" style="background: linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 100%); border-left: 6px solid #4F46E5; padding: 22px 26px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div>
+                <span style="background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE; padding: 4px 14px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-transform: uppercase;">
+                    <span class="live-pulse"></span> Today is {today_day} · {today_date_str}
+                </span>
+                <h3 style="margin: 10px 0 4px 0; font-size: 26px; font-weight: 900; color: #0F172A;">
+                    {len(today_slots)} Scheduled Sessions Today
+                </h3>
+                <p style="margin: 0; font-size: 14px; color: #475569; font-weight: 500;">
+                    {branch_name} • {sem_name} • Room LH-302 &amp; Computing Labs
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <span class="tag-chip" style="font-size: 14px; padding: 6px 14px;">🏛️ Academic Year 2026</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Tabs Navigation ──────────────────────────────
+    tt_tab_today, tt_tab_week, tt_tab_manage, tt_tab_exams = st.tabs([
+        f"📍 Today's Schedule ({today_day})",
+        "🗓️ Weekly Full Timetable Matrix",
+        "➕ Add & Customize Class Slots",
+        "🎯 Mid-Sem & Exam Dates Countdown"
+    ])
+
+    # ── TAB 1: TODAY'S LIVE ROUTINE ──────────────────
+    with tt_tab_today:
+        if today_day in ["Sunday"]:
+            st.info("🎉 **Today is Sunday!** No university lectures scheduled. Use today for rest, revisions, or project coding!")
+        elif not today_slots:
+            st.info(f"No classes logged for {today_day}. You can add slots in the '➕ Add & Customize Class Slots' tab.")
+        else:
+            st.markdown(f"##### ⏰ Lecture Sequence for {today_day}:")
+            for idx, slot in enumerate(today_slots):
+                st_id = slot.get("id", f"slot_{idx}")
+                sub = slot.get("subject", "Subject")
+                timing = slot.get("time", "Time Slot")
+                faculty = slot.get("faculty", "Faculty")
+                room = slot.get("room", "Room")
+                stype = slot.get("type", "Lecture")
+
+                type_bg = "#EDE9FE" if stype == "Practical" else "#FEF3C7" if stype == "Break" else "#E0F2FE" if stype == "Tutorial" else "#EEF2FF"
+                type_color = "#6D28D9" if stype == "Practical" else "#D97706" if stype == "Break" else "#0369A1" if stype == "Tutorial" else "#4338CA"
+                border_accent = "#7C3AED" if stype == "Practical" else "#D97706" if stype == "Break" else "#4F46E5"
+
+                with st.container():
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 5px solid {border_accent}; padding: 18px 22px; margin-bottom: 12px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <span style="font-family:'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #4F46E5; background: #EEF2FF; padding: 3px 10px; border-radius: 6px;">
+                                    ⏱️ {timing}
+                                </span>
+                                <h4 style="margin: 8px 0 4px 0; font-size: 19px; font-weight: 800; color: #0F172A;">
+                                    {sub}
+                                </h4>
+                                <div style="font-size: 13px; color: #64748B; font-weight: 500;">
+                                    👨‍🏫 Faculty: <strong>{faculty}</strong> &nbsp;|&nbsp; 🏛️ Venue: <strong>{room}</strong>
+                                </div>
+                            </div>
+                            <div>
+                                <span style="background: {type_bg}; color: {type_color}; padding: 4px 12px; border-radius: 9999px; font-weight: 700; font-size: 12px; text-transform: uppercase;">
+                                    {stype}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    if stype != "Break":
+                        col_mark1, col_mark2 = st.columns([1, 1])
+                        with col_mark1:
+                            if st.button(f"✅ Mark Present ({sub})", key=f"tt_pres_{st_id}_{idx}", use_container_width=True):
+                                # Update attendance for matching subject if present
+                                found_match = False
+                                for a_sub in attendance_data:
+                                    if a_sub.get("subject", "").lower() in sub.lower() or sub.lower() in a_sub.get("subject", "").lower():
+                                        a_sub["attended"] = a_sub.get("attended", 0) + 1
+                                        a_sub["total"] = a_sub.get("total", 0) + 1
+                                        found_match = True
+                                        break
+                                if found_match:
+                                    save_attendance(curr_user, attendance_data)
+                                    st.toast(f"Marked Present for {sub}! Attendance updated.", icon="🎉")
+                                else:
+                                    st.toast(f"Marked Present for {sub}!", icon="✅")
+                        with col_mark2:
+                            if st.button(f"❌ Mark Absent ({sub})", key=f"tt_abs_{st_id}_{idx}", use_container_width=True):
+                                found_match = False
+                                for a_sub in attendance_data:
+                                    if a_sub.get("subject", "").lower() in sub.lower() or sub.lower() in a_sub.get("subject", "").lower():
+                                        a_sub["total"] = a_sub.get("total", 0) + 1
+                                        found_match = True
+                                        break
+                                if found_match:
+                                    save_attendance(curr_user, attendance_data)
+                                    st.toast(f"Logged Absence for {sub}! Attendance total updated.", icon="⚠️")
+                                else:
+                                    st.toast(f"Logged Absence for {sub}!", icon="❌")
+
+                    st.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
+
+    # ── TAB 2: WEEKLY FULL MATRIX ────────────────────
+    with tt_tab_week:
+        st.subheader("🗓️ Weekly Master Schedule Matrix")
+        
+        selected_day = st.radio(
+            "Select Day",
+            ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            horizontal=True,
+            index=0 if today_day not in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] else ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"].index(today_day)
+        )
+
+        day_routine = timetable_data.get(selected_day, [])
+
+        if not day_routine:
+            st.info(f"No sessions configured for {selected_day}.")
+        else:
+            st.markdown(f"**Routine for {selected_day} ({len(day_routine)} classes):**")
+            
+            for idx, slot in enumerate(day_routine):
+                stype = slot.get("type", "Lecture")
+                type_bg = "#EDE9FE" if stype == "Practical" else "#FEF3C7" if stype == "Break" else "#E0F2FE" if stype == "Tutorial" else "#EEF2FF"
+                type_color = "#6D28D9" if stype == "Practical" else "#D97706" if stype == "Break" else "#0369A1" if stype == "Tutorial" else "#4338CA"
+
+                st.markdown(f"""
+                <div class="glass-card" style="padding: 16px 20px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <div>
+                            <span style="font-family:'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #4338CA; background: #EEF2FF; padding: 2px 8px; border-radius: 6px;">
+                                ⏰ {slot.get('time')}
+                            </span>
+                            <strong style="margin-left: 12px; font-size: 16px; color: #0F172A;">{slot.get('subject')}</strong>
+                        </div>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <span class="tag-chip">🏛️ {slot.get('room', 'LH-302')}</span>
+                            <span style="background: {type_bg}; color: {type_color}; padding: 2px 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">{stype}</span>
+                        </div>
+                    </div>
+                    <div style="font-size: 13px; color: #64748B; margin-top: 6px;">
+                        👨‍🏫 Faculty: <strong>{slot.get('faculty', 'Faculty Member')}</strong>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+    # ── TAB 3: ADD / EDIT CLASS SLOTS ─────────────────
+    with tt_tab_manage:
+        st.subheader("➕ Add or Modify Schedule Period")
+        st.write("Customize your weekly lecture slots, lab timings, classroom venues, and faculty details.")
+
+        with st.form("add_timetable_slot_form", clear_on_submit=True):
+            f_col1, f_col2 = st.columns(2)
+            with f_col1:
+                slot_day = st.selectbox("Day of Week *", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"])
+                slot_sub = st.text_input("Subject / Class Name *", placeholder="e.g. Data Structures & Algorithms")
+                slot_faculty = st.text_input("Faculty In-Charge", placeholder="e.g. Dr. Ramesh Verma")
+
+            with f_col2:
+                slot_time = st.text_input("Time Interval *", placeholder="e.g. 09:00 AM - 10:00 AM")
+                slot_room = st.text_input("Lecture Hall / Lab Venue *", placeholder="e.g. LH-302 or Computer Lab 4")
+                slot_type = st.selectbox("Session Type", ["Lecture", "Practical", "Tutorial", "Seminar", "Workshop", "Break"])
+
+            submit_slot = st.form_submit_button("✨ Save & Append Class Slot", use_container_width=True, type="primary")
+
+            if submit_slot:
+                if not slot_sub.strip() or not slot_time.strip():
+                    st.error("Please enter both the Subject Name and Time Interval.")
+                else:
+                    new_slot_obj = {
+                        "id": f"tt_{int(datetime.now().timestamp())}",
+                        "time": slot_time.strip(),
+                        "subject": slot_sub.strip(),
+                        "faculty": slot_faculty.strip() if slot_faculty.strip() else "Faculty In-Charge",
+                        "room": slot_room.strip() if slot_room.strip() else "LH-302",
+                        "type": slot_type
+                    }
+                    if slot_day not in timetable_data:
+                        timetable_data[slot_day] = []
+                    timetable_data[slot_day].append(new_slot_obj)
+                    save_timetable(curr_user, timetable_data)
+                    st.balloons()
+                    st.success(f"✅ Added new slot for **{slot_day}** ({slot_sub.strip()}) successfully!")
+                    st.rerun()
+
+        st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+        st.markdown("##### 🗑️ Remove an Existing Class Slot:")
+        rem_day = st.selectbox("Select Day to Manage", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], key="rem_day_select")
+        slots_to_delete = timetable_data.get(rem_day, [])
+        if slots_to_delete:
+            slot_options = [f"{s.get('time')} - {s.get('subject')} ({s.get('room')})" for s in slots_to_delete]
+            chosen_rem = st.selectbox("Select Slot to Delete", slot_options)
+            if st.button("🗑️ Delete Selected Slot", key="del_slot_btn", type="secondary"):
+                rem_idx = slot_options.index(chosen_rem)
+                deleted_item = timetable_data[rem_day].pop(rem_idx)
+                save_timetable(curr_user, timetable_data)
+                st.success(f"Removed '{deleted_item.get('subject')}' from {rem_day}!")
+                st.rerun()
+        else:
+            st.caption(f"No slots configured for {rem_day}.")
+
+    # ── TAB 4: EXAM DATES & COUNTDOWN ─────────────────
+    with tt_tab_exams:
+        st.subheader("🎯 Mid-Sem Exam Dates & Milestone Schedule")
+        st.write("Track examination dates, room seat allocations, syllabus boundaries, and live days remaining countdowns.")
+
+        for exam in exam_schedule_data:
+            exam_title = exam.get("title")
+            exam_date_str = exam.get("date")
+            exam_time = exam.get("time")
+            exam_hall = exam.get("hall")
+            exam_syl = exam.get("syllabus")
+            exam_type = exam.get("type", "Mid-Sem Theory")
+
+            # Calculate days remaining
+            try:
+                target_dt = datetime.strptime(exam_date_str, "%Y-%m-%d")
+                curr_dt = datetime.now()
+                delta_days = (target_dt.date() - curr_dt.date()).days
+                
+                if delta_days > 0:
+                    countdown_badge = f"⏳ In {delta_days} Days"
+                    countdown_bg = "#FEF3C7"
+                    countdown_color = "#D97706"
+                elif delta_days == 0:
+                    countdown_badge = "🚨 TODAY!"
+                    countdown_bg = "#FEE2E2"
+                    countdown_color = "#DC2626"
+                else:
+                    countdown_badge = "✅ Concluded"
+                    countdown_bg = "#D1FAE5"
+                    countdown_color = "#059669"
+            except Exception:
+                countdown_badge = exam_date_str
+                countdown_bg = "#EEF2FF"
+                countdown_color = "#4F46E5"
+
+            st.markdown(f"""
+            <div class="glass-card" style="border-left: 5px solid #4F46E5; padding: 20px 24px; margin-bottom: 14px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px;">
+                            <span style="background: {countdown_bg}; color: {countdown_color}; padding: 3px 12px; border-radius: 9999px; font-weight: 800; font-size: 13px;">
+                                {countdown_badge}
+                            </span>
+                            <span class="tag-chip">📅 {exam_date_str}</span>
+                            <span class="tag-chip">⏱️ {exam_time}</span>
+                        </div>
+                        <h4 style="margin: 4px 0 6px 0; font-size: 19px; font-weight: 800; color: #0F172A;">
+                            📝 {exam_title}
+                        </h4>
+                        <div style="font-size: 13px; color: #475569; margin-top: 6px; line-height: 1.5;">
+                            🏛️ <strong>Venue:</strong> {exam_hall} &nbsp;|&nbsp; 📑 <strong>Category:</strong> {exam_type}
+                        </div>
+                        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 10px; padding: 8px 12px; margin-top: 10px; font-size: 13px; color: #334155;">
+                            📚 <strong>Syllabus Scope:</strong> {exam_syl}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+
+# ==================================================
+# 3. 📊 STUDENT ATTENDANCE TRACKER & 75% GUARD
 # ==================================================
 
 elif "Attendance Tracker" in nav_option:

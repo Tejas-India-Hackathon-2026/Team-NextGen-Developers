@@ -1,0 +1,44 @@
+{
+    "sarika123": [
+        {
+            "id": "att_1",
+            "subject": "Data Structures & Algorithms",
+            "faculty": "Dr. Ramesh Verma",
+            "attended": 38,
+            "total": 45,
+            "target": 75
+        },
+        {
+            "id": "att_2",
+            "subject": "Operating Systems",
+            "faculty": "Prof. Sneha Kulkarni",
+            "attended": 34,
+            "total": 44,
+            "target": 75
+        },
+        {
+            "id": "att_3",
+            "subject": "Python Programming",
+            "faculty": "Dr. Ananya Ray",
+            "attended": 42,
+            "total": 45,
+            "target": 75
+        },
+        {
+            "id": "att_4",
+            "subject": "Database Management Systems",
+            "faculty": "Prof. Rajesh Kumar",
+            "attended": 30,
+            "total": 42,
+            "target": 75
+        },
+        {
+            "id": "att_5",
+            "subject": "Mathematics-III (Discrete Structures)",
+            "faculty": "Dr. M. S. Iyer",
+            "attended": 28,
+            "total": 40,
+            "target": 75
+        }
+    ]
+}
