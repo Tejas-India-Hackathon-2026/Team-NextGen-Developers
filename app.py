@@ -26,6 +26,7 @@ USERS_FILE = "users.json"
 ATTENDANCE_FILE = "attendance.json"
 TIMETABLE_FILE = "timetable.json"
 EXAM_SCHEDULE_FILE = "exam_schedule.json"
+SHARED_RESOURCES_FILE = "shared_resources.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -1306,6 +1307,111 @@ def save_material_requests(data):
     with open(REQUESTS_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+def load_shared_resources():
+    """Load peer-shared student resources, study swaps, and verified notes."""
+    default_shared = [
+        {
+            "id": "res_201",
+            "share_code": "DSA-842",
+            "title": "Complete Handwritten DSA Master Formula Book & Tree Cheatsheet",
+            "subject": "Data Structures",
+            "category": "Handwritten Notes",
+            "format": "PDF Document",
+            "resource_url": "materials/data_structures_cheatsheet.pdf",
+            "uploader_name": "Rohan Sharma",
+            "uploader_username": "rohan_cs",
+            "uploader_contact": "rohan.cs@campus.edu",
+            "description": "Handwritten summary covering AVL Rotations, Red-Black Trees, Graph Traversals, and Big-O space-time complexity tables.",
+            "semester": "3rd Semester",
+            "date": "2026-08-18",
+            "likes": 28,
+            "reviews": [
+                {"user": "Ananya", "rating": 5, "comment": "Best notes for quick exam revision!", "date": "2026-08-19"},
+                {"user": "Vikram", "rating": 5, "comment": "Tree rotation diagrams are super clean.", "date": "2026-08-19"}
+            ],
+            "status": "Available"
+        },
+        {
+            "id": "res_202",
+            "share_code": "OS-319",
+            "title": "Operating Systems - Solved Previous 5-Year Question Papers (2021-2025)",
+            "subject": "Operating Systems",
+            "category": "PYQ Solution Deck",
+            "format": "PDF Document",
+            "resource_url": "materials/operating_systems_cheatsheet.pdf",
+            "uploader_name": "Priya Verma",
+            "uploader_username": "priya_v",
+            "uploader_contact": "priya.verma@campus.edu",
+            "description": "Step-by-step solved numericals on Banker's Algorithm, Semaphore synchronization, and Page Replacement (FIFO, LRU, Optimal).",
+            "semester": "4th Semester",
+            "date": "2026-08-15",
+            "likes": 35,
+            "reviews": [
+                {"user": "Amit", "rating": 5, "comment": "Direct questions appeared from this in mid-sems.", "date": "2026-08-17"}
+            ],
+            "status": "Available"
+        },
+        {
+            "id": "res_203",
+            "share_code": "PY-705",
+            "title": "Python & NumPy Lab Assignment Solutions with Output Screenshots",
+            "subject": "Python",
+            "category": "Lab Code & Manual",
+            "format": "GitHub Repo / Link",
+            "resource_url": "https://github.com/topics/python-lab-solutions",
+            "uploader_name": "Ananya Ray",
+            "uploader_username": "ananya_r",
+            "uploader_contact": "ananya.r@campus.edu",
+            "description": "Complete 15 lab experiments code with explanations and error-handling routines.",
+            "semester": "1st Semester",
+            "date": "2026-08-12",
+            "likes": 19,
+            "reviews": [],
+            "status": "Available"
+        },
+        {
+            "id": "res_204",
+            "share_code": "BOOK-109",
+            "title": "Database System Concepts (Silberschatz 7th Ed) - Hardcopy Book Swap",
+            "subject": "Database Systems",
+            "category": "Physical Textbook Swap",
+            "format": "Physical Textbook (Lending)",
+            "resource_url": "Campus Library / LH-302",
+            "uploader_name": "Vikram Patel",
+            "uploader_username": "vikram_p",
+            "uploader_contact": "vikram.patel@campus.edu / Discord: @vikram_p",
+            "description": "Original hardcover book available for lending throughout 3rd/4th semester. Looking to swap for Computer Networks book if possible.",
+            "semester": "3rd Semester",
+            "date": "2026-08-10",
+            "likes": 12,
+            "reviews": [],
+            "status": "Available"
+        }
+    ]
+
+    if not os.path.exists(SHARED_RESOURCES_FILE):
+        with open(SHARED_RESOURCES_FILE, "w") as f:
+            json.dump(default_shared, f, indent=4)
+        return default_shared
+
+    try:
+        with open(SHARED_RESOURCES_FILE, "r") as f:
+            data = json.load(f)
+            for item in data:
+                item.setdefault("share_code", f"RES-{item.get('id', '000')[-3:]}")
+                item.setdefault("likes", 0)
+                item.setdefault("reviews", [])
+                item.setdefault("status", "Available")
+                item.setdefault("date", datetime.now().strftime("%Y-%m-%d"))
+            return data
+    except Exception:
+        return []
+
+def save_shared_resources(data):
+    """Save shared resources data back to JSON."""
+    with open(SHARED_RESOURCES_FILE, "w") as f:
+        json.dump(data, f, indent=4)
+
 def get_pdf_base64(file_path):
     """Read PDF file and return base64 string for embedded preview."""
     try:
@@ -1337,6 +1443,7 @@ with st.sidebar:
         "Navigation Menu",
         [
             "🏠 Home Dashboard",
+            "🤝 Resource Sharing Hub",
             "📅 Timetable & Schedule",
             "📊 Attendance Tracker",
             "📚 Study Materials",
@@ -1746,7 +1853,418 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 📅 CLASS TIMETABLE & SCHEDULE MANAGER
+# 2. 🤝 STUDENT RESOURCE SHARING & PEER EXCHANGE HUB
+# ==================================================
+
+elif "Resource Sharing" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_display_name = st.session_state.get("student_name", "Student Scholar")
+    branch_name = st.session_state.get("user_branch", "Computer Science & Engg")
+    sem_name = st.session_state.get("user_semester", "3rd Semester")
+    
+    shared_resources_data = load_shared_resources()
+
+    st.header("🤝 Student Resource Sharing & Peer Exchange Hub")
+    st.write(f"Direct peer-to-peer exchange for handwritten notes, PYQ solution decks, lab repositories, and physical textbook swaps for **{student_display_name}**.")
+
+    # ── Top Hero Stats & Quick Code Resolver ──────────
+    total_shared = len(shared_resources_data)
+    total_res_upvotes = sum(r.get("likes", 0) for r in shared_resources_data)
+    total_reviews_count = sum(len(r.get("reviews", [])) for r in shared_resources_data)
+
+    st.markdown(f"""
+    <div class="glass-card" style="background: linear-gradient(135deg, #EEF2FF 0%, #FAF5FF 100%); border-left: 6px solid #7C3AED; padding: 22px 26px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div>
+                <span style="background: #EDE9FE; color: #6D28D9; border: 1px solid #DDD6FE; padding: 4px 14px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-transform: uppercase;">
+                    <span class="live-pulse"></span> Peer-to-Peer Academic Exchange
+                </span>
+                <h3 style="margin: 10px 0 4px 0; font-size: 26px; font-weight: 900; color: #0F172A;">
+                    {total_shared} Shared Study Stashes Live
+                </h3>
+                <p style="margin: 0; font-size: 14px; color: #475569; font-weight: 500;">
+                    Share study notes with 6-digit campus codes, swap physical books, and access verified student repositories.
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <span class="tag-chip" style="font-size: 14px; padding: 6px 14px;">❤️ {total_res_upvotes} Community Upvotes</span>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 4-KPI Row
+    r_kpi1, r_kpi2, r_kpi3, r_kpi4 = st.columns(4)
+    with r_kpi1:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📚</div>
+            <div>
+                <div class="metric-val">{total_shared}</div>
+                <div class="metric-label">Shared Stashes</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with r_kpi2:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">🔑</div>
+            <div>
+                <div class="metric-val">6-Digit</div>
+                <div class="metric-label">Campus Share Codes</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with r_kpi3:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⭐</div>
+            <div>
+                <div class="metric-val">{total_reviews_count} Reviews</div>
+                <div class="metric-label">Peer Ratings</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with r_kpi4:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #FFE4E6; color: #E11D48; border: 1px solid #FECDD3;">❤️</div>
+            <div>
+                <div class="metric-val">{total_res_upvotes}</div>
+                <div class="metric-label">Karma Points</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
+
+    # ── Tabs Navigation ──────────────────────────────
+    tab_browse_res, tab_share_new, tab_code_resolve, tab_my_res = st.tabs([
+        "🌐 Browse Shared Resources & Swaps",
+        "📤 Share a Resource / Book Swap",
+        "🔑 Instant 6-Digit Code Stash Resolver",
+        "👤 My Shared Resources"
+    ])
+
+    # ── TAB 1: BROWSE SHARED RESOURCES ───────────────
+    with tab_browse_res:
+        f_col1, f_col2, f_col3, f_col4 = st.columns([2, 1.2, 1.2, 1.2])
+        with f_col1:
+            search_query = st.text_input("🔍 Search shared title, uploader, or topic", "", placeholder="e.g. AVL tree, Silberschatz, PYQ solutions...")
+        with f_col2:
+            sub_filter = st.selectbox(
+                "Filter by Subject",
+                ["All Subjects", "Data Structures", "Operating Systems", "Python", "Database Systems", "Mathematics", "C Programming", "C++ Programming", "Other"]
+            )
+        with f_col3:
+            cat_filter = st.selectbox(
+                "Resource Category",
+                ["All Categories", "Handwritten Notes", "PYQ Solution Deck", "Lab Code & Manual", "Physical Textbook Swap", "Formula Cheatsheet", "Project Report & Code"]
+            )
+        with f_col4:
+            format_filter = st.selectbox(
+                "Format",
+                ["All Formats", "PDF Document", "GitHub Repo / Link", "Physical Textbook (Lending)", "Google Drive Folder"]
+            )
+
+        # Apply Filters
+        filtered_resources = []
+        for r in shared_resources_data:
+            match_search = (
+                search_query.lower() in r.get("title", "").lower() or
+                search_query.lower() in r.get("description", "").lower() or
+                search_query.lower() in r.get("uploader_name", "").lower() or
+                search_query.lower() in r.get("share_code", "").lower()
+            )
+            match_sub = (sub_filter == "All Subjects" or r.get("subject") == sub_filter)
+            match_cat = (cat_filter == "All Categories" or r.get("category") == cat_filter)
+            match_format = (format_filter == "All Formats" or r.get("format") == format_filter)
+
+            if match_search and match_sub and match_cat and match_format:
+                filtered_resources.append(r)
+
+        if not filtered_resources:
+            st.info("No matching shared resources found. Try adjusting filters or be the first to share one in the '📤 Share a Resource' tab!")
+        else:
+            st.markdown(f"**Showing {len(filtered_resources)} verified shared student resources:**")
+            
+            for idx, res in enumerate(filtered_resources):
+                res_id = res.get("id", f"res_{idx}")
+                share_code = res.get("share_code", "CODE-00")
+                title = res.get("title", "Study Resource")
+                subject = res.get("subject", "General")
+                category = res.get("category", "Handwritten Notes")
+                r_format = res.get("format", "PDF Document")
+                url_or_path = res.get("resource_url", "#")
+                uploader = res.get("uploader_name", "Student Contributor")
+                uploader_contact = res.get("uploader_contact", "campus.edu")
+                desc = res.get("description", "")
+                sem = res.get("semester", "3rd Semester")
+                likes = res.get("likes", 0)
+                reviews = res.get("reviews", [])
+                r_status = res.get("status", "Available")
+
+                cat_bg = "#EDE9FE" if "Handwritten" in category else "#FEF3C7" if "Swap" in category else "#E0F2FE" if "PYQ" in category else "#D1FAE5"
+                cat_color = "#6D28D9" if "Handwritten" in category else "#D97706" if "Swap" in category else "#0369A1" if "PYQ" in category else "#059669"
+
+                with st.container():
+                    st.markdown(f"""
+                    <div class="glass-card" style="padding: 20px 24px; margin-bottom: 16px; border-left: 5px solid {cat_color};">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <div style="display: flex; gap: 8px; align-items: center; margin-bottom: 6px; flex-wrap: wrap;">
+                                    <span style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; padding: 2px 10px; border-radius: 6px; font-family:'JetBrains Mono', monospace; font-weight:800; font-size:12px;">
+                                        🔑 Share Code: {share_code}
+                                    </span>
+                                    <span style="background: {cat_bg}; color: {cat_color}; padding: 2px 10px; border-radius: 6px; font-weight: 700; font-size: 12px;">
+                                        {category}
+                                    </span>
+                                    <span class="tag-chip">📚 {subject}</span>
+                                    <span class="tag-chip">🎓 {sem}</span>
+                                    <span class="tag-chip">📑 {r_format}</span>
+                                </div>
+                                <h4 style="margin: 6px 0 4px 0; font-size: 19px; font-weight: 800; color: #0F172A;">
+                                    {title}
+                                </h4>
+                                <div style="font-size: 13px; color: #64748B; font-weight: 500;">
+                                    Shared by <strong>{uploader}</strong> • Status: <strong style="color: #059669;">{r_status}</strong> • Contact: <code>{uploader_contact}</code>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="font-size: 14px; font-weight: 700; color: #E11D48;">❤️ {likes} Upvotes</span><br>
+                                <span style="font-size: 12px; color: #D97706; font-weight: 600;">⭐ {len(reviews)} Reviews</span>
+                            </div>
+                        </div>
+                        <p style="font-size: 14px; color: #334155; margin: 10px 0 12px 0; line-height: 1.5;">
+                            {desc}
+                        </p>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    btn_c1, btn_c2, btn_c3, btn_c4 = st.columns([1.5, 1.2, 1.2, 2])
+                    
+                    with btn_c1:
+                        if r_format == "PDF Document" and os.path.exists(url_or_path):
+                            with open(url_or_path, "rb") as f:
+                                st.download_button(
+                                    label="⬇️ Download Verified PDF",
+                                    data=f,
+                                    file_name=os.path.basename(url_or_path),
+                                    mime="application/pdf",
+                                    key=f"share_dl_{res_id}_{idx}",
+                                    use_container_width=True
+                                )
+                        elif "http" in url_or_path:
+                            st.link_button("🌐 Open External Link", url_or_path, use_container_width=True)
+                        else:
+                            st.info(f"📍 Location: {url_or_path}")
+
+                    with btn_c2:
+                        if st.button(f"❤️ Upvote ({likes})", key=f"res_like_{res_id}_{idx}", use_container_width=True):
+                            res["likes"] = res.get("likes", 0) + 1
+                            save_shared_resources(shared_resources_data)
+                            st.toast("Upvote registered! Contributor rewarded karma.", icon="❤️")
+                            st.rerun()
+
+                    with btn_c3:
+                        if st.button("📋 Copy Code", key=f"cp_code_{res_id}_{idx}", use_container_width=True):
+                            st.toast(f"Campus Share Code: {share_code} (Share this with friends!)", icon="🔑")
+
+                    with btn_c4:
+                        with st.expander(f"💬 Reviews & Rate ({len(reviews)})"):
+                            if reviews:
+                                for rev in reviews:
+                                    st.markdown(f"""
+                                    <div style="background:#F8FAFC; border:1px solid #E2E8F0; padding:8px 12px; border-radius:8px; margin-bottom:6px; font-size:13px;">
+                                        <strong>{'⭐'*rev.get('rating', 5)}</strong> by <strong>{rev.get('user')}</strong> ({rev.get('date')}):<br>
+                                        <span style="color:#334155;">{rev.get('comment')}</span>
+                                    </div>
+                                    """, unsafe_allow_html=True)
+                            else:
+                                st.caption("No reviews yet. Be the first to review!")
+
+                            # Add review form
+                            with st.form(f"rev_form_{res_id}"):
+                                user_star = st.slider("Rating", min_value=1, max_value=5, value=5, key=f"star_{res_id}")
+                                user_comment = st.text_input("Comment", placeholder="e.g. Explains tree rotations well!", key=f"cmnt_{res_id}")
+                                submit_rev = st.form_submit_button("Post Review ✨")
+                                if submit_rev:
+                                    if user_comment.strip():
+                                        res.setdefault("reviews", []).append({
+                                            "user": student_display_name,
+                                            "rating": user_star,
+                                            "comment": user_comment.strip(),
+                                            "date": datetime.now().strftime("%Y-%m-%d")
+                                        })
+                                        save_shared_resources(shared_resources_data)
+                                        st.success("Review posted!")
+                                        st.rerun()
+
+                    st.markdown("<hr style='margin: 14px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+
+    # ── TAB 2: SHARE A NEW RESOURCE / BOOK SWAP ──────
+    with tab_share_new:
+        st.subheader("📤 Share a Study Resource or Offer Physical Book Swap")
+        st.write("Contribute handwritten notes, solved PYQ copies, GitHub lab codes, or offer physical textbooks for semester lending.")
+
+        with st.form("share_new_resource_form", clear_on_submit=True):
+            s_c1, s_c2 = st.columns(2)
+            with s_c1:
+                r_title = st.text_input("Resource Title *", placeholder="e.g. Complete Handwritten Operating Systems Master Notes")
+                r_sub = st.selectbox("Subject *", ["Data Structures", "Operating Systems", "Python", "Database Systems", "Mathematics", "C Programming", "C++ Programming", "Other"])
+                r_cat = st.selectbox("Category *", ["Handwritten Notes", "PYQ Solution Deck", "Lab Code & Manual", "Physical Textbook Swap", "Formula Cheatsheet", "Project Report & Code"])
+                r_sem = st.selectbox("Target Semester", ["1st Semester", "2nd Semester", "3rd Semester", "4th Semester", "5th Semester", "6th Semester", "7th Semester", "8th Semester"], index=2)
+
+            with s_c2:
+                r_format_choice = st.selectbox("Format Type *", ["PDF File Upload", "GitHub Repository / Drive Link", "Physical Textbook (Lending / Swap)"])
+                
+                r_link_url = ""
+                r_uploaded_pdf = None
+                r_physical_loc = ""
+
+                if r_format_choice == "PDF File Upload":
+                    r_uploaded_pdf = st.file_uploader("Upload Notes PDF *", type=["pdf"], key="p2p_pdf_uploader")
+                elif r_format_choice == "GitHub Repository / Drive Link":
+                    r_link_url = st.text_input("Resource URL (GitHub / Google Drive / Notion) *", placeholder="https://github.com/...")
+                else:
+                    r_physical_loc = st.text_input("Physical Handover Venue & Book Condition *", placeholder="e.g. Good Condition - Can meet at Central Library / LH-302")
+
+                r_contact = st.text_input("Your Contact Handle *", placeholder="e.g. student.email@campus.edu or Telegram: @handle")
+
+            r_desc = st.text_area("Detailed Description / Topics Covered *", placeholder="List units covered, key highlights, or specific swap requirements...")
+
+            submit_share = st.form_submit_button("🚀 Publish Resource & Generate Share Code", use_container_width=True, type="primary")
+
+            if submit_share:
+                if not r_title.strip() or not r_desc.strip() or not r_contact.strip():
+                    st.error("Please fill in all required fields marked with *.")
+                else:
+                    # Generate unique 6-char share code
+                    import random
+                    prefix = r_sub[:3].upper().replace(" ", "")
+                    rand_num = random.randint(100, 999)
+                    new_share_code = f"{prefix}-{rand_num}"
+
+                    res_target_url = ""
+                    final_format_label = r_format_choice
+
+                    if r_format_choice == "PDF File Upload":
+                        if r_uploaded_pdf is not None:
+                            safe_name = f"p2p_{int(datetime.now().timestamp())}_{r_uploaded_pdf.name.replace(' ', '_')}"
+                            save_path = os.path.join(MATERIAL_FOLDER, safe_name)
+                            with open(save_path, "wb") as f:
+                                f.write(r_uploaded_pdf.getbuffer())
+                            res_target_url = save_path
+                            final_format_label = "PDF Document"
+                        else:
+                            res_target_url = "materials/data_structures_cheatsheet.pdf"
+                            final_format_label = "PDF Document"
+                    elif r_format_choice == "GitHub Repository / Drive Link":
+                        res_target_url = r_link_url.strip() if r_link_url.strip() else "https://github.com"
+                        final_format_label = "GitHub Repo / Link"
+                    else:
+                        res_target_url = r_physical_loc.strip() if r_physical_loc.strip() else "Campus Library"
+                        final_format_label = "Physical Textbook (Lending)"
+
+                    new_resource_obj = {
+                        "id": f"res_{int(datetime.now().timestamp())}",
+                        "share_code": new_share_code,
+                        "title": r_title.strip(),
+                        "subject": r_sub,
+                        "category": r_cat,
+                        "format": final_format_label,
+                        "resource_url": res_target_url,
+                        "uploader_name": student_display_name,
+                        "uploader_username": curr_user,
+                        "uploader_contact": r_contact.strip(),
+                        "description": r_desc.strip(),
+                        "semester": r_sem,
+                        "date": datetime.now().strftime("%Y-%m-%d"),
+                        "likes": 0,
+                        "reviews": [],
+                        "status": "Available"
+                    }
+
+                    shared_resources_data.insert(0, new_resource_obj)
+                    save_shared_resources(shared_resources_data)
+                    st.balloons()
+                    st.success(f"🎉 Resource successfully published! Your Campus Share Code is **`{new_share_code}`**.")
+                    st.rerun()
+
+    # ── TAB 3: 6-DIGIT CODE RESOLVER ─────────────────
+    with tab_code_resolve:
+        st.subheader("🔑 Instant 6-Digit Campus Share Code Stash Resolver")
+        st.write("Got a 6-digit Share Code from a classmate, Discord group, or WhatsApp chat? Enter it below to immediately resolve and access that resource.")
+
+        code_input = st.text_input("Enter 6-Digit Share Code", placeholder="e.g. DSA-842, OS-319, PY-705").strip().upper()
+
+        if code_input:
+            matched = next((r for r in shared_resources_data if r.get("share_code", "").upper() == code_input), None)
+            if matched:
+                st.success(f"✅ Resolved Share Code **{code_input}** successfully!")
+                m_title = matched.get("title")
+                m_sub = matched.get("subject")
+                m_cat = matched.get("category")
+                m_url = matched.get("resource_url")
+                m_uploader = matched.get("uploader_name")
+                m_desc = matched.get("description")
+                m_fmt = matched.get("format")
+
+                st.markdown(f"""
+                <div class="glass-card" style="border-left: 5px solid #059669; padding: 22px 26px;">
+                    <span class="tag-new">🔑 Valid Code: {code_input}</span>
+                    <span class="tag-chip">📚 {m_sub}</span>
+                    <span class="tag-chip">📑 {m_cat}</span>
+                    <h3 style="margin: 10px 0 6px 0; color: #0F172A; font-size: 22px; font-weight: 800;">{m_title}</h3>
+                    <p style="font-size: 14px; color: #334155; line-height: 1.6;">{m_desc}</p>
+                    <div style="font-size: 13px; color: #64748B; margin-top: 8px;">
+                        Shared by <strong>{m_uploader}</strong> • Contact: <code>{matched.get('uploader_contact')}</code>
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+                if m_fmt == "PDF Document" and os.path.exists(m_url):
+                    with open(m_url, "rb") as f:
+                        st.download_button("⬇️ Download Shared PDF Now", f, file_name=os.path.basename(m_url), mime="application/pdf", key="res_code_dl", use_container_width=True)
+                elif "http" in m_url:
+                    st.link_button("🌐 Open External Shared Link", m_url, use_container_width=True)
+                else:
+                    st.info(f"📍 Physical Location: {m_url}")
+            else:
+                st.error(f"❌ No shared resource found for code '{code_input}'. Please check and re-enter.")
+
+    # ── TAB 4: MY SHARED RESOURCES ───────────────────
+    with tab_my_res:
+        st.subheader("👤 My Shared Resources & Peer Karma Impact")
+        
+        my_uploads = [r for r in shared_resources_data if r.get("uploader_username") == curr_user or r.get("uploader_name") == student_display_name]
+
+        if not my_uploads:
+            st.info("You haven't published any shared resources yet. Share lecture notes or book swaps to earn academic karma badges!")
+        else:
+            st.markdown(f"**You have contributed {len(my_uploads)} resource(s) to CampusHub:**")
+            
+            for m_idx, m_res in enumerate(my_uploads):
+                with st.container():
+                    st.markdown(f"""
+                    <div class="glass-card" style="padding: 16px 20px; margin-bottom: 12px; border-left: 4px solid #4F46E5;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong style="font-size: 17px; color: #0F172A;">📖 {m_res.get('title')}</strong><br>
+                                <span class="tag-chip">🔑 Code: {m_res.get('share_code')}</span>
+                                <span class="tag-chip">📚 {m_res.get('subject')}</span>
+                                <span class="tag-chip">❤️ {m_res.get('likes', 0)} Upvotes</span>
+                            </div>
+                            <div>
+                                <span style="background: #D1FAE5; color: #059669; padding: 4px 10px; border-radius: 9999px; font-weight: 700; font-size: 12px;">{m_res.get('status', 'Available')}</span>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+
+# ==================================================
+# 3. 📅 CLASS TIMETABLE & SCHEDULE MANAGER
 # ==================================================
 
 elif "Timetable & Schedule" in nav_option:

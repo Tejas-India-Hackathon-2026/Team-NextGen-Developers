@@ -1,0 +1,38 @@
+[
+    {
+        "id": "exam_1",
+        "title": "Data Structures & Algorithms - Mid-Semester Exam",
+        "date": "2026-09-04",
+        "time": "10:00 AM - 01:00 PM",
+        "hall": "Examination Hall A (Seats 1-60)",
+        "syllabus": "Units 1 to 3 (Arrays, Linked Lists, Stacks, Queues, Trees & BST)",
+        "type": "Mid-Sem Theory"
+    },
+    {
+        "id": "exam_2",
+        "title": "Operating Systems - Mid-Semester Exam",
+        "date": "2026-09-08",
+        "time": "10:00 AM - 01:00 PM",
+        "hall": "Examination Hall B (Seats 61-120)",
+        "syllabus": "Processes, CPU Scheduling, Deadlocks & Memory Management",
+        "type": "Mid-Sem Theory"
+    },
+    {
+        "id": "exam_3",
+        "title": "Database Management Systems (DBMS) - Theory Exam",
+        "date": "2026-09-12",
+        "time": "02:00 PM - 05:00 PM",
+        "hall": "LH-302",
+        "syllabus": "ER Modeling, Relational Algebra, SQL Queries & Normalization",
+        "type": "Mid-Sem Theory"
+    },
+    {
+        "id": "exam_4",
+        "title": "Python & Data Structures Lab Evaluation",
+        "date": "2026-09-16",
+        "time": "09:00 AM - 12:00 PM",
+        "hall": "Computer Lab 4",
+        "syllabus": "Hands-on coding, viva voce, and record submission",
+        "type": "Lab Practical"
+    }
+]
