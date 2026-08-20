@@ -42,40 +42,42 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
     :root {
-        --primary-indigo: #4F46E5;
-        --primary-violet: #7C3AED;
-        --accent-cyan: #0284C7;
-        --accent-emerald: #059669;
-        --accent-rose: #E11D48;
+        --primary-teal: #0D9488;
+        --primary-emerald: #059669;
+        --primary-forest: #064E3B;
+        --primary-tea: #10B981;
+        --primary-mint: #34D399;
+        --accent-lime: #65A30D;
         --accent-amber: #D97706;
-        --bg-main: #F0F4F8;
+        --accent-rose: #E11D48;
+        --bg-main: #F0FDF4;
         --bg-card: #FFFFFF;
-        --border-card: #DDE3EE;
-        --text-primary: #0A0F1E;
-        --text-secondary: #2D3A52;
-        --text-muted: #6B7A9A;
+        --border-card: #CCFBF1;
+        --text-primary: #022C22;
+        --text-secondary: #064E3B;
+        --text-muted: #374151;
     }
 
-    /* Light Theme Global Canvas */
+    /* Light Theme Global Canvas (Fresh Green & Tea Mint) */
     .stApp {
-        background: linear-gradient(150deg, #EEF3FB 0%, #F5F0FF 40%, #F0F9FF 100%) !important;
-        color: #1A2235 !important;
+        background: linear-gradient(150deg, #F0FDF4 0%, #F0FDFA 45%, #ECFDF5 100%) !important;
+        color: #022C22 !important;
         min-height: 100vh;
     }
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        color: #1A2235;
+        color: #022C22;
         font-size: 15.5px;
     }
 
-    /* Upgraded Typography Hierarchy */
+    /* Upgraded High-Contrast Crisp Typography */
     h1 {
         font-family: 'Outfit', sans-serif !important;
         font-weight: 900 !important;
         font-size: 36px !important;
         letter-spacing: -0.035em !important;
-        color: #0A0F1E !important;
+        color: #022C22 !important;
         margin-bottom: 10px !important;
     }
 
@@ -84,7 +86,7 @@ st.markdown("""
         font-weight: 800 !important;
         font-size: 29px !important;
         letter-spacing: -0.03em !important;
-        color: #0A0F1E !important;
+        color: #022C22 !important;
         margin-top: 16px !important;
         margin-bottom: 10px !important;
     }
@@ -94,30 +96,30 @@ st.markdown("""
         font-weight: 800 !important;
         font-size: 23px !important;
         letter-spacing: -0.025em !important;
-        color: #0A0F1E !important;
+        color: #022C22 !important;
     }
 
     h4 {
         font-family: 'Outfit', sans-serif !important;
         font-weight: 700 !important;
         font-size: 19px !important;
-        color: #0A0F1E !important;
+        color: #022C22 !important;
     }
 
     p, span, label, div {
-        color: #2D3A52;
+        color: #064E3B;
     }
 
     strong, b {
-        color: #0A0F1E;
-        font-weight: 700;
+        color: #022C22;
+        font-weight: 800;
     }
 
     code, pre {
         font-family: 'JetBrains Mono', monospace !important;
-        background: #F1F5F9 !important;
-        color: #4338CA !important;
-        border: 1px solid #E2E8F0 !important;
+        background: #F0FDF4 !important;
+        color: #047857 !important;
+        border: 1px solid #A7F3D0 !important;
         border-radius: 6px !important;
     }
 
@@ -127,14 +129,14 @@ st.markdown("""
         height: 8px;
     }
     ::-webkit-scrollbar-track {
-        background: #F1F5F9;
+        background: #F0FDF4;
     }
     ::-webkit-scrollbar-thumb {
-        background: #CBD5E1;
+        background: #A7F3D0;
         border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: #94A3B8;
+        background: #10B981;
     }
 
     /* Keyframe Animations */
@@ -159,14 +161,14 @@ st.markdown("""
         vertical-align: middle;
     }
 
-    /* Premium Sidebar - Bright White Frosted Panel */
+    /* Premium Sidebar - Frosted Tea White Panel */
     section[data-testid="stSidebar"] {
         background: #FFFFFF !important;
-        border-right: 1.5px solid #DDE3EE !important;
-        box-shadow: 6px 0 28px rgba(79, 70, 229, 0.05) !important;
+        border-right: 1.5px solid #D1FAE5 !important;
+        box-shadow: 6px 0 28px rgba(13, 148, 136, 0.06) !important;
     }
 
-    /* Enlarged Navigation Radio Buttons in Sidebar */
+    /* Enlarged Navigation Radio Buttons in Sidebar (Tea Green) */
     section[data-testid="stSidebar"] .stRadio > div {
         gap: 5px !important;
     }
@@ -174,11 +176,11 @@ st.markdown("""
         font-size: 14.5px !important;
         font-weight: 700 !important;
         font-family: 'Outfit', sans-serif !important;
-        color: #2D3A52 !important;
+        color: #064E3B !important;
         padding: 11px 16px !important;
         border-radius: 14px !important;
-        background: #F5F7FF !important;
-        border: 1.5px solid #E4EAF6 !important;
+        background: #F0FDF4 !important;
+        border: 1.5px solid #D1FAE5 !important;
         transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
         margin-bottom: 3px !important;
         display: flex !important;
@@ -186,41 +188,41 @@ st.markdown("""
         cursor: pointer !important;
     }
     section[data-testid="stSidebar"] .stRadio label:hover {
-        background: #EEF2FF !important;
-        border-color: #B5C4FF !important;
-        color: #3730A3 !important;
+        background: #CCFBF1 !important;
+        border-color: #5EEAD4 !important;
+        color: #0F766E !important;
         transform: translateX(4px) !important;
-        box-shadow: 0 2px 10px rgba(79,70,229,0.1) !important;
+        box-shadow: 0 2px 10px rgba(13, 148, 136, 0.12) !important;
     }
     section[data-testid="stSidebar"] .stRadio label[data-checked="true"],
     section[data-testid="stSidebar"] .stRadio div[aria-checked="true"] {
-        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
+        background: linear-gradient(135deg, #047857 0%, #0D9488 100%) !important;
         color: #FFFFFF !important;
-        border-color: #4338CA !important;
-        box-shadow: 0 4px 16px rgba(67, 56, 202, 0.35) !important;
+        border-color: #047857 !important;
+        box-shadow: 0 4px 16px rgba(4, 120, 87, 0.35) !important;
     }
 
-    /* Sidebar Profile Card (Light) */
+    /* Sidebar Profile Card (Tea Green) */
     .profile-card {
-        background: linear-gradient(135deg, #F5F7FF 0%, #FAFAFF 100%);
-        border: 1.5px solid #DDE3EE;
+        background: linear-gradient(135deg, #F0FDF4 0%, #F0FDFA 100%);
+        border: 1.5px solid #CCFBF1;
         border-radius: 18px;
         padding: 18px;
         margin-bottom: 16px;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.06);
+        box-shadow: 0 4px 14px rgba(13, 148, 136, 0.06);
     }
 
-    /* Ultra-Modern Hero Banner */
+    /* Ultra-Modern Hero Banner (Rich Forest Jade & Emerald Teal) */
     .hero-container {
-        background: linear-gradient(135deg, #1E1B6E 0%, #3730A3 30%, #4F46E5 70%, #6D28D9 100%);
+        background: linear-gradient(135deg, #064E3B 0%, #047857 35%, #0D9488 70%, #059669 100%);
         border-radius: 24px;
         padding: 40px 44px;
         color: white !important;
         margin-bottom: 26px;
-        box-shadow: 0 20px 50px -12px rgba(67, 56, 202, 0.45);
+        box-shadow: 0 20px 50px -12px rgba(4, 120, 87, 0.45);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .hero-container h1, .hero-container p, .hero-container span {
         color: white !important;
@@ -232,7 +234,7 @@ st.markdown("""
         right: -12%;
         width: 500px;
         height: 500px;
-        background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
@@ -243,55 +245,55 @@ st.markdown("""
         left: -10%;
         width: 300px;
         height: 300px;
-        background: radial-gradient(circle, rgba(124,58,237,0.3) 0%, rgba(124,58,237,0) 70%);
+        background: radial-gradient(circle, rgba(16, 185, 129, 0.3) 0%, rgba(16, 185, 129, 0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
 
-    /* Premium Light Cards */
+    /* Premium Light Cards (Emerald & Tea Borders) */
     .glass-card {
         background: #FFFFFF;
-        border: 1.5px solid #DDE3EE;
+        border: 1.5px solid #CCFBF1;
         border-radius: 20px;
         padding: 26px;
         margin-bottom: 18px;
-        box-shadow: 0 4px 24px -4px rgba(79, 70, 229, 0.06), 0 2px 8px rgba(0, 0, 0, 0.03);
+        box-shadow: 0 4px 24px -4px rgba(13, 148, 136, 0.08), 0 2px 8px rgba(0, 0, 0, 0.02);
         transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
     }
     .glass-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 16px 36px -6px rgba(79, 70, 229, 0.16), 0 0 18px rgba(99, 102, 241, 0.1);
-        border-color: #B5C4FF;
+        box-shadow: 0 16px 36px -6px rgba(13, 148, 136, 0.18), 0 0 18px rgba(16, 185, 129, 0.12);
+        border-color: #5EEAD4;
     }
 
     /* Quick Revision Specific Cards (Light) */
     .revision-box {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-left: 6px solid #4F46E5;
+        border: 1.5px solid #CCFBF1;
+        border-left: 6px solid #0D9488;
         border-radius: 16px;
         padding: 20px 24px;
         margin-bottom: 18px;
-        box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 4px 16px -2px rgba(13, 148, 136, 0.06);
     }
 
     /* Enlarged Metric KPI Box */
     .metric-box {
         background: #FFFFFF;
-        border: 1.5px solid #DDE3EE;
+        border: 1.5px solid #CCFBF1;
         border-radius: 20px;
         padding: 24px 22px;
         display: flex;
         align-items: center;
         gap: 20px;
-        box-shadow: 0 4px 20px -2px rgba(79, 70, 229, 0.07);
+        box-shadow: 0 4px 20px -2px rgba(13, 148, 136, 0.08);
         transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .metric-box:hover {
         transform: translateY(-4px);
-        border-color: #B5C4FF;
-        box-shadow: 0 12px 30px -4px rgba(79, 70, 229, 0.18);
+        border-color: #5EEAD4;
+        box-shadow: 0 12px 30px -4px rgba(13, 148, 136, 0.2);
     }
     .metric-icon {
         font-size: 34px;
@@ -307,14 +309,14 @@ st.markdown("""
         font-size: 34px;
         font-weight: 900;
         font-family: 'Outfit', sans-serif;
-        color: #0A0F1E;
+        color: #022C22;
         line-height: 1.1;
         letter-spacing: -0.03em;
     }
     .metric-label {
         font-size: 12.5px;
-        color: #6B7A9A;
-        font-weight: 700;
+        color: #064E3B;
+        font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 0.07em;
         margin-top: 4px;
@@ -323,60 +325,60 @@ st.markdown("""
     /* Vibrant Badges & Pills */
     .badge-urgent {
         background: #FEE2E2;
-        color: #DC2626;
+        color: #991B1B;
         border: 1px solid #FECACA;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         display: inline-block;
     }
     .badge-important {
         background: #FEF3C7;
-        color: #D97706;
+        color: #92400E;
         border: 1px solid #FDE68A;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         display: inline-block;
     }
     .badge-general {
-        background: #DBEAFE;
-        color: #1D4ED8;
-        border: 1px solid #BFDBFE;
+        background: #E0F2FE;
+        color: #0369A1;
+        border: 1px solid #BAE6FD;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         display: inline-block;
     }
     .badge-open {
         background: #D1FAE5;
-        color: #059669;
+        color: #065F46;
         border: 1px solid #A7F3D0;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         display: inline-block;
     }
     .badge-fulfilled {
         background: #EDE9FE;
-        color: #6D28D9;
+        color: #5B21B6;
         border: 1px solid #DDD6FE;
         padding: 5px 14px;
         border-radius: 9999px;
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 800;
         letter-spacing: 0.05em;
         text-transform: uppercase;
         display: inline-block;
@@ -384,21 +386,8 @@ st.markdown("""
     .tag-chip {
         display: inline-flex;
         align-items: center;
-        background: #EEF2FF;
-        color: #4338CA;
-        border: 1px solid #C7D2FE;
-        border-radius: 8px;
-        padding: 4px 12px;
-        font-size: 13px;
-        font-weight: 600;
-        margin-right: 6px;
-        margin-bottom: 4px;
-    }
-    .tag-new {
-        display: inline-flex;
-        align-items: center;
         background: #ECFDF5;
-        color: #047857;
+        color: #065F46;
         border: 1px solid #A7F3D0;
         border-radius: 8px;
         padding: 4px 12px;
@@ -407,25 +396,38 @@ st.markdown("""
         margin-right: 6px;
         margin-bottom: 4px;
     }
+    .tag-new {
+        display: inline-flex;
+        align-items: center;
+        background: #CCFBF1;
+        color: #0F766E;
+        border: 1px solid #99F6E4;
+        border-radius: 8px;
+        padding: 4px 12px;
+        font-size: 13px;
+        font-weight: 800;
+        margin-right: 6px;
+        margin-bottom: 4px;
+    }
 
     /* Home Dashboard Quick Action Launchpad */
     .quick-action-tile {
         background: #FFFFFF;
-        border: 1.5px solid #E2E8F0;
+        border: 1.5px solid #CCFBF1;
         border-radius: 16px;
         padding: 16px 18px;
         display: flex;
         align-items: center;
         gap: 14px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.05);
         transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
     }
     .quick-action-tile:hover {
         transform: translateY(-3px);
-        border-color: #818CF8;
-        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.12);
-        background: #F8FAFC;
+        border-color: #10B981;
+        box-shadow: 0 8px 20px rgba(13, 148, 136, 0.15);
+        background: #F0FDF4;
     }
     .quick-action-icon {
         width: 46px;
@@ -441,7 +443,7 @@ st.markdown("""
     /* Square Portal Tile (Horizontal Grid) - ENLARGED LOGOS */
     .square-portal-tile {
         background: #FFFFFF;
-        border: 1.5px solid #DDE3EE;
+        border: 1.5px solid #CCFBF1;
         border-radius: 22px;
         padding: 26px 18px 22px;
         text-align: center;
@@ -450,15 +452,15 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         min-height: 185px;
-        box-shadow: 0 4px 20px rgba(79, 70, 229, 0.06);
+        box-shadow: 0 4px 20px rgba(13, 148, 136, 0.06);
         transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
         cursor: pointer;
     }
     .square-portal-tile:hover {
         transform: translateY(-6px);
-        border-color: #7C6BE8;
-        box-shadow: 0 16px 36px -6px rgba(79, 70, 229, 0.24);
-        background: linear-gradient(160deg, #FAFBFF 0%, #F5F0FF 100%);
+        border-color: #0D9488;
+        box-shadow: 0 16px 36px -6px rgba(13, 148, 136, 0.24);
+        background: linear-gradient(160deg, #FFFFFF 0%, #F0FDF4 100%);
     }
     .square-logo-box {
         width: 80px;
@@ -469,7 +471,7 @@ st.markdown("""
         justify-content: center;
         font-size: 40px;
         margin-bottom: 14px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+        box-shadow: 0 4px 16px rgba(0,0,0,0.06);
         transition: transform 0.22s ease;
     }
     .square-portal-tile:hover .square-logo-box {
@@ -478,49 +480,49 @@ st.markdown("""
     .square-portal-title {
         font-size: 15.5px;
         font-weight: 800;
-        color: #0A0F1E;
+        color: #022C22;
         margin-bottom: 5px;
         line-height: 1.25;
     }
     .square-portal-sub {
         font-size: 12.5px;
-        color: #6B7A9A;
-        font-weight: 600;
+        color: #047857;
+        font-weight: 700;
     }
 
     /* Square Subject Cards (Horizontal Layout) */
     .square-subject-tile {
         background: #FFFFFF;
-        border: 1.5px solid #DDE3EE;
+        border: 1.5px solid #CCFBF1;
         border-radius: 20px;
         padding: 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         min-height: 185px;
-        box-shadow: 0 4px 18px rgba(79, 70, 229, 0.05);
+        box-shadow: 0 4px 18px rgba(13, 148, 136, 0.06);
         transition: all 0.26s ease;
     }
     .square-subject-tile:hover {
         transform: translateY(-4px);
-        border-color: #8B80F9;
-        box-shadow: 0 12px 28px rgba(79, 70, 229, 0.15);
+        border-color: #0D9488;
+        box-shadow: 0 12px 28px rgba(13, 148, 136, 0.18);
     }
 
     /* Concept of the Day Spotlight */
     .concept-card {
-        background: linear-gradient(135deg, #EEF2FF 0%, #FAF5FF 100%);
-        border: 1.5px solid #C7D2FE;
+        background: linear-gradient(135deg, #F0FDF4 0%, #F0FDFA 100%);
+        border: 1.5px solid #A7F3D0;
         border-radius: 18px;
         padding: 22px 26px;
         margin-bottom: 22px;
-        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.06);
+        box-shadow: 0 4px 16px rgba(13, 148, 136, 0.08);
     }
 
     /* Interactive Academic Milestone Card */
     .task-box {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
+        background: #F0FDF4;
+        border: 1px solid #CCFBF1;
         border-radius: 14px;
         padding: 14px 16px;
         margin-bottom: 10px;
@@ -528,27 +530,27 @@ st.markdown("""
     }
     .task-box:hover {
         background: #FFFFFF;
-        border-color: #CBD5E1;
+        border-color: #5EEAD4;
     }
 
-    /* Streamlit Global Widget Polish */
+    /* Streamlit Global Widget Polish (Green + Tea) */
     .stButton > button {
         border-radius: 14px !important;
         font-weight: 800 !important;
         font-size: 15px !important;
         font-family: 'Outfit', sans-serif !important;
         padding: 11px 24px !important;
-        border: 1.5px solid #4338CA !important;
-        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
+        border: 1.5px solid #047857 !important;
+        background: linear-gradient(135deg, #047857 0%, #0D9488 100%) !important;
         color: white !important;
-        box-shadow: 0 5px 18px rgba(67, 56, 202, 0.35) !important;
+        box-shadow: 0 5px 18px rgba(4, 120, 87, 0.35) !important;
         transition: all 0.22s cubic-bezier(0.4, 0, 0.2, 1) !important;
         letter-spacing: 0.01em !important;
     }
     .stButton > button:hover {
         transform: translateY(-3px) !important;
-        box-shadow: 0 10px 26px rgba(67, 56, 202, 0.5) !important;
-        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 100%) !important;
+        box-shadow: 0 10px 26px rgba(4, 120, 87, 0.5) !important;
+        background: linear-gradient(135deg, #064E3B 0%, #047857 100%) !important;
     }
     .stButton > button:active {
         transform: translateY(0px) !important;
@@ -556,45 +558,45 @@ st.markdown("""
 
     .stDownloadButton > button {
         border-radius: 12px !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         font-size: 15px !important;
         font-family: 'Outfit', sans-serif !important;
         padding: 10px 22px !important;
-        border: 1px solid #059669 !important;
-        background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
+        border: 1px solid #047857 !important;
+        background: linear-gradient(135deg, #047857 0%, #10B981 100%) !important;
         color: white !important;
-        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25) !important;
+        box-shadow: 0 4px 14px rgba(4, 120, 87, 0.28) !important;
         transition: all 0.2s ease !important;
     }
     .stDownloadButton > button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4) !important;
+        box-shadow: 0 8px 20px rgba(4, 120, 87, 0.45) !important;
     }
 
     .stLinkButton > a {
         border-radius: 12px !important;
-        font-weight: 700 !important;
+        font-weight: 800 !important;
         font-size: 14px !important;
         font-family: 'Outfit', sans-serif !important;
-        border: 1px solid #CBD5E1 !important;
+        border: 1.5px solid #A7F3D0 !important;
         background: #FFFFFF !important;
-        color: #4F46E5 !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        color: #047857 !important;
+        box-shadow: 0 2px 8px rgba(13, 148, 136, 0.06) !important;
         transition: all 0.2s ease !important;
     }
     .stLinkButton > a:hover {
-        background: #EEF2FF !important;
-        border-color: #818CF8 !important;
+        background: #F0FDF4 !important;
+        border-color: #10B981 !important;
         transform: translateY(-2px) !important;
     }
 
-    /* Enlarged Tabs Styling (Light) */
+    /* Enlarged Tabs Styling (Tea Green) */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: #EEF2FF;
+        background: #F0FDF4;
         padding: 7px;
         border-radius: 16px;
-        border: 1.5px solid #D4DBFF;
+        border: 1.5px solid #CCFBF1;
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 12px;
@@ -602,39 +604,41 @@ st.markdown("""
         font-weight: 700;
         font-size: 14.5px;
         font-family: 'Outfit', sans-serif;
-        color: #5060A0;
+        color: #064E3B;
         transition: all 0.22s ease;
     }
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #4338CA 0%, #6366F1 100%) !important;
+        background: linear-gradient(135deg, #047857 0%, #0D9488 100%) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 5px 16px rgba(67, 56, 202, 0.38);
+        box-shadow: 0 5px 16px rgba(4, 120, 87, 0.38);
     }
 
-    /* Inputs Polish (Light Theme) */
+    /* Inputs Polish (Light Theme with Tea Focus) */
     .stTextInput input, .stTextArea textarea, .stNumberInput input {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1.5px solid #A7F3D0 !important;
         border-radius: 12px !important;
-        color: #0F172A !important;
+        color: #022C22 !important;
         font-size: 15px !important;
+        font-weight: 600 !important;
         padding: 10px 14px !important;
         transition: all 0.2s ease !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus, .stNumberInput input:focus {
-        border-color: #4F46E5 !important;
-        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18) !important;
+        border-color: #0D9488 !important;
+        box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2) !important;
     }
     .stSelectbox > div > div {
         background: #FFFFFF !important;
-        border: 1.5px solid #CBD5E1 !important;
+        border: 1.5px solid #A7F3D0 !important;
         border-radius: 12px !important;
         font-size: 15px !important;
+        color: #022C22 !important;
     }
 
     /* Progress bar */
     .stProgress > div > div > div > div {
-        background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 50%, #059669 100%) !important;
+        background: linear-gradient(90deg, #047857 0%, #0D9488 50%, #10B981 100%) !important;
         border-radius: 9999px !important;
     }
 
@@ -647,17 +651,18 @@ st.markdown("""
         overflow: hidden;
     }
     table th {
-        background: #F1F5F9;
-        color: #0F172A;
-        font-weight: 700;
+        background: #F0FDF4;
+        color: #022C22;
+        font-weight: 800;
         padding: 10px 14px;
-        border-bottom: 2px solid #E2E8F0;
+        border-bottom: 2px solid #A7F3D0;
         text-align: left;
     }
     table td {
         padding: 10px 14px;
-        border-bottom: 1px solid #F1F5F9;
-        color: #334155;
+        border-bottom: 1px solid #F0FDF4;
+        color: #064E3B;
+        font-weight: 600;
     }
 
     /* ============================================
@@ -665,10 +670,10 @@ st.markdown("""
        ============================================ */
     .login-container-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
+        border: 1.5px solid #CCFBF1;
         border-radius: 24px;
         padding: 38px 44px;
-        box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 0 25px rgba(79, 70, 229, 0.06);
+        box-shadow: 0 20px 45px -10px rgba(13, 148, 136, 0.1), 0 0 25px rgba(16, 185, 129, 0.08);
         position: relative;
         margin-top: 10px;
     }
@@ -676,13 +681,13 @@ st.markdown("""
         font-size: 58px;
         display: inline-block;
         animation: float 3s ease-in-out infinite;
-        filter: drop-shadow(0 8px 16px rgba(79, 70, 229, 0.25));
+        filter: drop-shadow(0 8px 16px rgba(4, 120, 87, 0.3));
     }
     .login-title-text {
         font-family: 'Outfit', sans-serif;
         font-size: 38px;
         font-weight: 900;
-        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 50%, #7C3AED 100%);
+        background: linear-gradient(135deg, #064E3B 0%, #047857 50%, #0D9488 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -693,13 +698,13 @@ st.markdown("""
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
+        background: #F0FDF4;
+        border: 1px solid #CCFBF1;
         border-radius: 9999px;
         padding: 6px 14px;
         font-size: 13px;
-        color: #475569;
-        font-weight: 600;
+        color: #064E3B;
+        font-weight: 700;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -1632,10 +1637,10 @@ material_requests_data = load_material_requests()
 with st.sidebar:
     st.markdown("""
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-        <h2 style="margin: 0; font-size: 24px; font-weight: 800; color: #4F46E5;">🎓 CampusHub</h2>
-        <span style="font-size: 11px; color: #059669; font-weight: 700; background: #D1FAE5; border: 1px solid #A7F3D0; padding: 3px 8px; border-radius: 9999px;"><span class="live-pulse"></span>Live</span>
+        <h2 style="margin: 0; font-size: 24px; font-weight: 900; color: #047857;">🎓 CampusHub</h2>
+        <span style="font-size: 11px; color: #065F46; font-weight: 800; background: #D1FAE5; border: 1px solid #A7F3D0; padding: 3px 8px; border-radius: 9999px;"><span class="live-pulse"></span>Live</span>
     </div>
-    <p style="font-size: 13px; color: #64748B; margin-top: 0; margin-bottom: 14px; font-weight: 500;">Academic Resource Network &amp; Toolkit</p>
+    <p style="font-size: 13px; color: #064E3B; margin-top: 0; margin-bottom: 14px; font-weight: 600;">Academic Resource Network &amp; Toolkit</p>
     """, unsafe_allow_html=True)
 
     nav_option = st.radio(
@@ -1735,7 +1740,7 @@ if "Home Dashboard" in nav_option:
     with p_col1:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📚</div>
+            <div class="square-logo-box" style="background: #ECFDF5; color: #059669; border: 1.5px solid #A7F3D0;">📚</div>
             <div class="square-portal-title">Study Materials</div>
             <div class="square-portal-sub">Notes, Books &amp; PYQs</div>
         </div>
@@ -1743,7 +1748,7 @@ if "Home Dashboard" in nav_option:
     with p_col2:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #EFF6FF; color: #2563EB; border: 1px solid #BFDBFE;">🏛️</div>
+            <div class="square-logo-box" style="background: #F0FDFA; color: #0D9488; border: 1.5px solid #99F6E4;">🏛️</div>
             <div class="square-portal-title">Govt Exam Hub</div>
             <div class="square-portal-sub">GATE, ISRO &amp; UPSC</div>
         </div>
@@ -1751,7 +1756,7 @@ if "Home Dashboard" in nav_option:
     with p_col3:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #EDE9FE; color: #7C3AED; border: 1px solid #DDD6FE;">🤝</div>
+            <div class="square-logo-box" style="background: #ECFDF5; color: #047857; border: 1.5px solid #A7F3D0;">🤝</div>
             <div class="square-portal-title">Resource Sharing</div>
             <div class="square-portal-sub">P2P Swap &amp; 6-Digit Codes</div>
         </div>
@@ -1759,7 +1764,7 @@ if "Home Dashboard" in nav_option:
     with p_col4:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #E0E7FF; color: #4338CA; border: 1px solid #C7D2FE;">📅</div>
+            <div class="square-logo-box" style="background: #F0FDF4; color: #059669; border: 1.5px solid #BBF7D0;">📅</div>
             <div class="square-portal-title">Class Timetable</div>
             <div class="square-portal-sub">Live Routine &amp; Labs</div>
         </div>
@@ -1772,7 +1777,7 @@ if "Home Dashboard" in nav_option:
     with p_col5:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">📊</div>
+            <div class="square-logo-box" style="background: #D1FAE5; color: #065F46; border: 1.5px solid #6EE7B7;">📊</div>
             <div class="square-portal-title">Attendance Tracker</div>
             <div class="square-portal-sub">75% Safe Bunk Guard</div>
         </div>
@@ -1780,7 +1785,7 @@ if "Home Dashboard" in nav_option:
     with p_col6:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">⚡</div>
+            <div class="square-logo-box" style="background: #FEF3C7; color: #B45309; border: 1.5px solid #FDE68A;">⚡</div>
             <div class="square-portal-title">Revision Vault</div>
             <div class="square-portal-sub">1-Page Formula Sheets</div>
         </div>
@@ -1788,7 +1793,7 @@ if "Home Dashboard" in nav_option:
     with p_col7:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #E0F2FE; color: #0284C7; border: 1px solid #BAE6FD;">🙋</div>
+            <div class="square-logo-box" style="background: #E0F2FE; color: #0369A1; border: 1.5px solid #BAE6FD;">🙋</div>
             <div class="square-portal-title">Peer Wishlist</div>
             <div class="square-portal-sub">Community Requests</div>
         </div>
@@ -1796,9 +1801,9 @@ if "Home Dashboard" in nav_option:
     with p_col8:
         st.markdown("""
         <div class="square-portal-tile">
-            <div class="square-logo-box" style="background: #FCE7F3; color: #DB2777; border: 1px solid #FBCFE8;">🧰</div>
+            <div class="square-logo-box" style="background: #F0FDFA; color: #0F766E; border: 1.5px solid #99F6E4;">🧰</div>
             <div class="square-portal-title">Student Tools</div>
-            <div class="square-portal-sub">SGPA, Guard &amp; Timer</div>
+            <div class="square-portal-sub">Calculator &amp; SGPA</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -1810,42 +1815,42 @@ if "Home Dashboard" in nav_option:
     
     with sub_col1:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #3B82F6; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EFF6FF; color: #2563EB; margin: 0 auto 12px;">🐍</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Python Programming</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. Ananya Ray</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">OOP concepts, Decorators, Generators, File I/O &amp; NumPy arrays.</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #0D9488; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #F0FDFA; color: #0D9488; margin: 0 auto 12px; border: 1.5px solid #99F6E4;">🐍</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">Python Programming</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Dr. Ananya Ray</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">OOP concepts, Decorators, Generators, File I/O &amp; NumPy arrays.</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">4 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with sub_col2:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #4F46E5; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EEF2FF; color: #4F46E5; margin: 0 auto 12px;">🌳</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Data Structures &amp; Algorithms</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. Ramesh Verma</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Trees, BST, AVL Rotations, Sorting Algorithms &amp; Graph Traversals.</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #059669; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #ECFDF5; color: #059669; margin: 0 auto 12px; border: 1.5px solid #A7F3D0;">🌳</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">Data Structures &amp; Algorithms</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Dr. Ramesh Verma</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">Trees, BST, AVL Rotations, Sorting Algorithms &amp; Graph Traversals.</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">6 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with sub_col3:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #0284C7; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #E0F2FE; color: #0284C7; margin: 0 auto 12px;">💻</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Operating Systems</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Sneha Kulkarni</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Process sync, Semaphore, Deadlocks, Paging &amp; Virtual Memory.</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #047857; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #F0FDF4; color: #047857; margin: 0 auto 12px; border: 1.5px solid #A7F3D0;">💻</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">Operating Systems</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Prof. Sneha Kulkarni</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">Process sync, Semaphore, Deadlocks, Paging &amp; Virtual Memory.</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">5 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1855,42 +1860,42 @@ if "Home Dashboard" in nav_option:
     sub_col4, sub_col5, sub_col6 = st.columns(3)
     with sub_col4:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #059669; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #D1FAE5; color: #059669; margin: 0 auto 12px;">🗄️</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Database Systems (DBMS)</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Rajesh Kumar</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">ER diagrams, Relational Algebra, SQL queries &amp; Normalization (1NF-BCNF).</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #065F46; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #D1FAE5; color: #065F46; margin: 0 auto 12px; border: 1.5px solid #6EE7B7;">🗄️</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">Database Systems (DBMS)</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Prof. Rajesh Kumar</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">ER diagrams, Relational Algebra, SQL queries &amp; Normalization (1NF-BCNF).</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">4 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with sub_col5:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #D97706; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #FEF3C7; color: #D97706; margin: 0 auto 12px;">📐</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">Mathematics-III (Discrete)</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Dr. M. S. Iyer</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Propositional logic, Set theory, Graph theory, Trees &amp; Combinatorics.</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #B45309; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #FEF3C7; color: #B45309; margin: 0 auto 12px; border: 1.5px solid #FDE68A;">📐</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">Mathematics-III (Discrete)</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Dr. M. S. Iyer</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">Propositional logic, Set theory, Graph theory, Trees &amp; Combinatorics.</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">3 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with sub_col6:
         st.markdown("""
-        <div class="square-subject-tile" style="border-top: 5px solid #7C3AED; text-align: center; align-items: center;">
-            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #EDE9FE; color: #7C3AED; margin: 0 auto 12px;">🔷</div>
-            <div style="font-weight: 800; font-size: 15.5px; color: #0A0F1E; margin-bottom: 4px;">C / C++ Core Systems</div>
-            <div style="font-size: 12px; color: #6B7A9A; margin-bottom: 8px;">Prof. Ankit S.</div>
-            <p style="font-size: 12.5px; color: #475569; margin: 0 0 10px; line-height: 1.5;">Pointers, Memory allocation, STL containers &amp; template metaprogramming.</p>
+        <div class="square-subject-tile" style="border-top: 5px solid #0F766E; text-align: center; align-items: center;">
+            <div class="square-logo-box" style="width: 64px; height: 64px; font-size: 34px; background: #CCFBF1; color: #0F766E; margin: 0 auto 12px; border: 1.5px solid #99F6E4;">🔷</div>
+            <div style="font-weight: 800; font-size: 15.5px; color: #022C22; margin-bottom: 4px;">C / C++ Core Systems</div>
+            <div style="font-size: 12px; color: #047857; font-weight: 700; margin-bottom: 8px;">Prof. Ankit S.</div>
+            <p style="font-size: 12.5px; color: #064E3B; margin: 0 0 10px; line-height: 1.5; font-weight: 500;">Pointers, Memory allocation, STL containers &amp; template metaprogramming.</p>
             <div style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;">
                 <span class="tag-chip">5 Notes</span>
-                <span style="font-size: 12px; color: #059669; font-weight: 700;">Verified ✅</span>
+                <span style="font-size: 12px; color: #047857; font-weight: 800;">Verified ✅</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
