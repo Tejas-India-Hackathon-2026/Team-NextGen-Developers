@@ -1,0 +1,110 @@
+{
+    "DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf": {
+        "title": "DSA & Algorithms 1-Page Rapid Revision Cheatsheet",
+        "subject": "Data Structures",
+        "semester": "3rd Semester",
+        "type": "Quick Revision Cheatsheet",
+        "uploader": "Tech Society Editorial Board",
+        "upload_date": "2026-08-20",
+        "size_kb": 3.3,
+        "description": "Master Big-O complexities for all sorting algorithms, tree & graph traversals, Dijkstra, and top 14 Dynamic Programming patterns in 1 page.",
+        "likes": 32,
+        "downloads": 78
+    },
+    "OS_and_DBMS_Exam_CheatSheet.pdf": {
+        "title": "OS & DBMS Core Concepts Exam Revision Sheet",
+        "subject": "Operating Systems",
+        "semester": "4th Semester",
+        "type": "Quick Revision Cheatsheet",
+        "uploader": "Campus Exam Prep Lead",
+        "upload_date": "2026-08-20",
+        "size_kb": 2.6,
+        "description": "Fast-track review of Deadlock conditions, Banker's algorithm, Page replacement (FIFO/LRU), ACID properties, and Database Normalization (1NF-BCNF).",
+        "likes": 27,
+        "downloads": 64
+    },
+    "C_Programming_Complete_Notes.pdf": {
+        "title": "C Programming Complete Reference & Notes",
+        "subject": "C Programming",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. K. Sharma (CS Dept)",
+        "upload_date": "2026-08-20",
+        "size_kb": 3.0,
+        "description": "Comprehensive reference covering C tokens, pointers, pointer arithmetic, heap memory management (malloc/calloc/free), and structures.",
+        "likes": 16,
+        "downloads": 39
+    },
+    "CPP_OOPs_and_STL_Guide.pdf": {
+        "title": "C++ Object-Oriented Programming & STL Master Guide",
+        "subject": "C++ Programming",
+        "semester": "2nd Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. R. Verma (Computer Science)",
+        "upload_date": "2026-08-20",
+        "size_kb": 2.7,
+        "description": "Master the 4 pillars of OOP, virtual functions, abstract classes, templates, and STL containers (vector, map, set, priority_queue).",
+        "likes": 22,
+        "downloads": 51
+    },
+    "Python_Complete_Programming_Handbook.pdf": {
+        "title": "Python Complete Programming Handbook",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Dr. S. Mehta (AI & Data Science Lead)",
+        "upload_date": "2026-08-20",
+        "size_kb": 2.5,
+        "description": "Core Python data structures (lists, tuples, dicts, sets), list comprehensions, lambdas, OOP dunder methods, exception handling, and NumPy basics.",
+        "likes": 29,
+        "downloads": 82
+    },
+    "Lecture1_py.pdf": {
+        "title": "Python Core Architecture & Variables",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. A. Nambiar",
+        "upload_date": "2026-08-20",
+        "size_kb": 797.7,
+        "description": "Introduction to Python bytecode interpreter, dynamic typing, variable assignments, and operators.",
+        "likes": 11,
+        "downloads": 24
+    },
+    "Lecture2_py.pdf": {
+        "title": "Python Control Flow & Functions",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. A. Nambiar",
+        "upload_date": "2026-08-20",
+        "size_kb": 69.9,
+        "description": "Conditional branching, loops (while, for), range iterator, function scope, and default arguments.",
+        "likes": 9,
+        "downloads": 18
+    },
+    "Lecture3_py.pdf": {
+        "title": "Python Data Structures & Collections",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. A. Nambiar",
+        "upload_date": "2026-08-20",
+        "size_kb": 77.0,
+        "description": "In-depth methods for List, Tuple, Dict, Set, slicing tricks, and dictionary views.",
+        "likes": 15,
+        "downloads": 30
+    },
+    "Lecture4_py.pdf": {
+        "title": "Python OOP & Exception Handling",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lecture Notes",
+        "uploader": "Prof. A. Nambiar",
+        "upload_date": "2026-08-20",
+        "size_kb": 182.7,
+        "description": "Classes, inheritance patterns, polymorphism, custom exception hierarchy, and try-except-finally blocks.",
+        "likes": 17,
+        "downloads": 38
+    }
+}

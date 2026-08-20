@@ -2,6 +2,7 @@ import streamlit as st
 import os
 import json
 import base64
+import hashlib
 from datetime import datetime
 
 # ==================================================
@@ -21,6 +22,7 @@ MATERIAL_FOLDER = "materials"
 ANNOUNCEMENTS_FILE = "announcements.json"
 METADATA_FILE = "materials_meta.json"
 REQUESTS_FILE = "material_requests.json"
+USERS_FILE = "users.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -103,6 +105,17 @@ st.markdown("""
         transform: translateY(-3px);
         box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
         border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    /* Quick Revision Specific Cards */
+    .revision-box {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.25);
+        border-left: 4px solid #818CF8;
+        border-radius: 14px;
+        padding: 16px 20px;
+        margin-bottom: 14px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     }
 
     /* Metric Glass Box */
@@ -214,23 +227,18 @@ st.markdown("""
         margin-right: 6px;
         margin-bottom: 4px;
     }
-
-    /* Grade Points Highlight Chips */
-    .grade-chip-gold {
-        background: rgba(234, 179, 8, 0.15);
-        color: #FACC15;
-        border: 1px solid rgba(234, 179, 8, 0.3);
-        border-radius: 6px;
-        padding: 2px 8px;
-        font-weight: 700;
-    }
-    .grade-chip-green {
+    .tag-new {
+        display: inline-flex;
+        align-items: center;
         background: rgba(16, 185, 129, 0.15);
         color: #34D399;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-        border-radius: 6px;
-        padding: 2px 8px;
+        border: 1px solid rgba(16, 185, 129, 0.35);
+        border-radius: 8px;
+        padding: 3px 10px;
+        font-size: 12px;
         font-weight: 700;
+        margin-right: 6px;
+        margin-bottom: 4px;
     }
 
     /* Sidebar profile avatar container */
@@ -263,8 +271,341 @@ st.markdown("""
         color: #FFFFFF !important;
         box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
     }
+
+    /* ============================================
+       LOGIN PAGE STYLES
+       ============================================ */
+    .login-page-wrapper {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(ellipse at 20% 50%, rgba(79,70,229,0.15) 0%, transparent 60%),
+                    radial-gradient(ellipse at 80% 20%, rgba(219,39,119,0.12) 0%, transparent 60%),
+                    radial-gradient(ellipse at 60% 80%, rgba(124,58,237,0.1) 0%, transparent 60%);
+        padding: 40px 20px;
+    }
+    .login-card {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 24px;
+        padding: 48px 44px;
+        width: 100%;
+        max-width: 460px;
+        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.5),
+                    0 0 0 1px rgba(255,255,255,0.05),
+                    inset 0 1px 0 rgba(255,255,255,0.1);
+        animation: cardEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes cardEntrance {
+        from { opacity: 0; transform: translateY(30px) scale(0.97); }
+        to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+    .login-logo {
+        font-size: 52px;
+        text-align: center;
+        margin-bottom: 8px;
+        animation: float 3s ease-in-out infinite;
+    }
+    .login-title {
+        font-family: 'Outfit', sans-serif;
+        font-size: 28px;
+        font-weight: 800;
+        text-align: center;
+        background: linear-gradient(135deg, #818CF8 0%, #C084FC 50%, #F472B6 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 4px;
+    }
+    .login-subtitle {
+        text-align: center;
+        font-size: 13px;
+        color: #64748B;
+        margin-bottom: 32px;
+        font-weight: 500;
+    }
+    .auth-tab-btn {
+        flex: 1;
+        padding: 10px;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .auth-tab-active {
+        background: linear-gradient(135deg, #4F46E5, #7C3AED);
+        color: white;
+        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
+    }
+    .auth-tab-inactive {
+        background: rgba(30, 41, 59, 0.5);
+        color: #64748B;
+    }
+    .login-divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 24px 0 8px;
+    }
+    .login-divider::before, .login-divider::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: rgba(255,255,255,0.08);
+    }
+    .login-divider span {
+        font-size: 12px;
+        color: #475569;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .login-footer-note {
+        text-align: center;
+        font-size: 12px;
+        color: #334155;
+        margin-top: 24px;
+    }
+    /* Override streamlit input borders on login page */
+    .login-form-area .stTextInput input {
+        background: rgba(30, 41, 59, 0.6) !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        border-radius: 10px !important;
+        color: #F1F5F9 !important;
+        font-size: 14px !important;
+        padding: 10px 14px !important;
+    }
+    .login-form-area .stTextInput input:focus {
+        border-color: #6366F1 !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+    }
+    .login-form-area .stSelectbox > div > div {
+        background: rgba(30, 41, 59, 0.6) !important;
+        border: 1px solid rgba(99, 102, 241, 0.3) !important;
+        border-radius: 10px !important;
+    }
 </style>
 """, unsafe_allow_html=True)
+
+
+# ==================================================
+# 🔐 AUTHENTICATION SYSTEM
+# ==================================================
+
+def _hash_password(password: str) -> str:
+    """SHA-256 hash of the password."""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def load_users() -> dict:
+    """Load registered users from JSON file."""
+    if not os.path.exists(USERS_FILE):
+        # Seed with a demo admin account
+        default_users = {
+            "admin": {
+                "name": "Admin User",
+                "password": _hash_password("admin123"),
+                "branch": "Computer Science & Engg",
+                "semester": "3rd Semester",
+                "role": "Admin",
+                "joined": datetime.now().strftime("%Y-%m-%d")
+            }
+        }
+        with open(USERS_FILE, "w") as f:
+            json.dump(default_users, f, indent=4)
+        return default_users
+    try:
+        with open(USERS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+def save_users(users: dict):
+    """Persist users dict to JSON."""
+    with open(USERS_FILE, "w") as f:
+        json.dump(users, f, indent=4)
+
+def show_login_page():
+    """Render the premium login / sign-up page and handle auth logic."""
+    # Hide the sidebar on the login page
+    st.markdown("""
+    <style>
+        section[data-testid="stSidebar"] { display: none !important; }
+        .block-container { padding-top: 0 !important; max-width: 100% !important; }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # ── Page Header ──────────────────────────────────
+    st.markdown("""
+    <div style="text-align:center; padding: 48px 0 12px;">
+        <div style="font-size:58px; animation: float 3s ease-in-out infinite; display:inline-block;">🎓</div>
+        <div style="
+            font-family:'Outfit',sans-serif;
+            font-size:34px;
+            font-weight:900;
+            background:linear-gradient(135deg,#818CF8 0%,#C084FC 50%,#F472B6 100%);
+            -webkit-background-clip:text;
+            -webkit-text-fill-color:transparent;
+            background-clip:text;
+            line-height:1.1;
+            margin-top:10px;
+        ">CampusHub</div>
+        <div style="font-size:13px;color:#64748B;font-weight:500;margin-top:6px;">
+            Academic Resource Network &amp; Toolkit · AY 2026
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # ── Tab selector ─────────────────────────────────
+    col_spacer_l, col_center, col_spacer_r = st.columns([1, 2, 1])
+    with col_center:
+        tab_choice = st.radio(
+            "auth_tab",
+            ["🔑  Sign In", "✨  Create Account"],
+            horizontal=True,
+            label_visibility="collapsed",
+            key="auth_tab_radio"
+        )
+
+        st.markdown("<div class='login-form-area'>", unsafe_allow_html=True)
+
+        if tab_choice == "🔑  Sign In":
+            # ── LOGIN FORM ────────────────────────────
+            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+            with st.form("login_form", clear_on_submit=False):
+                username_in = st.text_input(
+                    "Username",
+                    placeholder="Enter your username",
+                    key="login_username"
+                )
+                password_in = st.text_input(
+                    "Password",
+                    type="password",
+                    placeholder="Enter your password",
+                    key="login_password"
+                )
+                st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+                submit_login = st.form_submit_button(
+                    "Sign In →",
+                    use_container_width=True,
+                    type="primary"
+                )
+
+            if submit_login:
+                users = load_users()
+                uname = username_in.strip().lower()
+                if not uname or not password_in:
+                    st.error("Please fill in both fields.")
+                elif uname not in users:
+                    st.error("❌ Username not found. Please sign up first.")
+                elif users[uname]["password"] != _hash_password(password_in):
+                    st.error("❌ Incorrect password. Please try again.")
+                else:
+                    user_data = users[uname]
+                    st.session_state["authenticated"] = True
+                    st.session_state["username"] = uname
+                    st.session_state["student_name"] = user_data["name"]
+                    st.session_state["user_branch"] = user_data.get("branch", "Computer Science & Engg")
+                    st.session_state["user_semester"] = user_data.get("semester", "3rd Semester")
+                    st.session_state["user_role"] = user_data.get("role", "Student")
+                    st.success(f"✅ Welcome back, {user_data['name']}!")
+                    st.rerun()
+
+            # Demo hint
+            st.markdown("""
+            <div style="text-align:center;margin-top:16px;">
+                <span style="font-size:12px;color:#334155;">Demo account: </span>
+                <code style="font-size:12px;color:#818CF8;background:rgba(99,102,241,0.1);padding:2px 8px;border-radius:6px;">admin / admin123</code>
+            </div>
+            """, unsafe_allow_html=True)
+
+        else:
+            # ── SIGN-UP FORM ──────────────────────────
+            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
+            with st.form("signup_form", clear_on_submit=False):
+                full_name_in = st.text_input("Full Name", placeholder="e.g. Alex Kumar", key="signup_name")
+                new_username_in = st.text_input("Choose Username", placeholder="e.g. alexkumar21", key="signup_username")
+                new_pass_in = st.text_input("Password", type="password", placeholder="Min 6 characters", key="signup_pass")
+                confirm_pass_in = st.text_input("Confirm Password", type="password", placeholder="Re-enter password", key="signup_confirm")
+                branch_in = st.selectbox(
+                    "Branch / Department",
+                    [
+                        "Computer Science & Engg",
+                        "Information Technology",
+                        "AI & Data Science",
+                        "Electronics & Comm (ECE)",
+                        "Electrical Engg (EEE)",
+                        "Mechanical Engineering",
+                        "Civil Engineering",
+                        "BCA / MCA / Applied Sci",
+                        "Other"
+                    ],
+                    key="signup_branch"
+                )
+                sem_in = st.selectbox(
+                    "Current Semester",
+                    [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)],
+                    index=2,
+                    key="signup_sem"
+                )
+                st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+                submit_signup = st.form_submit_button(
+                    "Create Account ✨",
+                    use_container_width=True,
+                    type="primary"
+                )
+
+            if submit_signup:
+                users = load_users()
+                uname = new_username_in.strip().lower()
+                if not full_name_in.strip() or not uname or not new_pass_in:
+                    st.error("Please fill in all required fields.")
+                elif len(new_pass_in) < 6:
+                    st.error("Password must be at least 6 characters.")
+                elif new_pass_in != confirm_pass_in:
+                    st.error("Passwords do not match.")
+                elif uname in users:
+                    st.error("❌ Username already taken. Please choose another.")
+                else:
+                    users[uname] = {
+                        "name": full_name_in.strip(),
+                        "password": _hash_password(new_pass_in),
+                        "branch": branch_in,
+                        "semester": sem_in,
+                        "role": "Student",
+                        "joined": datetime.now().strftime("%Y-%m-%d")
+                    }
+                    save_users(users)
+                    st.session_state["authenticated"] = True
+                    st.session_state["username"] = uname
+                    st.session_state["student_name"] = full_name_in.strip()
+                    st.session_state["user_branch"] = branch_in
+                    st.session_state["user_semester"] = sem_in
+                    st.session_state["user_role"] = "Student"
+                    st.success(f"🎉 Account created! Welcome to CampusHub, {full_name_in.strip()}!")
+                    st.rerun()
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+        # Footer
+        st.markdown("""
+        <div style="text-align:center;margin-top:32px;">
+            <span style="font-size:11px;color:#1E293B;">🔒 Your credentials are stored securely on this device.</span>
+        </div>
+        """, unsafe_allow_html=True)
+
+
+# ==================================================
+# 🚪 AUTH GATE — block app until user is logged in
+# ==================================================
+if not st.session_state.get("authenticated", False):
+    show_login_page()
+    st.stop()
 
 
 # ==================================================
@@ -341,6 +682,8 @@ def load_materials_meta():
                 inferred_subject = "Python"
             elif "ds" in fl or "algo" in fl or "data" in fl:
                 inferred_subject = "Data Structures"
+            elif "os" in fl or "operating" in fl:
+                inferred_subject = "Operating Systems"
             elif "math" in fl:
                 inferred_subject = "Mathematics"
 
@@ -348,11 +691,11 @@ def load_materials_meta():
                 "title": filename.replace(".pdf", "").replace("_", " ").title(),
                 "subject": inferred_subject,
                 "semester": "1st Semester",
-                "type": "Lecture Notes",
+                "type": "Quick Revision Cheatsheet" if "cheat" in fl or "revision" in fl else "Lecture Notes",
                 "uploader": "Faculty / Contributor",
                 "upload_date": datetime.now().strftime("%Y-%m-%d"),
                 "size_kb": file_size_kb,
-                "description": "Complete lecture reference notes with core concepts.",
+                "description": "Complete lecture reference notes and key revision concepts.",
                 "likes": 0,
                 "downloads": 0
             }
@@ -481,6 +824,7 @@ with st.sidebar:
         [
             "🏠 Home Dashboard",
             "📚 Study Materials",
+            "⚡ Quick Revision & Cheatsheets",
             "🙋 Request Materials",
             "🧰 Student Tools",
             "🔗 Useful Resources",
@@ -491,44 +835,36 @@ with st.sidebar:
 
     st.markdown("<hr style='margin: 14px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.08);'>", unsafe_allow_html=True)
 
-    # Student Profile Card
-    st.markdown("#### 👤 Student Profile")
-    student_name = st.text_input("Your Full Name", value=st.session_state.get("student_name", "Student Scholar"), placeholder="e.g. Alex Kumar")
-    st.session_state["student_name"] = student_name
+    # Student Profile Card (auto-populated from login session)
+    student_name = st.session_state.get("student_name", "Student Scholar")
+    branch = st.session_state.get("user_branch", "Computer Science & Engg")
+    semester = st.session_state.get("user_semester", "3rd Semester")
+    user_role = st.session_state.get("user_role", "Student")
+    username_display = st.session_state.get("username", "user")
 
-    branch = st.selectbox(
-        "Branch / Department",
-        [
-            "Computer Science & Engg",
-            "Information Technology",
-            "AI & Data Science",
-            "Electronics & Comm (ECE)",
-            "Electrical Engg (EEE)",
-            "Mechanical Engineering",
-            "Civil Engineering",
-            "BCA / MCA / Applied Sci",
-            "Other"
-        ]
-    )
-
-    semester = st.selectbox(
-        "Current Semester",
-        [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)],
-        index=2
-    )
+    role_color = "#F59E0B" if user_role == "Admin" else "#10B981"
 
     # Visual Profile Badge
     st.markdown(f"""
     <div class="profile-card">
         <div style="display: flex; align-items: center; gap: 12px;">
             <div style="font-size: 26px; background: rgba(99,102,241,0.2); border-radius: 50%; padding: 6px 10px;">👨‍🎓</div>
-            <div>
+            <div style="flex:1;">
                 <div style="font-weight: 700; color: #F1F5F9; font-size: 14px;">{student_name}</div>
                 <div style="font-size: 12px; color: #94A3B8;">{semester} • {branch.split('(')[0].strip()}</div>
+                <div style="margin-top:4px;">
+                    <span style="font-size:11px;font-weight:700;color:{role_color};background:rgba(16,185,129,0.1);padding:2px 8px;border-radius:6px;">@{username_display} · {user_role}</span>
+                </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Logout button
+    if st.button("🚪 Sign Out", use_container_width=True, key="sidebar_logout_btn"):
+        for key in ["authenticated", "username", "student_name", "user_branch", "user_semester", "user_role"]:
+            st.session_state.pop(key, None)
+        st.rerun()
 
     st.caption("🚀 **Contribute notes or fulfill requests** to earn campus recognition and help fellow peers succeed.")
 
@@ -550,7 +886,7 @@ if "Home Dashboard" in nav_option:
                 <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Campus Portal • Academic Year 2026</span>
                 <h1 style="margin: 10px 0 6px 0; font-size: 32px; font-weight: 800;">{time_greeting}, {student_name}! 🚀</h1>
                 <p style="margin: 0; opacity: 0.95; font-size: 15px; max-width: 650px; line-height: 1.5;">
-                    Your centralized college hub for <strong>{semester}</strong> ({branch}). Discover peer-reviewed notes, request needed materials, calculate GPA projections, and never miss an official notice.
+                    Your centralized college hub for <strong>{semester}</strong> ({branch}). Discover peer-reviewed notes, rapid exam revision cheatsheets, request needed materials, and never miss an official notice.
                 </p>
             </div>
         </div>
@@ -577,20 +913,20 @@ if "Home Dashboard" in nav_option:
     with kpi2:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">🙋</div>
+            <div class="metric-icon">⚡</div>
             <div>
-                <div class="metric-val">{open_requests_count}</div>
-                <div class="metric-label">Open Material Requests</div>
+                <div class="metric-val">5</div>
+                <div class="metric-label">Quick Revision Decks</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with kpi3:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">📢</div>
+            <div class="metric-icon">🙋</div>
             <div>
-                <div class="metric-val">{total_announcements}</div>
-                <div class="metric-label">Active Notices</div>
+                <div class="metric-val">{open_requests_count}</div>
+                <div class="metric-label">Open Requests</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -613,29 +949,32 @@ if "Home Dashboard" in nav_option:
         for u in urgent_notices:
             st.error(f"🚨 **URGENT NOTICE:** **{u.get('title')}** — {u.get('message')} *(Posted by {u.get('author', 'Admin')} on {u.get('date', 'Today')})*")
 
-    # Semester Progress Bar
-    st.markdown("#### 🎯 Semester Milestones & Academic Progress")
-    sem_progress_col1, sem_progress_col2 = st.columns([3, 1])
-    with sem_progress_col1:
-        st.progress(0.65, text="Semester Timeline: Week 11 of 16 (Mid-terms completed • End-sem finals in 4 weeks)")
-    with sem_progress_col2:
-        st.caption("💡 Recommended: Complete 2 PYQ sets this week.")
-
-    st.markdown("<hr style='margin: 20px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.08);'>", unsafe_allow_html=True)
+    # Quick Revision Spotlight Banner
+    st.markdown("""
+    <div class="revision-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+        <div>
+            <h4 style="margin: 0 0 4px 0; color: #818CF8; font-size: 17px;">⚡ Need Rapid Exam Prep?</h4>
+            <p style="margin: 0; font-size: 13px; color: #CBD5E1;">Review 1-page formula summaries, sorting complexity matrices, and core OOP cheatsheets.</p>
+        </div>
+        <div>
+            <span class="tag-new">🔥 2026 Batch Cheatsheets Ready</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
 
     # 2-Column Home Layout
     dash_col_left, dash_col_right = st.columns([3, 2])
 
     with dash_col_left:
-        st.subheader("🔥 Featured & Recent Study Materials")
+        st.subheader("🔥 Latest Notes & Verified Uploads")
         if not materials_meta:
             st.info("No study materials found. Be the first student to upload!")
         else:
             recent_items = sorted(
                 materials_meta.items(),
-                key=lambda x: x[1].get("upload_date", ""),
+                key=lambda x: (x[1].get("upload_date", ""), x[1].get("likes", 0)),
                 reverse=True
-            )[:3]
+            )[:4]
 
             for filename, info in recent_items:
                 file_path = os.path.join(MATERIAL_FOLDER, filename)
@@ -645,6 +984,7 @@ if "Home Dashboard" in nav_option:
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
                                 <h4 style="margin: 0 0 6px 0; color: #F1F5F9; font-size: 16px;">📄 {info.get('title', filename)}</h4>
+                                <span class="tag-new">🆕 Latest</span>
                                 <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
                                 <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
                                 <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
@@ -726,12 +1066,12 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 📚 STUDY MATERIALS HUB
+# 2. 📚 STUDY MATERIALS HUB (WITH LATEST NOTES FILTER)
 # ==================================================
 
 elif "Study Materials" in nav_option:
-    st.header("📚 Study Materials Hub")
-    st.write("Browse, search, download, preview, and contribute academic PDFs across all semesters.")
+    st.header("📚 Study Materials & Latest Notes Hub")
+    st.write("Browse, search, download, preview, and contribute academic PDFs, lecture notes, and revision sheets.")
 
     tab_browse, tab_upload, tab_request_jump = st.tabs([
         "🔍 Browse & Search Materials",
@@ -744,7 +1084,7 @@ elif "Study Materials" in nav_option:
         f_col1, f_col2, f_col3, f_col4 = st.columns([2, 1, 1, 1])
 
         with f_col1:
-            search_query = st.text_input("🔎 Search by Title, Keyword, or Uploader", placeholder="e.g. Python, Trees, Calculus, DBMS...")
+            search_query = st.text_input("🔎 Search by Title, Keyword, or Uploader", placeholder="e.g. Python, C++, Trees, Calculus, DBMS...")
 
         with f_col2:
             all_subjects = ["All Subjects"] + sorted(list(set(info.get("subject", "Other") for info in materials_meta.values()) | {"C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"}))
@@ -755,7 +1095,7 @@ elif "Study Materials" in nav_option:
             selected_semester = st.selectbox("Semester", all_semesters)
 
         with f_col4:
-            all_types = ["All Types", "Lecture Notes", "Previous Year Question Paper (PYQ)", "Lab Manual", "Syllabus", "Reference Book / Summary"]
+            all_types = ["All Types", "Lecture Notes", "Quick Revision Cheatsheet", "Previous Year Question Paper (PYQ)", "Lab Manual", "Syllabus", "Reference Book / Summary"]
             selected_type = st.selectbox("Type", all_types)
 
         # Filter Logic
@@ -780,7 +1120,7 @@ elif "Study Materials" in nav_option:
         st.markdown(f"**Showing {len(filtered_materials)} verified study resource(s)**")
 
         if not filtered_materials:
-            st.info("No matching study materials found. Can't find what you need? Go to '🙋 Quick Material Request' tab to ask peers to upload it!")
+            st.info("No matching study materials found. Can't find what you need? Post a request in the '🙋 Quick Material Request' tab!")
         else:
             # 2-Column Responsive Card Grid
             mat_cols = st.columns(2)
@@ -795,6 +1135,7 @@ elif "Study Materials" in nav_option:
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div>
                                     <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #F8FAFC;">📄 {info.get('title', filename)}</h3>
+                                    <span class="tag-new">🆕 Latest Notes</span>
                                     <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
                                     <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
                                     <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
@@ -877,6 +1218,7 @@ elif "Study Materials" in nav_option:
                     "Resource Category *",
                     [
                         "Lecture Notes",
+                        "Quick Revision Cheatsheet",
                         "Previous Year Question Paper (PYQ)",
                         "Lab Manual",
                         "Syllabus",
@@ -934,7 +1276,7 @@ elif "Study Materials" in nav_option:
                 qr_subject = st.selectbox("Subject *", ["C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"], key="qr_sub")
                 qr_semester = st.selectbox("Semester *", [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)], index=2, key="qr_sem")
             with qr_col2:
-                qr_type = st.selectbox("Resource Type", ["Lecture Notes", "Previous Year Question Paper (PYQ)", "Lab Manual", "Reference Book / Summary", "Assignment Solutions"], key="qr_type")
+                qr_type = st.selectbox("Resource Type", ["Lecture Notes", "Quick Revision Cheatsheet", "Previous Year Question Paper (PYQ)", "Lab Manual", "Reference Book / Summary", "Assignment Solutions"], key="qr_type")
                 qr_urgency = st.selectbox("Urgency Level", ["🚨 Urgent (Exam in <3 days)", "⚠️ Important (Upcoming test/lab)", "📌 General (Regular study)"], key="qr_urg")
                 qr_desc = st.text_area("Specific Requirements or Chapter Numbers", placeholder="e.g. Need step-by-step solved numericals on FIFO, LRU, and Optimal page replacement.", key="qr_desc")
 
@@ -969,14 +1311,344 @@ elif "Study Materials" in nav_option:
 
 
 # ==================================================
-# 3. 🙋 REQUEST A MATERIAL PORTAL (DEDICATED)
+# 3. ⚡ QUICK REVISION & EXAM CHEATSHEETS (NEW)
+# ==================================================
+
+elif "Quick Revision" in nav_option:
+    st.header("⚡ Quick Revision & Exam Cheatsheet Vault")
+    st.write("Master key algorithms, syntax, Big-O tables, and core engineering concepts in 5 minutes before your exams.")
+
+    rev_tab_python, rev_tab_cpp, rev_tab_dsa, rev_tab_os, rev_tab_dbms, rev_tab_flashcards = st.tabs([
+        "🐍 Python Syntax & OOP",
+        "🔷 C & C++ Core",
+        "🌳 DSA & Sorting Matrix",
+        "💻 OS & Deadlocks",
+        "🗄️ DBMS & Normalization",
+        "🧠 Interactive Flashcards"
+    ])
+
+    # --- TAB 1: PYTHON QUICK REVISION ---
+    with rev_tab_python:
+        st.subheader("🐍 Python Fast-Track Cheatsheet")
+        
+        py_c1, py_c2 = st.columns(2)
+        with py_c1:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#818CF8; margin-top:0;">📦 Python Core Collections</h4>
+                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                        <th>Type</th><th>Syntax</th><th>Mutable?</th><th>Lookup Time</th>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><strong>List</strong></td><td><code>[1, 2, 3]</code></td><td>✅ Yes</td><td>O(1) index, O(n) search</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><strong>Tuple</strong></td><td><code>(1, 2, 3)</code></td><td>❌ No</td><td>O(1) index, O(n) search</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><strong>Dict</strong></td><td><code>{'k': 'v'}</code></td><td>✅ Yes</td><td>O(1) Avg (Hash Map)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Set</strong></td><td><code>{1, 2, 3}</code></td><td>✅ Yes</td><td>O(1) Avg (Unique elements)</td>
+                    </tr>
+                </table>
+            </div>
+            """, unsafe_allow_html=True)
+
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#34D399; margin-top:0;">⚡ List & Dict Comprehension</h4>
+                <p style="font-size:13px; color:#CBD5E1; margin-bottom:8px;">Fast syntax shortcuts:</p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.code("""# Squares of even numbers
+evens_sq = [x**2 for x in range(10) if x % 2 == 0]
+
+# Dict from list of pairs
+word_lengths = {word: len(word) for word in ['apple', 'banana', 'cherry']}
+
+# Matrix transpose
+transpose = [[row[i] for row in matrix] for i in range(len(matrix[0]))]""", language="python")
+
+        with py_c2:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#F472B6; margin-top:0;">🎯 OOP & Magic / Dunder Methods</h4>
+                <p style="font-size:13px; color:#CBD5E1;">Quick reference for object customisation:</p>
+            </div>
+            """, unsafe_allow_html=True)
+            st.code("""class Account:
+    def __init__(self, owner, balance=0):
+        self.owner = owner
+        self.balance = balance
+        
+    def __str__(self):
+        return f"Account({self.owner}, Balance: {self.balance})"
+        
+    def __len__(self):
+        return int(self.balance)
+        
+    def __add__(self, other):
+        return self.balance + other.balance
+
+acc = Account("Alex", 1500)
+print(acc)  # Calls __str__""", language="python")
+
+            if os.path.exists("materials/Python_Complete_Programming_Handbook.pdf"):
+                with open("materials/Python_Complete_Programming_Handbook.pdf", "rb") as f:
+                    st.download_button("⬇️ Download Python Complete Handbook PDF", f, file_name="Python_Complete_Handbook.pdf", mime="application/pdf", use_container_width=True)
+
+    # --- TAB 2: C & C++ QUICK REVISION ---
+    with rev_tab_cpp:
+        st.subheader("🔷 C & C++ Exam Summary")
+        
+        cpp_c1, cpp_c2 = st.columns(2)
+        with cpp_c1:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#818CF8; margin-top:0;">📌 Pointers & Memory Management</h4>
+                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                        <th>Feature</th><th>C Language</th><th>C++ Language</th>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td>Heap Alloc</td><td><code>malloc(size)</code> / <code>calloc</code></td><td><code>new Type[size]</code></td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td>Heap Free</td><td><code>free(ptr)</code></td><td><code>delete / delete[] ptr</code></td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td>I/O Speed</td><td><code>printf / scanf</code></td><td><code>cin / cout</code> (use fast I/O)</td>
+                    </tr>
+                    <tr>
+                        <td>Pass Type</td><td>Pointers (<code>*ptr</code>)</td><td>References (<code>&ref</code>)</td>
+                    </tr>
+                </table>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.code("""// C++ Fast I/O for Competitive Programming
+#include <iostream>
+using namespace std;
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    // write your solution here
+    return 0;
+}""", language="cpp")
+
+        with cpp_c2:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#34D399; margin-top:0;">⚡ C++ STL Container Complexity Matrix</h4>
+                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                        <th>STL Container</th><th>Internal Structure</th><th>Access Time</th><th>Insert / Delete</th>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><code>vector</code></td><td>Dynamic Array</td><td>O(1)</td><td>O(1) Back, O(n) Middle</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><code>deque</code></td><td>Chunked Arrays</td><td>O(1)</td><td>O(1) Front & Back</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><code>set / map</code></td><td>Red-Black Tree</td><td>O(log n)</td><td>O(log n)</td>
+                    </tr>
+                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <td><code>unordered_map</code></td><td>Hash Table</td><td>O(1) Avg</td><td>O(1) Avg</td>
+                    </tr>
+                    <tr>
+                        <td><code>priority_queue</code></td><td>Binary Max/Min Heap</td><td>O(1) Top</td><td>O(log n) Push/Pop</td>
+                    </tr>
+                </table>
+            </div>
+            """, unsafe_allow_html=True)
+
+            if os.path.exists("materials/CPP_OOPs_and_STL_Guide.pdf"):
+                with open("materials/CPP_OOPs_and_STL_Guide.pdf", "rb") as f:
+                    st.download_button("⬇️ Download C++ OOPs & STL Guide PDF", f, file_name="CPP_OOPs_and_STL_Guide.pdf", mime="application/pdf", use_container_width=True)
+
+    # --- TAB 3: DSA & SORTING MATRIX ---
+    with rev_tab_dsa:
+        st.subheader("🌳 Data Structures & Algorithms Revision Matrix")
+        
+        st.markdown("""
+        <div class="glass-card">
+            <h4 style="color:#818CF8; margin-top:0;">📊 Master Sorting Algorithms Comparison</h4>
+            <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                    <th>Algorithm</th><th>Best Time</th><th>Average Time</th><th>Worst Time</th><th>Space</th><th>Stable?</th>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td><strong>Quick Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>❌ No</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td><strong>Merge Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>✅ Yes</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td><strong>Heap Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>❌ No</td>
+                </tr>
+                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <td><strong>Insertion Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✅ Yes</td>
+                </tr>
+                <tr>
+                    <td><strong>Bubble Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✅ Yes</td>
+                </tr>
+            </table>
+        </div>
+        """, unsafe_allow_html=True)
+
+        dsa_col1, dsa_col2 = st.columns(2)
+        with dsa_col1:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#34D399; margin-top:0;">🌲 Tree Traversals</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    • <strong>Inorder:</strong> Left -> Root -> Right (Yields sorted order in BST)<br>
+                    • <strong>Preorder:</strong> Root -> Left -> Right (Used for serialization)<br>
+                    • <strong>Postorder:</strong> Left -> Right -> Root (Used for deleting/bottom-up DP)<br>
+                    • <strong>Level Order:</strong> Breadth-First Search using Queue
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with dsa_col2:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#F472B6; margin-top:0;">🕸️ Graph Algorithms</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    • <strong>BFS:</strong> Queue, Shortest Path in unweighted graph — <code>O(V + E)</code><br>
+                    • <strong>DFS:</strong> Stack/Recursion, Connected components & cycles — <code>O(V + E)</code><br>
+                    • <strong>Dijkstra:</strong> Min-Heap, Single-source shortest path — <code>O((V+E) log V)</code><br>
+                    • <strong>Kruskal / Prim:</strong> Minimum Spanning Tree (MST)
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        if os.path.exists("materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"):
+            with open("materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf", "rb") as f:
+                st.download_button("⬇️ Download DSA 1-Page Cheatsheet PDF", f, file_name="DSA_Quick_Revision_Cheatsheet.pdf", mime="application/pdf", use_container_width=True)
+
+    # --- TAB 4: OS & DEADLOCKS ---
+    with rev_tab_os:
+        st.subheader("💻 Operating Systems Core Exam Cheatsheet")
+        
+        os_c1, os_c2 = st.columns(2)
+        with os_c1:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#EF4444; margin-top:0;">🚨 4 Coffman Deadlock Conditions</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    1. <strong>Mutual Exclusion:</strong> At least one resource must be held non-shareably.<br>
+                    2. <strong>Hold and Wait:</strong> Process holds ≥1 resource and waits for others.<br>
+                    3. <strong>No Preemption:</strong> Resources cannot be forcibly taken from a process.<br>
+                    4. <strong>Circular Wait:</strong> P0 waits for P1, P1 waits for P2... Pn waits for P0.
+                </p>
+                <div style="background:rgba(239,68,68,0.1); border-left:3px solid #EF4444; padding:8px 12px; border-radius:6px; font-size:12px;">
+                    💡 <em>Deadlock Prevention breaks at least ONE of these four conditions.</em>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with os_c2:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#34D399; margin-top:0;">📊 CPU Scheduling & Memory Formulae</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    • <strong>Turnaround Time (TAT)</strong> = Completion Time (CT) - Arrival Time (AT)<br>
+                    • <strong>Waiting Time (WT)</strong> = Turnaround Time (TAT) - Burst Time (BT)<br>
+                    • <strong>Banker's Algorithm:</strong> <code>Need[i][j] = Max[i][j] - Allocation[i][j]</code><br>
+                    • <strong>Belady's Anomaly:</strong> Increasing page frames causes MORE page faults in FIFO.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        if os.path.exists("materials/OS_and_DBMS_Exam_CheatSheet.pdf"):
+            with open("materials/OS_and_DBMS_Exam_CheatSheet.pdf", "rb") as f:
+                st.download_button("⬇️ Download OS & DBMS Exam Revision Sheet PDF", f, file_name="OS_and_DBMS_Exam_CheatSheet.pdf", mime="application/pdf", use_container_width=True)
+
+    # --- TAB 5: DBMS & NORMALIZATION ---
+    with rev_tab_dbms:
+        st.subheader("🗄️ Database Management Systems (DBMS) Cheatsheet")
+        
+        db_c1, db_c2 = st.columns(2)
+        with db_c1:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#818CF8; margin-top:0;">💎 ACID Properties of Transactions</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    • <strong>A - Atomicity:</strong> "All or Nothing" — transaction completes wholly or rolls back.<br>
+                    • <strong>C - Consistency:</strong> State transitions preserve integrity constraints.<br>
+                    • <strong>I - Isolation:</strong> Concurrent transactions execute as if isolated.<br>
+                    • <strong>D - Durability:</strong> Once committed, changes persist even across crashes.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+        with db_c2:
+            st.markdown("""
+            <div class="glass-card">
+                <h4 style="color:#FACC15; margin-top:0;">📐 Normalization Quick Checklist</h4>
+                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                    • <strong>1NF:</strong> Atomic column values, no repeating groups.<br>
+                    • <strong>2NF:</strong> 1NF + No partial dependency (all non-key attributes fully depend on primary key).<br>
+                    • <strong>3NF:</strong> 2NF + No transitive dependency (X -> Y, Y -> Z where Z is non-prime).<br>
+                    • <strong>BCNF:</strong> For every Functional Dependency <code>X -> Y</code>, <code>X</code> must be a Super Key.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # --- TAB 6: INTERACTIVE FLASHCARDS ---
+    with rev_tab_flashcards:
+        st.subheader("🧠 Rapid Concept Recall Flashcards")
+        st.write("Click any flashcard to expand and test your exam recall.")
+
+        flashcards = [
+            {
+                "topic": "Python",
+                "q": "What is the difference between shallow copy and deep copy in Python?",
+                "a": "A shallow copy creates a new object but inserts references into it to the objects found in the original. A deep copy creates a new object and recursively copies all objects found within the original."
+            },
+            {
+                "topic": "C++",
+                "q": "Why is a destructor made virtual in a base class in C++?",
+                "a": "To ensure that when deleting a derived class object through a base class pointer, the derived class's destructor is executed first, preventing memory leaks."
+            },
+            {
+                "topic": "Data Structures",
+                "q": "Why is HeapSort preferred over QuickSort when worst-case time is critical?",
+                "a": "HeapSort guarantees O(n log n) in the worst case and operates in-place O(1) extra space, whereas standard QuickSort can degrade to O(n²) on poor pivot choices."
+            },
+            {
+                "topic": "Operating Systems",
+                "q": "What is the Convoy Effect in CPU scheduling?",
+                "a": "The Convoy Effect occurs in FCFS when smaller I/O-bound processes wait for a long CPU-bound process to finish, resulting in poor CPU and device utilization."
+            },
+            {
+                "topic": "DBMS",
+                "q": "What is the difference between WHERE and HAVING in SQL?",
+                "a": "WHERE filters rows before grouping occurs (cannot use aggregate functions), while HAVING filters aggregated groups after GROUP BY."
+            }
+        ]
+
+        for idx, fc in enumerate(flashcards):
+            with st.expander(f"🃏 Flashcard {idx+1} [{fc['topic']}]: {fc['q']}"):
+                st.markdown(f"""
+                <div style="background: rgba(99,102,241,0.1); border-left: 3px solid #818CF8; padding: 12px; border-radius: 8px; font-size: 14px; color: #F1F5F9;">
+                    💡 <strong>Answer & Concept:</strong><br>{fc['a']}
+                </div>
+                """, unsafe_allow_html=True)
+
+
+# ==================================================
+# 4. 🙋 REQUEST A MATERIAL PORTAL
 # ==================================================
 
 elif "Request Materials" in nav_option:
     st.header("🙋 Student Material Requests & Wishlist Portal")
     st.write("Can't find specific handwritten notes, past papers, or lab manuals? Post your request, upvote needed materials, or fulfill peer requests to earn contributor badges.")
 
-    # Metric summary for requests
     total_reqs = len(material_requests_data)
     open_reqs = len([r for r in material_requests_data if r.get("status") == "Open"])
     fulfilled_reqs = len([r for r in material_requests_data if r.get("status") == "Fulfilled"])
@@ -1167,7 +1839,7 @@ elif "Request Materials" in nav_option:
                 r_semester = st.selectbox("Academic Semester *", [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)], index=2, key="post_req_sem")
 
             with r_col2:
-                r_type = st.selectbox("Resource Category *", ["Lecture Notes", "Previous Year Question Paper (PYQ)", "Lab Manual", "Reference Book / Summary", "Assignment Solutions", "Syllabus Copy"], key="post_req_type")
+                r_type = st.selectbox("Resource Category *", ["Lecture Notes", "Quick Revision Cheatsheet", "Previous Year Question Paper (PYQ)", "Lab Manual", "Reference Book / Summary", "Assignment Solutions", "Syllabus Copy"], key="post_req_type")
                 r_urgency = st.selectbox("Urgency Level *", ["🚨 Urgent (Exam in <3 days)", "⚠️ Important (Test or lab coming up)", "📌 General (Regular semester prep)"], key="post_req_urg")
                 r_requester = st.text_input("Your Name", value=student_name if student_name else "Student Scholar", key="post_req_name")
 
@@ -1241,7 +1913,7 @@ elif "Request Materials" in nav_option:
 
 
 # ==================================================
-# 4. 🧰 STUDENT PRODUCTIVITY TOOLS
+# 5. 🧰 STUDENT PRODUCTIVITY TOOLS
 # ==================================================
 
 elif "Student Tools" in nav_option:
@@ -1460,7 +2132,7 @@ elif "Student Tools" in nav_option:
 
 
 # ==================================================
-# 5. 🔗 CURATED USEFUL RESOURCES
+# 6. 🔗 CURATED USEFUL RESOURCES
 # ==================================================
 
 elif "Useful Resources" in nav_option:
@@ -1595,7 +2267,7 @@ elif "Useful Resources" in nav_option:
 
 
 # ==================================================
-# 6. 📢 CAMPUS ANNOUNCEMENTS
+# 7. 📢 CAMPUS ANNOUNCEMENTS
 # ==================================================
 
 elif "Announcements" in nav_option:

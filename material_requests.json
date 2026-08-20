@@ -1,0 +1,50 @@
+[
+    {
+        "id": "req_101",
+        "title": "Data Structures - AVL Trees & Graph Traversal Notes",
+        "subject": "Data Structures",
+        "semester": "3rd Semester",
+        "type": "Lecture Notes",
+        "urgency": "\ud83d\udea8 Urgent",
+        "description": "Looking for clear handwritten notes or step-by-step PDF explaining AVL tree rotations and Dijkstra's algorithm.",
+        "requester": "Rahul Sharma",
+        "date": "2026-08-20",
+        "upvotes": 8,
+        "status": "Open",
+        "fulfilled_by": null,
+        "fulfilled_date": null,
+        "fulfillment_note": null
+    },
+    {
+        "id": "req_102",
+        "title": "Operating Systems 2025 End-Sem PYQ Solved Paper",
+        "subject": "Operating Systems",
+        "semester": "4th Semester",
+        "type": "Previous Year Question Paper (PYQ)",
+        "urgency": "\u26a0\ufe0f Important",
+        "description": "Need university question paper from last semester covering Process Synchronization & Deadlock detection numericals.",
+        "requester": "Priya Verma",
+        "date": "2026-08-20",
+        "upvotes": 14,
+        "status": "Open",
+        "fulfilled_by": null,
+        "fulfilled_date": null,
+        "fulfillment_note": null
+    },
+    {
+        "id": "req_103",
+        "title": "Python & NumPy Lab Record / Assignment Solutions",
+        "subject": "Python",
+        "semester": "1st Semester",
+        "type": "Lab Manual",
+        "urgency": "\ud83d\udccc General",
+        "description": "Solved lab manual for Python programming with sample outputs for matrix manipulations.",
+        "requester": "Amit Patel",
+        "date": "2026-08-20",
+        "upvotes": 5,
+        "status": "Fulfilled",
+        "fulfilled_by": "Prof. Rao / Teaching Assistant",
+        "fulfilled_date": "2026-08-20",
+        "fulfillment_note": "Uploaded into the Study Materials hub under Python subject."
+    }
+]
