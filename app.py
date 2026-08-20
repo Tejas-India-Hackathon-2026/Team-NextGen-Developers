@@ -23,6 +23,7 @@ ANNOUNCEMENTS_FILE = "announcements.json"
 METADATA_FILE = "materials_meta.json"
 REQUESTS_FILE = "material_requests.json"
 USERS_FILE = "users.json"
+ATTENDANCE_FILE = "attendance.json"
 
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
@@ -936,6 +937,46 @@ def save_announcements(data):
     with open(ANNOUNCEMENTS_FILE, "w") as f:
         json.dump(data, f, indent=4)
 
+def load_attendance(username="admin"):
+    """Load per-student subject-wise attendance records with sensible defaults."""
+    default_subjects = [
+        {"id": "att_1", "subject": "Data Structures & Algorithms", "faculty": "Dr. Ramesh Verma", "attended": 38, "total": 45, "target": 75},
+        {"id": "att_2", "subject": "Operating Systems", "faculty": "Prof. Sneha Kulkarni", "attended": 34, "total": 44, "target": 75},
+        {"id": "att_3", "subject": "Python Programming", "faculty": "Dr. Ananya Ray", "attended": 42, "total": 45, "target": 75},
+        {"id": "att_4", "subject": "Database Management Systems", "faculty": "Prof. Rajesh Kumar", "attended": 30, "total": 42, "target": 75},
+        {"id": "att_5", "subject": "Mathematics-III (Discrete Structures)", "faculty": "Dr. M. S. Iyer", "attended": 28, "total": 40, "target": 75}
+    ]
+    
+    if not os.path.exists(ATTENDANCE_FILE):
+        store = {username: default_subjects}
+        with open(ATTENDANCE_FILE, "w") as f:
+            json.dump(store, f, indent=4)
+        return default_subjects
+
+    try:
+        with open(ATTENDANCE_FILE, "r") as f:
+            store = json.load(f)
+        if username not in store or not store[username]:
+            store[username] = default_subjects
+            with open(ATTENDANCE_FILE, "w") as f:
+                json.dump(store, f, indent=4)
+        return store[username]
+    except Exception:
+        return default_subjects
+
+def save_attendance(username, data):
+    """Save student attendance list to JSON store."""
+    store = {}
+    if os.path.exists(ATTENDANCE_FILE):
+        try:
+            with open(ATTENDANCE_FILE, "r") as f:
+                store = json.load(f)
+        except Exception:
+            store = {}
+    store[username] = data
+    with open(ATTENDANCE_FILE, "w") as f:
+        json.dump(store, f, indent=4)
+
 def load_materials_meta():
     """Load material metadata, auto-indexing any existing untracked PDFs in materials/."""
     meta = {}
@@ -1105,6 +1146,7 @@ with st.sidebar:
         "Navigation Menu",
         [
             "🏠 Home Dashboard",
+            "📊 Attendance Tracker",
             "📚 Study Materials",
             "⚡ Quick Revision & Cheatsheets",
             "🙋 Request Materials",
@@ -1202,6 +1244,16 @@ if "Home Dashboard" in nav_option:
     with qa_col2:
         st.markdown("""
         <div class="quick-action-tile">
+            <div class="quick-action-icon" style="background: #D1FAE5; color: #059669;">📊</div>
+            <div>
+                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Track Attendance</div>
+                <div style="font-size: 12px; color: #64748B;">75% Criteria &amp; Safe Bunks</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with qa_col3:
+        st.markdown("""
+        <div class="quick-action-tile">
             <div class="quick-action-icon" style="background: #FEF3C7; color: #D97706;">⚡</div>
             <div>
                 <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Revision Vault</div>
@@ -1209,23 +1261,13 @@ if "Home Dashboard" in nav_option:
             </div>
         </div>
         """, unsafe_allow_html=True)
-    with qa_col3:
+    with qa_col4:
         st.markdown("""
         <div class="quick-action-tile">
             <div class="quick-action-icon" style="background: #E0F2FE; color: #0284C7;">🙋</div>
             <div>
                 <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Request Material</div>
-                <div style="font-size: 12px; color: #64748B;">Ask community & faculty</div>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
-    with qa_col4:
-        st.markdown("""
-        <div class="quick-action-tile">
-            <div class="quick-action-icon" style="background: #FCE7F3; color: #DB2777;">⏱️</div>
-            <div>
-                <div style="font-weight: 800; font-size: 15px; color: #0F172A;">Focus Studio</div>
-                <div style="font-size: 12px; color: #64748B;">25-min Pomodoro timer</div>
+                <div style="font-size: 12px; color: #64748B;">Ask community &amp; faculty</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -1445,7 +1487,375 @@ if "Home Dashboard" in nav_option:
 
 
 # ==================================================
-# 2. 📚 STUDY MATERIALS HUB (WITH LATEST NOTES FILTER)
+# 2. 📊 STUDENT ATTENDANCE TRACKER & 75% GUARD
+# ==================================================
+
+elif "Attendance Tracker" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_display_name = st.session_state.get("student_name", "Student Scholar")
+    attendance_data = load_attendance(curr_user)
+
+    st.header("📊 Student Attendance Tracker & 75% Criteria Guard")
+    st.write(f"Real-time subject-wise attendance logs, 1-click class counter, safe bunk limits, and exam eligibility forecaster for **{student_display_name}**.")
+
+    # ── Overall Aggregate Statistics ─────────────────
+    total_classes_held = sum(item.get("total", 0) for item in attendance_data)
+    total_classes_attended = sum(item.get("attended", 0) for item in attendance_data)
+    
+    overall_percentage = round((total_classes_attended / total_classes_held * 100), 1) if total_classes_held > 0 else 0.0
+    
+    # Calculate overall safe bunks or overall deficit
+    overall_target = 75.0
+    target_ratio = overall_target / 100.0
+    
+    if overall_percentage >= overall_target:
+        overall_safe_bunks = int((total_classes_attended / target_ratio) - total_classes_held) if target_ratio > 0 else 0
+        overall_deficit = 0
+        status_label = "Eligible for Exams ✅"
+        status_color = "#059669"
+        status_bg = "#D1FAE5"
+        status_border = "#A7F3D0"
+    else:
+        overall_safe_bunks = 0
+        overall_deficit = int(((target_ratio * total_classes_held) - total_classes_attended) / (1.0 - target_ratio)) + 1 if target_ratio < 1.0 else 0
+        status_label = "At Risk of Debarment ⚠️"
+        status_color = "#DC2626"
+        status_bg = "#FEE2E2"
+        status_border = "#FECACA"
+
+    subjects_at_risk = len([s for s in attendance_data if (s.get("attended", 0) / s.get("total", 1) * 100) < s.get("target", 75)])
+
+    # Hero Aggregate Banner
+    st.markdown(f"""
+    <div class="glass-card" style="background: linear-gradient(135deg, #FFFFFF 0%, #F8FAFC 100%); border-left: 6px solid {status_color}; padding: 24px 28px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+                <span style="background: {status_bg}; color: {status_color}; border: 1px solid {status_border}; padding: 4px 14px; border-radius: 9999px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+                    {status_label}
+                </span>
+                <h2 style="margin: 10px 0 4px 0; font-size: 32px; font-weight: 900; color: #0F172A;">
+                    Overall Attendance: <span style="color: {status_color};">{overall_percentage}%</span>
+                </h2>
+                <p style="margin: 0; font-size: 15px; color: #64748B; font-weight: 500;">
+                    Attended <strong>{total_classes_attended}</strong> out of <strong>{total_classes_held}</strong> total conducted lectures across {len(attendance_data)} academic subjects.
+                </p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 13px; color: #64748B; font-weight: 700; text-transform: uppercase;">Criteria Requirement</div>
+                <div style="font-size: 26px; font-weight: 800; color: #4338CA;">≥ 75.0% Min</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # 4-KPI Row
+    att_kpi1, att_kpi2, att_kpi3, att_kpi4 = st.columns(4)
+    with att_kpi1:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #EEF2FF; color: #4F46E5; border: 1px solid #C7D2FE;">📈</div>
+            <div>
+                <div class="metric-val">{overall_percentage}%</div>
+                <div class="metric-label">Aggregate Score</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with att_kpi2:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #D1FAE5; color: #059669; border: 1px solid #A7F3D0;">✅</div>
+            <div>
+                <div class="metric-val">{total_classes_attended}/{total_classes_held}</div>
+                <div class="metric-label">Classes Attended</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with att_kpi3:
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: #FEF3C7; color: #D97706; border: 1px solid #FDE68A;">🛡️</div>
+            <div>
+                <div class="metric-val">{overall_safe_bunks} Classes</div>
+                <div class="metric-label">Safe Bunk Allowance</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    with att_kpi4:
+        risk_bg = "#FEE2E2" if subjects_at_risk > 0 else "#D1FAE5"
+        risk_color = "#DC2626" if subjects_at_risk > 0 else "#059669"
+        risk_border = "#FECACA" if subjects_at_risk > 0 else "#A7F3D0"
+        st.markdown(f"""
+        <div class="metric-box">
+            <div class="metric-icon" style="background: {risk_bg}; color: {risk_color}; border: 1px solid {risk_border};">🚨</div>
+            <div>
+                <div class="metric-val" style="color: {risk_color};">{subjects_at_risk} Subject(s)</div>
+                <div class="metric-label">Below 75% Threshold</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
+
+    # ── Tabs Interface ───────────────────────────────
+    tab_subjects, tab_daily_log, tab_manage, tab_simulator = st.tabs([
+        "📋 Subject-Wise Attendance Log & 1-Click Marker",
+        "⚡ Daily Quick Bulk Marker",
+        "➕ Add & Customize Subjects",
+        "🔮 Future Bunk & Leave Forecaster"
+    ])
+
+    # ── TAB 1: SUBJECT-WISE CARDS ────────────────────
+    with tab_subjects:
+        if not attendance_data:
+            st.info("No subjects tracked yet. Use the '➕ Add & Customize Subjects' tab to add your courses.")
+        else:
+            st.markdown(f"**Tracking {len(attendance_data)} subjects for {student_display_name}:**")
+            
+            for idx, item in enumerate(attendance_data):
+                sub_id = item.get("id", f"sub_{idx}")
+                sub_name = item.get("subject", "General Subject")
+                faculty = item.get("faculty", "Faculty In-Charge")
+                att = item.get("attended", 0)
+                tot = item.get("total", 0)
+                target = item.get("target", 75)
+                
+                pct = round((att / tot * 100), 1) if tot > 0 else 0.0
+                t_ratio = target / 100.0
+
+                is_safe = pct >= target
+                card_border = "#059669" if is_safe else "#DC2626"
+                card_badge_bg = "#D1FAE5" if is_safe else "#FEE2E2"
+                card_badge_color = "#059669" if is_safe else "#DC2626"
+                card_badge_text = f"✅ Safe ({pct}%)" if is_safe else f"⚠️ At Risk ({pct}%)"
+
+                if is_safe:
+                    safe_miss = int((att / t_ratio) - tot) if t_ratio > 0 else 0
+                    advice_text = f"You can safely miss up to <strong>{safe_miss}</strong> upcoming lecture(s) without dropping below {target}%."
+                    advice_bg = "#ECFDF5"
+                    advice_color = "#065F46"
+                else:
+                    must_attend = int(((t_ratio * tot) - att) / (1.0 - t_ratio)) + 1 if t_ratio < 1.0 else 1
+                    advice_text = f"You must attend the next <strong>{must_attend}</strong> consecutive lecture(s) without missing any to restore {target}% eligibility."
+                    advice_bg = "#FEF2F2"
+                    advice_color = "#991B1B"
+
+                with st.container():
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 5px solid {card_border}; padding: 20px 24px; margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; font-size: 20px; font-weight: 800; color: #0F172A;">📖 {sub_name}</h3>
+                                <div style="font-size: 13px; color: #64748B; font-weight: 500;">👨‍🏫 Faculty: <strong>{faculty}</strong> • Target Threshold: <strong>{target}%</strong></div>
+                            </div>
+                            <div style="text-align: right;">
+                                <span style="background: {card_badge_bg}; color: {card_badge_color}; padding: 4px 12px; border-radius: 9999px; font-weight: 800; font-size: 13px;">
+                                    {card_badge_text}
+                                </span>
+                                <div style="font-size: 14px; font-weight: 700; color: #0F172A; margin-top: 4px;">{att} / {tot} Lectures</div>
+                            </div>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    # Visual Progress Bar
+                    st.progress(min(pct / 100.0, 1.0), text=f"Attendance: {pct}% | Target: {target}%")
+
+                    st.markdown(f"""
+                    <div style="background: {advice_bg}; color: {advice_color}; padding: 10px 14px; border-radius: 10px; font-size: 14px; margin: 8px 0 12px 0;">
+                        💡 {advice_text}
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    # Quick 1-Click Action Buttons
+                    btn_col1, btn_col2, btn_col3 = st.columns([1.2, 1.2, 2])
+                    
+                    with btn_col1:
+                        if st.button(f"✅ +1 Attended (Present)", key=f"att_inc_{sub_id}_{idx}", use_container_width=True):
+                            item["attended"] = item.get("attended", 0) + 1
+                            item["total"] = item.get("total", 0) + 1
+                            save_attendance(curr_user, attendance_data)
+                            st.toast(f"Marked Present for {sub_name}! Current: {round(item['attended']/item['total']*100, 1)}%", icon="🎉")
+                            st.rerun()
+
+                    with btn_col2:
+                        if st.button(f"❌ +1 Missed (Absent)", key=f"att_miss_{sub_id}_{idx}", use_container_width=True):
+                            item["total"] = item.get("total", 0) + 1
+                            save_attendance(curr_user, attendance_data)
+                            st.toast(f"Logged Missed class for {sub_name}! Current: {round(item['attended']/item['total']*100, 1)}%", icon="⚠️")
+                            st.rerun()
+
+                    with btn_col3:
+                        with st.expander("⚙️ Edit Counts / Remove"):
+                            edit_col1, edit_col2 = st.columns(2)
+                            with edit_col1:
+                                edit_att = st.number_input(f"Attended ({sub_name})", min_value=0, value=item.get("attended", 0), key=f"edit_att_{sub_id}")
+                            with edit_col2:
+                                edit_tot = st.number_input(f"Total Held ({sub_name})", min_value=1, value=max(item.get("total", 1), 1), key=f"edit_tot_{sub_id}")
+                            
+                            e_btn1, e_btn2 = st.columns([1, 1])
+                            with e_btn1:
+                                if st.button(f"💾 Save Changes", key=f"save_edit_{sub_id}", use_container_width=True):
+                                    item["attended"] = min(edit_att, edit_tot)
+                                    item["total"] = edit_tot
+                                    save_attendance(curr_user, attendance_data)
+                                    st.success("Updated successfully!")
+                                    st.rerun()
+                            with e_btn2:
+                                if st.button(f"🗑️ Delete Subject", key=f"del_{sub_id}", use_container_width=True):
+                                    attendance_data = [s for s in attendance_data if s.get("id") != sub_id]
+                                    save_attendance(curr_user, attendance_data)
+                                    st.success(f"Removed {sub_name}")
+                                    st.rerun()
+
+                    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+
+    # ── TAB 2: DAILY QUICK BULK MARKER ───────────────
+    with tab_daily_log:
+        st.subheader("⚡ Daily Class Attendance Multi-Marker")
+        st.write("Mark your presence across multiple lectures held today in one batch submission.")
+
+        if not attendance_data:
+            st.info("No subjects found. Please add subjects first.")
+        else:
+            with st.form("daily_bulk_attendance_form"):
+                st.markdown("##### 📝 Select Status for Today's Timetable:")
+                status_selections = {}
+                
+                for idx, item in enumerate(attendance_data):
+                    sub_id = item.get("id", f"sub_{idx}")
+                    sub_name = item.get("subject")
+                    
+                    c_name, c_status = st.columns([2, 2])
+                    with c_name:
+                        st.markdown(f"**📖 {sub_name}**")
+                        st.caption(f"Current: {item.get('attended', 0)} / {item.get('total', 0)} ({round(item.get('attended', 0)/max(item.get('total', 1), 1)*100, 1)}%)")
+                    with c_status:
+                        choice = st.radio(
+                            f"Status for {sub_name}",
+                            ["🚫 No Lecture Today", "✅ Present (Attended)", "❌ Absent (Missed)"],
+                            horizontal=True,
+                            key=f"bulk_radio_{sub_id}",
+                            label_visibility="collapsed"
+                        )
+                        status_selections[sub_id] = choice
+                    st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
+
+                bulk_submit = st.form_submit_button("🚀 Submit Today's Attendance Log", use_container_width=True, type="primary")
+
+                if bulk_submit:
+                    updated_count = 0
+                    for item in attendance_data:
+                        sub_id = item.get("id")
+                        chosen = status_selections.get(sub_id)
+                        if chosen == "✅ Present (Attended)":
+                            item["attended"] = item.get("attended", 0) + 1
+                            item["total"] = item.get("total", 0) + 1
+                            updated_count += 1
+                        elif chosen == "❌ Absent (Missed)":
+                            item["total"] = item.get("total", 0) + 1
+                            updated_count += 1
+
+                    if updated_count > 0:
+                        save_attendance(curr_user, attendance_data)
+                        st.balloons()
+                        st.success(f"🎉 Successfully logged attendance for {updated_count} course lecture(s) today!")
+                        st.rerun()
+                    else:
+                        st.info("No class status updates selected.")
+
+    # ── TAB 3: ADD NEW SUBJECT ───────────────────────
+    with tab_manage:
+        st.subheader("➕ Add New Subject or Course to Track")
+        st.write("Configure your semester courses, lab practicals, and customized minimum attendance thresholds.")
+
+        with st.form("add_subject_form", clear_on_submit=True):
+            add_c1, add_c2 = st.columns(2)
+            with add_c1:
+                new_sub_name = st.text_input("Subject / Course Name *", placeholder="e.g. Computer Networks & Protocols")
+                new_faculty = st.text_input("Faculty In-Charge", placeholder="e.g. Prof. Arvind Swaminathan")
+            with add_c2:
+                new_att = st.number_input("Classes Already Attended", min_value=0, value=20, step=1)
+                new_tot = st.number_input("Total Classes Already Conducted", min_value=1, value=25, step=1)
+                new_target = st.slider("Target Minimum % (University Criteria)", min_value=60, max_value=90, value=75, step=5)
+
+            add_submit = st.form_submit_button("✨ Add Subject to Tracker", use_container_width=True, type="primary")
+
+            if add_submit:
+                if not new_sub_name.strip():
+                    st.error("Please enter a valid subject title.")
+                else:
+                    new_item = {
+                        "id": f"att_{int(datetime.now().timestamp())}",
+                        "subject": new_sub_name.strip(),
+                        "faculty": new_faculty.strip() if new_faculty.strip() else "Faculty In-Charge",
+                        "attended": min(int(new_att), int(new_tot)),
+                        "total": int(new_tot),
+                        "target": int(new_target)
+                    }
+                    attendance_data.append(new_item)
+                    save_attendance(curr_user, attendance_data)
+                    st.balloons()
+                    st.success(f"✅ Added **{new_sub_name.strip()}** to your attendance tracker!")
+                    st.rerun()
+
+    # ── TAB 4: BUNK & LEAVE FORECASTER ────────────────
+    with tab_simulator:
+        st.subheader("🔮 Predictive Bunk & Planned Leave Simulator")
+        st.write("Simulate future missed lectures (e.g. hackathon travel, illness, campus fest) to see their direct mathematical impact on exam eligibility.")
+
+        if not attendance_data:
+            st.info("Please add courses to simulate attendance.")
+        else:
+            sim_sub_names = [s.get("subject") for s in attendance_data]
+            selected_sim_sub = st.selectbox("Select Course to Simulate", sim_sub_names)
+
+            target_sub = next((s for s in attendance_data if s.get("subject") == selected_sim_sub), None)
+
+            if target_sub:
+                cur_att = target_sub.get("attended", 0)
+                cur_tot = target_sub.get("total", 0)
+                cur_pct = round((cur_att / cur_tot * 100), 1) if cur_tot > 0 else 0.0
+
+                sim_c1, sim_c2 = st.columns(2)
+                with sim_c1:
+                    planned_bunks = st.slider("Proposed Future Classes to Skip / Miss", min_value=1, max_value=15, value=2, step=1)
+                with sim_c2:
+                    planned_future_attend = st.slider("Additional Future Classes You Will Attend", min_value=0, max_value=20, value=5, step=1)
+
+                projected_tot = cur_tot + planned_bunks + planned_future_attend
+                projected_att = cur_att + planned_future_attend
+                projected_pct = round((projected_att / projected_tot * 100), 1) if projected_tot > 0 else 0.0
+
+                pct_diff = round(projected_pct - cur_pct, 1)
+                diff_sign = f"+{pct_diff}%" if pct_diff >= 0 else f"{pct_diff}%"
+
+                sim_res_c1, sim_res_c2 = st.columns(2)
+                with sim_res_c1:
+                    st.markdown(f"""
+                    <div class="glass-card" style="text-align:center;">
+                        <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Current Attendance</div>
+                        <div style="font-size:36px; font-weight:800; color:#4338CA; margin:6px 0;">{cur_pct}%</div>
+                        <span class="tag-chip">{cur_att} / {cur_tot} Classes</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+                with sim_res_c2:
+                    proj_color = "#059669" if projected_pct >= target_sub.get("target", 75) else "#DC2626"
+                    st.markdown(f"""
+                    <div class="glass-card" style="text-align:center;">
+                        <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Projected Final Attendance</div>
+                        <div style="font-size:36px; font-weight:800; color:{proj_color}; margin:6px 0;">{projected_pct}%</div>
+                        <span class="tag-chip" style="color:{proj_color};">Trend: {diff_sign}</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                if projected_pct >= target_sub.get("target", 75):
+                    st.success(f"🎉 **Safe Projection:** Your attendance in **{selected_sim_sub}** will remain at **{projected_pct}%**, satisfying the {target_sub.get('target', 75)}% exam threshold.")
+                else:
+                    st.error(f"🚨 **Warning Threshold Breach:** Missing {planned_bunks} lecture(s) will lower your attendance in **{selected_sim_sub}** to **{projected_pct}%**, which is below the mandatory {target_sub.get('target', 75)}% criteria!")
+
+
+# ==================================================
+# 3. 📚 STUDY MATERIALS HUB (WITH LATEST NOTES FILTER)
 # ==================================================
 
 elif "Study Materials" in nav_option:
