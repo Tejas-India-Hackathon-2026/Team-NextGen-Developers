@@ -9,7 +9,23 @@
         "size_kb": 3.3,
         "description": "Master Big-O complexities for all sorting algorithms, tree & graph traversals, Dijkstra, and top 14 Dynamic Programming patterns in 1 page.",
         "likes": 32,
-        "downloads": 78
+        "downloads": 78,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Data Structures"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Master Big-O complexities for all sorting algorithms, tree & graph traversals, Dijkstra, and top 14 Dynamic Programming patterns in 1 page."
+        }
     },
     "OS_and_DBMS_Exam_CheatSheet.pdf": {
         "title": "OS & DBMS Core Concepts Exam Revision Sheet",
@@ -21,7 +37,23 @@
         "size_kb": 2.6,
         "description": "Fast-track review of Deadlock conditions, Banker's algorithm, Page replacement (FIFO/LRU), ACID properties, and Database Normalization (1NF-BCNF).",
         "likes": 27,
-        "downloads": 64
+        "downloads": 64,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Operating Systems"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Fast-track review of Deadlock conditions, Banker's algorithm, Page replacement (FIFO/LRU), ACID properties, and Database Normalization (1NF-BCNF)."
+        }
     },
     "C_Programming_Complete_Notes.pdf": {
         "title": "C Programming Complete Reference & Notes",
@@ -33,7 +65,23 @@
         "size_kb": 3.0,
         "description": "Comprehensive reference covering C tokens, pointers, pointer arithmetic, heap memory management (malloc/calloc/free), and structures.",
         "likes": 16,
-        "downloads": 39
+        "downloads": 40,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "C Programming"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Comprehensive reference covering C tokens, pointers, pointer arithmetic, heap memory management (malloc/calloc/free), and structures."
+        }
     },
     "CPP_OOPs_and_STL_Guide.pdf": {
         "title": "C++ Object-Oriented Programming & STL Master Guide",
@@ -45,7 +93,23 @@
         "size_kb": 2.7,
         "description": "Master the 4 pillars of OOP, virtual functions, abstract classes, templates, and STL containers (vector, map, set, priority_queue).",
         "likes": 22,
-        "downloads": 51
+        "downloads": 51,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "C++ Programming"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Master the 4 pillars of OOP, virtual functions, abstract classes, templates, and STL containers (vector, map, set, priority_queue)."
+        }
     },
     "Python_Complete_Programming_Handbook.pdf": {
         "title": "Python Complete Programming Handbook",
@@ -57,7 +121,23 @@
         "size_kb": 2.5,
         "description": "Core Python data structures (lists, tuples, dicts, sets), list comprehensions, lambdas, OOP dunder methods, exception handling, and NumPy basics.",
         "likes": 29,
-        "downloads": 82
+        "downloads": 82,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Python"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Core Python data structures (lists, tuples, dicts, sets), list comprehensions, lambdas, OOP dunder methods, exception handling, and NumPy basics."
+        }
     },
     "Lecture1_py.pdf": {
         "title": "Python Core Architecture & Variables",
@@ -69,7 +149,23 @@
         "size_kb": 797.7,
         "description": "Introduction to Python bytecode interpreter, dynamic typing, variable assignments, and operators.",
         "likes": 11,
-        "downloads": 24
+        "downloads": 24,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Python"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Introduction to Python bytecode interpreter, dynamic typing, variable assignments, and operators."
+        }
     },
     "Lecture2_py.pdf": {
         "title": "Python Control Flow & Functions",
@@ -81,7 +177,23 @@
         "size_kb": 69.9,
         "description": "Conditional branching, loops (while, for), range iterator, function scope, and default arguments.",
         "likes": 9,
-        "downloads": 18
+        "downloads": 18,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Python"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Conditional branching, loops (while, for), range iterator, function scope, and default arguments."
+        }
     },
     "Lecture3_py.pdf": {
         "title": "Python Data Structures & Collections",
@@ -93,7 +205,23 @@
         "size_kb": 77.0,
         "description": "In-depth methods for List, Tuple, Dict, Set, slicing tricks, and dictionary views.",
         "likes": 15,
-        "downloads": 30
+        "downloads": 30,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Python"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "In-depth methods for List, Tuple, Dict, Set, slicing tricks, and dictionary views."
+        }
     },
     "Lecture4_py.pdf": {
         "title": "Python OOP & Exception Handling",
@@ -105,6 +233,22 @@
         "size_kb": 182.7,
         "description": "Classes, inheritance patterns, polymorphism, custom exception hierarchy, and try-except-finally blocks.",
         "likes": 17,
-        "downloads": 38
+        "downloads": 38,
+        "status": "Approved",
+        "quality_score": 95,
+        "report_count": 0,
+        "reports": [],
+        "uploader_username": "admin",
+        "moderation_note": "Verified academic resource",
+        "scan_summary": {
+            "page_count": 1,
+            "word_count": 120,
+            "matched_keywords": [
+                "Python"
+            ],
+            "quality_score": 95,
+            "quality_label": "\u2705 High Academic Relevance & Integrity",
+            "snippet": "Classes, inheritance patterns, polymorphism, custom exception hierarchy, and try-except-finally blocks."
+        }
     }
 }

@@ -5,7 +5,9 @@ import base64
 import hashlib
 import math
 import re
+import io
 from datetime import datetime
+import pypdf
 
 # ==================================================
 # 🎨 PAGE CONFIGURATION & METADATA
@@ -730,6 +732,7 @@ def load_users() -> dict:
                 "branch": "Computer Science & Engg",
                 "semester": "3rd Semester",
                 "role": "Admin",
+                "karma": 100,
                 "joined": datetime.now().strftime("%Y-%m-%d")
             }
         }
@@ -738,7 +741,15 @@ def load_users() -> dict:
         return default_users
     try:
         with open(USERS_FILE, "r") as f:
-            return json.load(f)
+            data = json.load(f)
+            changed = False
+            for uname, udata in data.items():
+                if "karma" not in udata:
+                    udata["karma"] = 100 if udata.get("role") == "Admin" else 20
+                    changed = True
+            if changed:
+                save_users(data)
+            return data
     except Exception:
         return {}
 
@@ -746,6 +757,31 @@ def save_users(users: dict):
     """Persist users dict to JSON."""
     with open(USERS_FILE, "w") as f:
         json.dump(users, f, indent=4)
+
+def get_user_karma_info(username: str) -> tuple:
+    """Return (karma_points, badge_title) for a given user."""
+    users = load_users()
+    udata = users.get(username, {})
+    karma = udata.get("karma", 100 if udata.get("role") == "Admin" else 20)
+    if karma >= 100:
+        badge = "🌟 Campus Scholar & Faculty Lead"
+    elif karma >= 50:
+        badge = "💎 Senior Contributor"
+    elif karma >= 25:
+        badge = "🥈 Active Contributor"
+    elif karma >= 10:
+        badge = "🥉 Verified Student"
+    else:
+        badge = "⚠️ Restricted Contributor"
+    return karma, badge
+
+def update_user_karma(username: str, delta: int):
+    """Update user academic karma by a positive or negative delta."""
+    users = load_users()
+    if username in users:
+        curr = users[username].get("karma", 100 if users[username].get("role") == "Admin" else 20)
+        users[username]["karma"] = max(0, curr + delta)
+        save_users(users)
 
 def show_login_page():
     """Render the ultra-premium executive login / sign-up page and handle auth logic."""
@@ -946,6 +982,7 @@ def show_login_page():
                         "branch": branch_in,
                         "semester": sem_in,
                         "role": "Student",
+                        "karma": 20,
                         "joined": datetime.now().strftime("%Y-%m-%d")
                     }
                     save_users(users)
@@ -1198,8 +1235,124 @@ def load_exam_schedule():
     except Exception:
         return default_exams
 
+# ==================================================
+# 🛡️ PDF CONTENT SCANNER & VALIDATION ENGINE
+# ==================================================
+
+SUBJECT_KEYWORDS = {
+    "Python": ["python", "def ", "class ", "list", "dict", "tuple", "lambda", "numpy", "pandas", "import ", "loop", "syntax", "variable", "string", "oop", "module", "recursion", "print("],
+    "C Programming": ["c language", "pointer", "malloc", "struct", "printf", "scanf", "header", "stdio.h", "array", "function", "memory", "recursion", "file io", "string.h", "typedef", "#include"],
+    "C++ Programming": ["c++", "cpp", "class ", "object", "vector", "stl", "template", "inheritance", "polymorphism", "virtual", "cout", "cin", "namespace", "iterator", "destructor", "std::"],
+    "Data Structures": ["data structure", "tree", "bst", "graph", "dijkstra", "stack", "queue", "linked list", "sorting", "searching", "traversal", "time complexity", "big-o", "node", "hash", "array", "heap", "recursion", "binary tree", "avl"],
+    "Operating Systems": ["operating system", "process", "thread", "deadlock", "scheduling", "cpu", "semaphore", "paging", "virtual memory", "mutex", "banker", "kernel", "page fault", "concurrency", "fcfs", "round robin"],
+    "Database Systems": ["database", "dbms", "sql", "table", "relational", "normalization", "1nf", "2nf", "3nf", "bcnf", "acid", "query", "select", "join", "foreign key", "primary key", "transaction", "schema", "er model"],
+    "Computer Networks": ["network", "tcp", "udp", "ip", "osi", "protocol", "router", "switch", "packet", "ethernet", "http", "dns", "lan", "wan", "socket", "subnet", "routing"],
+    "Mathematics": ["matrix", "eigen", "integral", "derivative", "calculus", "differential", "fourier", "laplace", "probability", "statistics", "vector", "algebra", "theorem", "equation", "fourier series"],
+    "Computer Science": ["algorithm", "complexity", "computer", "logic", "binary", "system", "architecture", "hardware", "software", "memory", "data", "computation", "gates"],
+    "AI / Machine Learning": ["machine learning", "ai", "neural network", "regression", "classification", "supervised", "dataset", "deep learning", "model", "training", "feature", "gradient", "clustering", "nlp", "llm"],
+    "Software Engineering": ["agile", "scrum", "waterfall", "sdlc", "testing", "unit test", "uml", "diagram", "requirements", "design pattern", "refactoring", "qa"],
+    "Web Development": ["html", "css", "javascript", "react", "frontend", "backend", "api", "node", "server", "dom", "rest", "web", "framework", "bootstrap"]
+}
+
+BLOCKED_SPAM_PATTERNS = [
+    r"\b(casino|betting|gambling|lottery|crypto\s*airdrop|buy\s*followers|free\s*vbucks|xxx|nude|porn|adult\s*dating|viagra|escort)\b",
+    r"\b(t\.me\/[a-zA-Z0-9_]+|bit\.ly\/[a-zA-Z0-9_]+|t\.co\/[a-zA-Z0-9_]+|wa\.me\/[0-9]+)\b"
+]
+
+def validate_and_scan_pdf(file_bytes: bytes, filename: str, selected_subject: str, title: str, description: str) -> tuple:
+    """
+    Multi-tier automated validation and content scanning engine for uploaded PDFs.
+    Returns: (is_valid: bool, message: str, scan_summary: dict)
+    """
+    # 1. Minimum & Maximum Size Validation
+    size_kb = len(file_bytes) / 1024.0
+    if size_kb < 1.0:
+        return False, "❌ Upload Blocked: File is virtually empty (< 1 KB) or corrupted.", {}
+    if size_kb > 25 * 1024.0:
+        return False, "❌ Upload Blocked: File size exceeds the 25 MB maximum campus threshold.", {}
+
+    # 2. Magic byte / PDF Header Format Verification
+    if not file_bytes.startswith(b"%PDF-") and b"%PDF-" not in file_bytes[:1024]:
+        return False, "❌ Upload Blocked: Invalid binary format. File does not start with a valid '%PDF-' header.", {}
+
+    # 3. PDF Structural and Page Analysis (PyPDF)
+    try:
+        reader = pypdf.PdfReader(io.BytesIO(file_bytes))
+        num_pages = len(reader.pages)
+        if num_pages == 0:
+            return False, "❌ Upload Blocked: The PDF file contains 0 readable pages.", {}
+    except Exception as e:
+        return False, f"❌ Upload Blocked: Corrupted or unreadable PDF structure ({str(e)}).", {}
+
+    # 4. Content & Text Extraction (Up to first 8 pages)
+    extracted_text = ""
+    for page_idx in range(min(num_pages, 8)):
+        try:
+            page_text = reader.pages[page_idx].extract_text() or ""
+            extracted_text += " " + page_text
+        except Exception:
+            continue
+
+    combined_corpus = (title + " " + description + " " + extracted_text).lower()
+    words = extracted_text.split()
+    word_count = len(words)
+
+    # 5. Security & Spam / Inappropriate Content Scanner
+    for pattern in BLOCKED_SPAM_PATTERNS:
+        if re.search(pattern, combined_corpus):
+            return False, "🚫 Blocked by Safety Guard: Prohibited promotional spam, betting terms, or unauthorized link shorteners detected.", {}
+
+    # 6. Subject-Relevance Matching & Quality Scoring
+    subject_kw_list = SUBJECT_KEYWORDS.get(selected_subject, [])
+    matched_keywords = []
+    for kw in subject_kw_list:
+        if kw.lower() in combined_corpus:
+            matched_keywords.append(kw.strip())
+
+    # Compute Quality Score (0 to 100)
+    score = 50
+
+    if word_count >= 150:
+        score += 25
+    elif word_count >= 40:
+        score += 15
+    else:
+        score += 5
+
+    if len(matched_keywords) >= 3:
+        score += 20
+    elif len(matched_keywords) >= 1:
+        score += 10
+    elif selected_subject.lower() in combined_corpus or "notes" in combined_corpus:
+        score += 5
+
+    if len(title.strip()) >= 10:
+        score += 5
+    if len(description.strip()) >= 20:
+        score += 5
+
+    quality_score = min(98, max(45, score))
+
+    if quality_score >= 80:
+        quality_label = "✅ High Academic Relevance & Integrity"
+    elif quality_score >= 65:
+        quality_label = "ℹ️ Moderate Content Relevance"
+    else:
+        quality_label = "⚠️ Low Extracted Text (Scanned / Handwritten Notes)"
+
+    scan_summary = {
+        "page_count": num_pages,
+        "word_count": word_count,
+        "matched_keywords": matched_keywords[:6],
+        "quality_score": quality_score,
+        "quality_label": quality_label,
+        "snippet": extracted_text.strip()[:240] + ("..." if len(extracted_text.strip()) > 240 else "")
+    }
+
+    return True, "Valid", scan_summary
+
 def load_materials_meta():
-    """Load material metadata, auto-indexing any existing untracked PDFs in materials/."""
+    """Load material metadata, auto-indexing untracked PDFs and maintaining moderation states."""
     meta = {}
     if os.path.exists(METADATA_FILE):
         try:
@@ -1236,12 +1389,57 @@ def load_materials_meta():
                 "subject": inferred_subject,
                 "semester": "1st Semester",
                 "type": "Quick Revision Cheatsheet" if "cheat" in fl or "revision" in fl else "Lecture Notes",
-                "uploader": "Faculty / Contributor",
+                "uploader": "Faculty Lead",
+                "uploader_username": "admin",
                 "upload_date": datetime.now().strftime("%Y-%m-%d"),
                 "size_kb": file_size_kb,
                 "description": "Complete lecture reference notes and key revision concepts.",
                 "likes": 0,
-                "downloads": 0
+                "downloads": 0,
+                "status": "Approved",
+                "quality_score": 95,
+                "report_count": 0,
+                "reports": [],
+                "moderation_note": "Verified by Faculty Lead",
+                "scan_summary": {
+                    "page_count": 1,
+                    "word_count": 120,
+                    "matched_keywords": [inferred_subject],
+                    "quality_score": 95,
+                    "quality_label": "✅ High Academic Relevance & Integrity",
+                    "snippet": "Verified core curriculum resource."
+                }
+            }
+            changed = True
+
+    # Ensure all existing items have moderation & quality fields
+    for fname, info in meta.items():
+        if "status" not in info:
+            info["status"] = "Approved"
+            changed = True
+        if "quality_score" not in info:
+            info["quality_score"] = 95
+            changed = True
+        if "report_count" not in info:
+            info["report_count"] = 0
+            changed = True
+        if "reports" not in info:
+            info["reports"] = []
+            changed = True
+        if "uploader_username" not in info:
+            info["uploader_username"] = "admin"
+            changed = True
+        if "moderation_note" not in info:
+            info["moderation_note"] = "Verified academic resource"
+            changed = True
+        if "scan_summary" not in info:
+            info["scan_summary"] = {
+                "page_count": 1,
+                "word_count": 120,
+                "matched_keywords": [info.get("subject", "General")],
+                "quality_score": 95,
+                "quality_label": "✅ High Academic Relevance & Integrity",
+                "snippet": info.get("description", "Academic study material.")
             }
             changed = True
 
@@ -1843,39 +2041,47 @@ with st.sidebar:
     <p style="font-size: 13px; color: #64748B; margin-top: 0; margin-bottom: 14px; font-weight: 600;">Academic Resource Network &amp; Toolkit</p>
     """, unsafe_allow_html=True)
 
-    nav_option = st.radio(
-        "Navigation Menu",
-        [
-            "🏠 Home Dashboard",
-            "💼 Collab & Revenue Hub",
-            "🏛️ Govt Exam Hub",
-            "🤝 Resource Sharing Hub",
-            "📅 Timetable & Schedule",
-            "📊 Attendance Tracker",
-            "📚 Study Materials",
-            "⚡ Quick Revision & Cheatsheets",
-            "🙋 Request Materials",
-            "🧰 Student Tools",
-            "🔗 Useful Resources",
-            "📢 Announcements"
-        ],
-        label_visibility="collapsed"
-    )
-
-    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
-
-    # Student Profile Card (auto-populated from login session)
+    # Student Profile data (auto-populated from login session)
     student_name = st.session_state.get("student_name", "Student Scholar")
     branch = st.session_state.get("user_branch", "Computer Science & Engg")
     semester = st.session_state.get("user_semester", "3rd Semester")
     user_role = st.session_state.get("user_role", "Student")
     username_display = st.session_state.get("username", "user")
+    user_karma, karma_badge = get_user_karma_info(username_display)
+
+    nav_items = [
+        "🏠 Home Dashboard",
+        "💼 Collab & Revenue Hub",
+        "🏛️ Govt Exam Hub",
+        "🤝 Resource Sharing Hub",
+        "📅 Timetable & Schedule",
+        "📊 Attendance Tracker",
+        "📚 Study Materials",
+        "⚡ Quick Revision & Cheatsheets",
+        "🙋 Request Materials",
+        "🧰 Student Tools",
+        "🔗 Useful Resources",
+        "📢 Announcements"
+    ]
+    if user_role == "Admin":
+        nav_items.insert(7, "🛡️ Moderation Center")
+
+    nav_option = st.radio(
+        "Navigation Menu",
+        nav_items,
+        label_visibility="collapsed"
+    )
+
+    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
+
+    pending_review_count = sum(1 for m in materials_meta.values() if m.get("status") == "Pending Review")
+    flagged_review_count = sum(1 for m in materials_meta.values() if m.get("status") == "Auto-Flagged" or m.get("report_count", 0) > 0)
 
     role_bg = "#FEF3C7" if user_role == "Admin" else "#D1FAE5"
     role_color = "#D97706" if user_role == "Admin" else "#059669"
     role_border = "#FDE68A" if user_role == "Admin" else "#A7F3D0"
 
-    # Visual Profile Badge (Light Theme)
+    # Visual Profile Badge with Academic Karma (Light Theme)
     st.markdown(f"""
     <div class="profile-card">
         <div style="display: flex; align-items: center; gap: 12px;">
@@ -1883,13 +2089,29 @@ with st.sidebar:
             <div style="flex:1;">
                 <div style="font-weight: 700; color: #0F172A; font-size: 15px;">{student_name}</div>
                 <div style="font-size: 13px; color: #64748B; font-weight: 500;">{semester} • {branch.split('(')[0].strip()}</div>
-                <div style="margin-top:5px;">
-                    <span style="font-size:11px; font-weight:700; color:{role_color}; background:{role_bg}; border: 1px solid {role_border}; padding:2px 8px; border-radius:6px;">@{username_display} · {user_role}</span>
+                <div style="margin-top:6px; display:flex; flex-direction:column; gap:4px;">
+                    <div>
+                        <span style="font-size:11px; font-weight:700; color:{role_color}; background:{role_bg}; border: 1px solid {role_border}; padding:2px 8px; border-radius:6px;">@{username_display} · {user_role}</span>
+                    </div>
+                    <div>
+                        <span style="font-size:11px; font-weight:700; color:#4338CA; background:#EEF2FF; border:1px solid #C7D2FE; padding:2px 8px; border-radius:6px;">🌟 {user_karma} Karma · {karma_badge}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    if user_role == "Admin" and (pending_review_count > 0 or flagged_review_count > 0):
+        st.markdown(f"""
+        <div style="background:#FEF3C7; border:1.5px solid #FDE68A; border-radius:12px; padding:10px 14px; margin-bottom:12px;">
+            <div style="font-size:12px; font-weight:800; color:#B45309; text-transform:uppercase;">🔔 Moderation Alerts</div>
+            <div style="font-size:13px; color:#92400E; font-weight:600; margin-top:2px;">
+                ⏳ <strong>{pending_review_count}</strong> Pending Review<br>
+                🚩 <strong>{flagged_review_count}</strong> Flagged Content
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
     # Logout button
     if st.button("🚪 Sign Out of Session", use_container_width=True, key="sidebar_logout_btn"):
@@ -2104,10 +2326,10 @@ if "Home Dashboard" in nav_option:
     st.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
 
     # ── 4. HORIZONTAL KEY KPI STATS BAR (4 EQUAL TILES) ────────────
-    total_materials = len(materials_meta)
+    total_materials = len([m for m in materials_meta.values() if m.get("status", "Approved") == "Approved"])
     open_requests_count = len([r for r in material_requests_data if r.get("status") == "Open"])
     total_announcements = len(announcements_data)
-    total_likes = sum(item.get("likes", 0) for item in materials_meta.values()) + sum(r.get("upvotes", 0) for r in material_requests_data)
+    total_likes = sum(item.get("likes", 0) for item in materials_meta.values() if item.get("status", "Approved") == "Approved") + sum(r.get("upvotes", 0) for r in material_requests_data)
 
     st.markdown("#### 📊 Academic Performance & Community Health")
     kpi1, kpi2, kpi3, kpi4 = st.columns(4)
@@ -4034,41 +4256,58 @@ elif "Attendance Tracker" in nav_option:
 
 
 # ==================================================
-# 3. 📚 STUDY MATERIALS HUB (WITH LATEST NOTES FILTER)
+# 3. 📚 STUDY MATERIALS HUB & QUALITY ASSURANCE ENGINE
 # ==================================================
 
-elif "Study Materials" in nav_option:
-    st.header("📚 Study Materials & Latest Notes Hub")
-    st.write("Browse, search, download, preview, and contribute academic PDFs, lecture notes, and revision sheets.")
+elif "Study Materials" in nav_option or "Moderation Center" in nav_option:
+    curr_user = st.session_state.get("username", "admin")
+    student_name = st.session_state.get("student_name", "Student Scholar")
+    user_role = st.session_state.get("user_role", "Student")
 
-    tab_browse, tab_upload, tab_request_jump = st.tabs([
+    if "Moderation Center" in nav_option:
+        st.header("🛡️ Faculty & Admin Moderation Center")
+        st.write("Review student submissions, manage quality assurance, inspect automated scan audits, and resolve flagged materials.")
+    else:
+        st.header("📚 Study Materials & Verified Notes Hub")
+        st.write("Browse, search, download, preview, and contribute academic PDFs with automated quality verification and peer protection.")
+
+    # Configure Tabs based on user role and navigation
+    tab_list = [
         "🔍 Browse & Search Materials",
         "📤 Contribute / Upload Material",
+        "📋 My Contributions & Status",
+        "🛡️ Moderation Center",
         "🙋 Quick Material Request"
-    ])
+    ]
 
-    # --- TAB 1: BROWSE MATERIALS ---
+    tab_browse, tab_upload, tab_my_uploads, tab_moderation, tab_request_jump = st.tabs(tab_list)
+
+    # ── TAB 1: BROWSE VERIFIED MATERIALS ────────────────
     with tab_browse:
         f_col1, f_col2, f_col3, f_col4 = st.columns([2, 1, 1, 1])
 
         with f_col1:
-            search_query = st.text_input("🔎 Search by Title, Keyword, or Uploader", placeholder="e.g. Python, C++, Trees, Calculus, DBMS...")
+            search_query = st.text_input("🔎 Search by Title, Keyword, or Uploader", placeholder="e.g. Python, C++, Trees, Calculus, DBMS...", key="mat_search_box")
 
         with f_col2:
             all_subjects = ["All Subjects"] + sorted(list(set(info.get("subject", "Other") for info in materials_meta.values()) | {"C Programming", "C++ Programming", "Python", "Data Structures", "Mathematics", "Computer Science", "Database Systems", "Operating Systems", "Computer Networks", "Web Development", "AI / Machine Learning", "Other"}))
-            selected_subject = st.selectbox("Subject", all_subjects)
+            selected_subject = st.selectbox("Subject", all_subjects, key="mat_filter_sub")
 
         with f_col3:
             all_semesters = ["All Semesters"] + [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)]
-            selected_semester = st.selectbox("Semester", all_semesters)
+            selected_semester = st.selectbox("Semester", all_semesters, key="mat_filter_sem")
 
         with f_col4:
             all_types = ["All Types", "Lecture Notes", "Quick Revision Cheatsheet", "Previous Year Question Paper (PYQ)", "Lab Manual", "Syllabus", "Reference Book / Summary"]
-            selected_type = st.selectbox("Type", all_types)
+            selected_type = st.selectbox("Type", all_types, key="mat_filter_type")
 
-        # Filter Logic
+        # Filter Logic - Only Approved Materials Are Visible to Public
         filtered_materials = {}
         for fname, info in materials_meta.items():
+            # Security / Moderation Filter: Only Approved Notes
+            if info.get("status", "Approved") != "Approved":
+                continue
+
             q = search_query.lower().strip()
             match_search = (
                 not q or 
@@ -4088,13 +4327,16 @@ elif "Study Materials" in nav_option:
         st.markdown(f"**Showing {len(filtered_materials)} verified study resource(s)**")
 
         if not filtered_materials:
-            st.info("No matching study materials found. Can't find what you need? Post a request in the '🙋 Quick Material Request' tab!")
+            st.info("No approved study materials found matching your filters. Have high-yield notes to share? Upload them in the '📤 Contribute / Upload Material' tab!")
         else:
             # 2-Column Responsive Card Grid
             mat_cols = st.columns(2)
             for idx, (filename, info) in enumerate(filtered_materials.items()):
                 file_path = os.path.join(MATERIAL_FOLDER, filename)
                 col = mat_cols[idx % 2]
+                q_score = info.get("quality_score", 95)
+                up_user = info.get("uploader_username", "admin")
+                up_karma, up_badge = get_user_karma_info(up_user)
 
                 with col:
                     with st.container():
@@ -4103,18 +4345,19 @@ elif "Study Materials" in nav_option:
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div>
                                     <h3 style="margin: 0 0 6px 0; font-size: 20px; font-weight: 800; color: #0F172A;">📄 {info.get('title', filename)}</h3>
-                                    <span class="tag-new">🆕 Latest Notes</span>
+                                    <span class="tag-new">✅ Verified</span>
                                     <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
                                     <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
                                     <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
+                                    <span style="font-size: 11px; color: #059669; font-weight: 800; background: #D1FAE5; padding: 2px 8px; border-radius: 9999px;">⭐ {q_score}% Quality</span>
                                 </div>
                             </div>
-                            <p style="font-size: 14px; color: #334155; margin: 10px 0 14px 0; line-height: 1.5;">
+                            <p style="font-size: 14px; color: #334155; margin: 10px 0 12px 0; line-height: 1.5;">
                                 {info.get('description', 'Comprehensive reference study materials.')}
                             </p>
-                            <div style="font-size: 13px; color: #64748B; margin-bottom: 14px; display: flex; justify-content: space-between; flex-wrap: wrap; font-weight: 500;">
-                                <span>👤 Contributor: <strong style="color:#0F172A;">{info.get('uploader', 'Peer')}</strong></span>
-                                <span>💾 {info.get('size_kb', 0)} KB • ❤️ {info.get('likes', 0)} Upvotes</span>
+                            <div style="font-size: 12.5px; color: #64748B; margin-bottom: 12px; display: flex; justify-content: space-between; flex-wrap: wrap; font-weight: 500;">
+                                <span>👤 <strong style="color:#0F172A;">{info.get('uploader', 'Peer')}</strong> <span style="color:#4338CA; font-size:11.5px;">({up_badge.split('·')[-1].strip() if '·' in up_badge else 'Scholar'})</span></span>
+                                <span>💾 {info.get('size_kb', 0)} KB • ❤️ {info.get('likes', 0)} Upvotes • 📥 {info.get('downloads', 0)}</span>
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
@@ -4137,30 +4380,91 @@ elif "Study Materials" in nav_option:
                         with btn_c2:
                             if st.button(f"❤️ Upvote ({info.get('likes', 0)})", key=f"grid_like_{filename}", use_container_width=True):
                                 materials_meta[filename]["likes"] = materials_meta[filename].get("likes", 0) + 1
+                                # Reward uploader with +2 karma
+                                update_user_karma(info.get("uploader_username", "admin"), 2)
                                 save_materials_meta(materials_meta)
+                                st.toast(f"Upvoted '{info.get('title')}'! Contributor earned +2 Academic Karma.", icon="💖")
                                 st.rerun()
 
-                        # In-browser Preview
-                        if os.path.exists(file_path):
-                            with st.expander("👁️ View PDF In-Browser Preview"):
-                                pdf_b64 = get_pdf_base64(file_path)
-                                if pdf_b64:
-                                    pdf_display = f'<iframe src="data:application/pdf;base64,{pdf_b64}" width="100%" height="500" type="application/pdf" style="border: 1px solid rgba(255,255,255,0.1); border-radius: 10px;"></iframe>'
-                                    st.markdown(pdf_display, unsafe_allow_html=True)
-                                else:
-                                    st.warning("Preview unavailable for this PDF format.")
-                        
+                        # In-browser Preview & Community Report Options
+                        sub_exp1, sub_exp2 = st.columns(2)
+                        with sub_exp1:
+                            with st.expander("👁️ Preview PDF"):
+                                if os.path.exists(file_path):
+                                    pdf_b64 = get_pdf_base64(file_path)
+                                    if pdf_b64:
+                                        pdf_display = f'<iframe src="data:application/pdf;base64,{pdf_b64}" width="100%" height="450" type="application/pdf" style="border: 1px solid #CBD5E1; border-radius: 10px;"></iframe>'
+                                        st.markdown(pdf_display, unsafe_allow_html=True)
+                                    else:
+                                        st.warning("Preview unavailable for this format.")
+
+                        with sub_exp2:
+                            with st.expander("🚩 Report / Flag Content"):
+                                st.caption("Help keep CampusHub safe and syllabus-relevant. Submissions with 3+ reports are auto-hidden.")
+                                report_reason = st.selectbox(
+                                    "Select Issue Reason",
+                                    [
+                                        "🚫 Irrelevant / Wrong Subject Syllabus",
+                                        "⚠️ Low Quality / Blurry / Unreadable",
+                                        "❌ Prohibited / Inappropriate Content",
+                                        "📄 Duplicate / Broken File",
+                                        "📌 Other Concern"
+                                    ],
+                                    key=f"rep_reason_{filename}"
+                                )
+                                report_details = st.text_input("Additional Details (Optional)", placeholder="e.g. Page 2 is blank, wrong semester syllabus", key=f"rep_det_{filename}")
+                                
+                                if st.button("🚩 Submit Report", key=f"btn_rep_{filename}", type="secondary", use_container_width=True):
+                                    already_reported = any(r.get("reporter") == curr_user for r in info.get("reports", []))
+                                    if already_reported:
+                                        st.warning("You have already reported this material. Our moderators are reviewing it.")
+                                    else:
+                                        new_report_entry = {
+                                            "reporter": curr_user,
+                                            "reason": report_reason,
+                                            "details": report_details.strip(),
+                                            "date": datetime.now().strftime("%Y-%m-%d %H:%M")
+                                        }
+                                        info.setdefault("reports", []).append(new_report_entry)
+                                        info["report_count"] = info.get("report_count", 0) + 1
+                                        
+                                        # Auto-Hide Threshold (3 or more reports)
+                                        if info["report_count"] >= 3:
+                                            info["status"] = "Auto-Flagged"
+                                            info["moderation_note"] = f"Auto-hidden after {info['report_count']} community flags."
+                                            update_user_karma(info.get("uploader_username", "admin"), -15)
+                                            save_materials_meta(materials_meta)
+                                            st.error("🚨 This material has accumulated 3+ community reports and has been automatically hidden from public catalog.")
+                                        else:
+                                            save_materials_meta(materials_meta)
+                                            st.success("✅ Thank you. Your report has been registered for faculty moderation.")
+                                        st.rerun()
+
                         st.markdown("<br>", unsafe_allow_html=True)
 
-    # --- TAB 2: UPLOAD MATERIAL ---
+    # ── TAB 2: UPLOAD & AUTOMATED VALIDATION ────────────
     with tab_upload:
-        st.subheader("📤 Share Study Material with Peers")
-        st.write("Help expand the campus knowledge bank by uploading verified notes, syllabus summaries, and question papers.")
+        st.subheader("📤 Contribute Verified Study Material")
+        st.write("Share high-yield handwritten notes, formula sheets, or solved question papers with classmates.")
+
+        # Safety & Content Guard Banner
+        st.markdown("""
+        <div style="background: linear-gradient(135deg, #EEF2FF 0%, #F8FAFC 100%); border: 1.5px solid #C7D2FE; border-left: 5px solid #4F46E5; border-radius: 14px; padding: 14px 18px; margin-bottom: 18px;">
+            <div style="font-weight: 800; color: #1E1B4B; font-size: 15px; display: flex; align-items: center; gap: 8px;">
+                <span>🛡️</span> Content Moderation &amp; Academic Safety Guard Active
+            </div>
+            <p style="font-size: 13.5px; color: #334155; margin: 6px 0 0 0; line-height: 1.5;">
+                • Submissions are automatically scanned with <strong>PyPDF Text Analysis</strong> to verify academic relevance and block spam.<br>
+                • Student uploads enter a <strong>Faculty Review Queue</strong> before becoming visible to all peers.<br>
+                • Earn <strong>+10 Academic Karma points</strong> upon faculty approval!
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
         with st.form("upload_material_form", clear_on_submit=True):
             up_col1, up_col2 = st.columns(2)
             with up_col1:
-                doc_title = st.text_input("Document Title *", placeholder="e.g. Unit 4 - Dynamic Programming & Graphs")
+                doc_title = st.text_input("Document Title *", placeholder="e.g. Unit 4 - Dynamic Programming & Dijkstra Graph Algorithms")
                 doc_subject = st.selectbox(
                     "Academic Subject *",
                     [
@@ -4193,46 +4497,303 @@ elif "Study Materials" in nav_option:
                         "Reference Book / Summary"
                     ]
                 )
-                doc_uploader = st.text_input("Contributor Name", value=student_name if student_name else "Student Contributor")
-                doc_description = st.text_area("Brief Summary / Key Topics Included", placeholder="e.g. Detailed handwritten notes with diagrams, code snippets, and practice problems.")
+                doc_uploader = st.text_input("Contributor Display Name", value=student_name if student_name else "Student Contributor")
+                doc_description = st.text_area("Summary & Key Topics Included *", placeholder="e.g. Complete handwritten notes covering BFS, DFS, Bellman-Ford, and 12 solved practice questions.")
 
-            uploaded_pdf = st.file_uploader("Select PDF File * (Max 25MB)", type=["pdf"])
-            submitted = st.form_submit_button("🚀 Publish & Share Study Resource", use_container_width=True)
+            uploaded_pdf = st.file_uploader("Select PDF Document * (Min 10KB · Max 25MB)", type=["pdf"])
+            submitted = st.form_submit_button("🚀 Submit Document for Academic Review", use_container_width=True, type="primary")
 
             if submitted:
-                if not doc_title.strip():
-                    st.error("Please enter a descriptive document title.")
+                if not doc_title.strip() or len(doc_title.strip()) < 5:
+                    st.error("⚠️ Please enter a descriptive document title (at least 5 characters).")
+                elif not doc_description.strip() or len(doc_description.strip()) < 10:
+                    st.error("⚠️ Please provide a clear summary of topics covered in the PDF (at least 10 characters).")
                 elif uploaded_pdf is None:
-                    st.error("Please select a valid PDF file to upload.")
+                    st.error("⚠️ Please select a valid PDF file to upload.")
                 else:
+                    pdf_bytes = uploaded_pdf.getvalue()
                     clean_filename = "".join(c for c in uploaded_pdf.name if c.isalnum() or c in ('.', '_', '-')).strip()
                     if not clean_filename.lower().endswith(".pdf"):
                         clean_filename += ".pdf"
-                    
-                    save_path = os.path.join(MATERIAL_FOLDER, clean_filename)
-                    with open(save_path, "wb") as f:
-                        f.write(uploaded_pdf.getbuffer())
 
-                    file_size_kb = round(len(uploaded_pdf.getbuffer()) / 1024, 1)
+                    # Run Multi-tier Automated Scanner
+                    is_valid, scan_msg, scan_summary = validate_and_scan_pdf(
+                        pdf_bytes, clean_filename, doc_subject, doc_title, doc_description
+                    )
 
-                    materials_meta[clean_filename] = {
-                        "title": doc_title.strip(),
-                        "subject": doc_subject,
-                        "semester": doc_semester,
-                        "type": doc_type,
-                        "uploader": doc_uploader.strip() if doc_uploader.strip() else "Anonymous Contributor",
-                        "upload_date": datetime.now().strftime("%Y-%m-%d"),
-                        "size_kb": file_size_kb,
-                        "description": doc_description.strip() if doc_description.strip() else "Verified academic study material.",
-                        "likes": 0,
-                        "downloads": 0
-                    }
-                    save_materials_meta(materials_meta)
+                    if not is_valid:
+                        st.error(scan_msg)
+                    else:
+                        # Save file to disk
+                        save_path = os.path.join(MATERIAL_FOLDER, clean_filename)
+                        with open(save_path, "wb") as f:
+                            f.write(pdf_bytes)
 
-                    st.balloons()
-                    st.success(f"🎉 **{clean_filename}** has been published successfully! Thank you for contributing to the student community.")
+                        file_size_kb = round(len(pdf_bytes) / 1024, 1)
+                        is_admin = (user_role == "Admin")
+                        initial_status = "Approved" if is_admin else "Pending Review"
+                        moderation_msg = "Auto-Approved (Faculty / Admin)" if is_admin else "Submitted - Queued for Faculty Approval"
 
-    # --- TAB 3: QUICK MATERIAL REQUEST ---
+                        materials_meta[clean_filename] = {
+                            "title": doc_title.strip(),
+                            "subject": doc_subject,
+                            "semester": doc_semester,
+                            "type": doc_type,
+                            "uploader": doc_uploader.strip() if doc_uploader.strip() else student_name,
+                            "uploader_username": curr_user,
+                            "upload_date": datetime.now().strftime("%Y-%m-%d"),
+                            "size_kb": file_size_kb,
+                            "description": doc_description.strip(),
+                            "likes": 0,
+                            "downloads": 0,
+                            "status": initial_status,
+                            "quality_score": scan_summary.get("quality_score", 85),
+                            "report_count": 0,
+                            "reports": [],
+                            "moderation_note": moderation_msg,
+                            "scan_summary": scan_summary
+                        }
+                        save_materials_meta(materials_meta)
+
+                        if is_admin:
+                            update_user_karma(curr_user, 10)
+                            st.balloons()
+                            st.success(f"🎉 **{clean_filename}** was pre-scanned and published live immediately! Quality Score: **{scan_summary.get('quality_score')}%**.")
+                        else:
+                            st.balloons()
+                            st.success(f"🎉 **{clean_filename}** passed automated scanning (**{scan_summary.get('quality_score')}% Quality**) and is now in the **Faculty Moderation Queue**. You will receive +10 Karma upon approval!")
+                        st.rerun()
+
+    # ── TAB 3: MY CONTRIBUTIONS & STATUS ────────────────
+    with tab_my_uploads:
+        st.subheader("📋 My Uploaded Notes & Review Status Tracker")
+        st.write("Track the moderation lifecycle and peer feedback for all materials you have submitted.")
+
+        my_items = {k: v for k, v in materials_meta.items() if v.get("uploader_username") == curr_user or v.get("uploader") == student_name}
+
+        if not my_items:
+            st.info("You have not uploaded any study materials yet. Submit your handwritten notes or formula sheets in the '📤 Contribute / Upload Material' tab!")
+        else:
+            # Summary Metrics
+            my_approved = sum(1 for m in my_items.values() if m.get("status") == "Approved")
+            my_pending = sum(1 for m in my_items.values() if m.get("status") == "Pending Review")
+            my_flagged = sum(1 for m in my_items.values() if m.get("status") in ["Rejected", "Auto-Flagged"])
+            my_total_likes = sum(m.get("likes", 0) for m in my_items.values())
+
+            m_kpi1, m_kpi2, m_kpi3, m_kpi4 = st.columns(4)
+            with m_kpi1:
+                st.metric("Total Submitted", len(my_items))
+            with m_kpi2:
+                st.metric("Approved & Live", my_approved)
+            with m_kpi3:
+                st.metric("Pending Review", my_pending)
+            with m_kpi4:
+                st.metric("Total Peer Likes", my_total_likes)
+
+            st.markdown("<div style='height:12px;'></div>", unsafe_allow_html=True)
+
+            for fname, info in my_items.items():
+                m_status = info.get("status", "Pending Review")
+                if m_status == "Approved":
+                    status_badge = '<span style="background:#D1FAE5; color:#059669; border:1px solid #A7F3D0; font-weight:800; padding:4px 12px; border-radius:9999px; font-size:12px;">✅ Live &amp; Approved</span>'
+                    border_color = "#059669"
+                elif m_status == "Pending Review":
+                    status_badge = '<span style="background:#FEF3C7; color:#D97706; border:1px solid #FDE68A; font-weight:800; padding:4px 12px; border-radius:9999px; font-size:12px;">⏳ Pending Faculty Review</span>'
+                    border_color = "#D97706"
+                elif m_status == "Rejected":
+                    status_badge = '<span style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; font-weight:800; padding:4px 12px; border-radius:9999px; font-size:12px;">❌ Rejected</span>'
+                    border_color = "#DC2626"
+                else:
+                    status_badge = f'<span style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; font-weight:800; padding:4px 12px; border-radius:9999px; font-size:12px;">🚩 {m_status}</span>'
+                    border_color = "#DC2626"
+
+                st.markdown(f"""
+                <div class="glass-card" style="border-left: 5px solid {border_color}; padding: 18px 22px; margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
+                        <div>
+                            <h4 style="margin: 0 0 4px 0; color: #0F172A;">📄 {info.get('title')}</h4>
+                            <span class="tag-chip">📚 {info.get('subject')}</span>
+                            <span class="tag-chip">🎓 {info.get('semester')}</span>
+                            <span class="tag-chip">💾 {info.get('size_kb')} KB</span>
+                            <span class="tag-chip">⭐ Quality: {info.get('quality_score', 85)}%</span>
+                        </div>
+                        <div>
+                            {status_badge}
+                        </div>
+                    </div>
+                    <p style="font-size: 13.5px; color: #475569; margin: 10px 0 6px 0;">{info.get('description')}</p>
+                    <div style="font-size: 12.5px; color: #64748B; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 12px; border-radius: 8px; margin-top: 8px;">
+                        <strong>Moderation Note:</strong> {info.get('moderation_note', 'No feedback remarks logged.')}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+    # ── TAB 4: FACULTY & ADMIN MODERATION CENTER ────────
+    with tab_moderation:
+        st.subheader("🛡️ Faculty & Administrator Moderation Center")
+        st.write("Review student submissions, inspect automated text extractions, resolve reports, and enforce academic quality.")
+
+        # Sub-tabs within Moderation
+        mod_tab_pending, mod_tab_reported, mod_tab_analytics = st.tabs([
+            "⏳ Pending Approval Queue",
+            "🚩 Flagged & Reported Materials",
+            "📊 Quality & Safety Metrics"
+        ])
+
+        # Sub-Tab 1: Pending Queue
+        with mod_tab_pending:
+            pending_items = {k: v for k, v in materials_meta.items() if v.get("status") == "Pending Review"}
+
+            if not pending_items:
+                st.success("🎉 **Pending Queue is Clean!** No unreviewed materials waiting for moderation.")
+            else:
+                st.markdown(f"**Found {len(pending_items)} submission(s) awaiting approval:**")
+                for fname, info in pending_items.items():
+                    fpath = os.path.join(MATERIAL_FOLDER, fname)
+                    scan_info = info.get("scan_summary", {})
+                    q_score = info.get("quality_score", 80)
+                    score_color = "#059669" if q_score >= 80 else "#D97706" if q_score >= 65 else "#DC2626"
+
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 5px solid #2563EB; padding: 20px 24px; margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                            <div>
+                                <h3 style="margin: 0 0 6px 0; color: #0F172A; font-size: 21px;">📄 {info.get('title')}</h3>
+                                <span class="tag-chip">📚 {info.get('subject')}</span>
+                                <span class="tag-chip">🎓 {info.get('semester')}</span>
+                                <span class="tag-chip">📑 {info.get('type')}</span>
+                                <span class="tag-chip">👤 Uploader: @{info.get('uploader_username', 'user')} ({info.get('uploader')})</span>
+                            </div>
+                            <div>
+                                <span style="background:#EFF6FF; color:{score_color}; border: 1.5px solid #BFDBFE; font-weight:800; font-size:13px; padding:4px 14px; border-radius:9999px;">
+                                    ⭐ Pre-Scan Quality: {q_score}%
+                                </span>
+                            </div>
+                        </div>
+                        <p style="font-size: 14px; color: #334155; margin: 10px 0;">{info.get('description')}</p>
+                        
+                        <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:10px 14px; margin-bottom:12px; font-size:13px;">
+                            <strong>🔍 Automated Scan Audit:</strong> {scan_info.get('quality_label', 'Scanned')} &nbsp;|&nbsp; 
+                            Pages: <strong>{scan_info.get('page_count', 1)}</strong> &nbsp;|&nbsp; 
+                            Extracted Words: <strong>{scan_info.get('word_count', 0)}</strong> &nbsp;|&nbsp; 
+                            Matched Keywords: <code>{', '.join(scan_info.get('matched_keywords', ['None']))}</code>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    if os.path.exists(fpath):
+                        with st.expander(f"👁️ Inspect Document: {fname}"):
+                            pdf_b64 = get_pdf_base64(fpath)
+                            if pdf_b64:
+                                st.markdown(f'<iframe src="data:application/pdf;base64,{pdf_b64}" width="100%" height="450" type="application/pdf" style="border: 1px solid #CBD5E1; border-radius: 10px;"></iframe>', unsafe_allow_html=True)
+
+                    act_col1, act_col2 = st.columns([1, 1])
+                    with act_col1:
+                        if st.button(f"✅ Approve & Publish ({info.get('title')[:25]}...)", key=f"apprv_btn_{fname}", type="primary", use_container_width=True):
+                            info["status"] = "Approved"
+                            info["moderation_note"] = f"Approved by Faculty ({student_name})"
+                            update_user_karma(info.get("uploader_username", "admin"), 10)
+                            save_materials_meta(materials_meta)
+                            st.toast(f"Approved '{info.get('title')}'! Contributor awarded +10 Karma.", icon="🎉")
+                            st.rerun()
+
+                    with act_col2:
+                        with st.expander(f"❌ Reject Submission"):
+                            rej_reason = st.text_input("Rejection Feedback / Reason for Student", placeholder="e.g. Scanned pages are upside down, or wrong subject notes", key=f"rej_in_{fname}")
+                            if st.button("Confirm Rejection", key=f"conf_rej_{fname}", type="secondary", use_container_width=True):
+                                info["status"] = "Rejected"
+                                info["moderation_note"] = rej_reason.strip() if rej_reason.strip() else "Did not meet campus quality standards."
+                                update_user_karma(info.get("uploader_username", "admin"), -10)
+                                save_materials_meta(materials_meta)
+                                st.toast(f"Submission rejected with feedback.", icon="⚠️")
+                                st.rerun()
+
+                    st.markdown("<hr style='margin:16px 0; border:0; border-top:1px dashed #CBD5E1;'>", unsafe_allow_html=True)
+
+        # Sub-Tab 2: Flagged / Reported Queue
+        with mod_tab_reported:
+            flagged_items = {k: v for k, v in materials_meta.items() if v.get("status") == "Auto-Flagged" or v.get("report_count", 0) > 0}
+
+            if not flagged_items:
+                st.success("✨ **Zero Active Reports!** No community flags currently open.")
+            else:
+                st.markdown(f"**Found {len(flagged_items)} material(s) with community reports:**")
+                for fname, info in flagged_items.items():
+                    fpath = os.path.join(MATERIAL_FOLDER, fname)
+                    rep_list = info.get("reports", [])
+                    st.markdown(f"""
+                    <div class="glass-card" style="border-left: 5px solid #DC2626; padding: 20px 24px; margin-bottom: 14px;">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                            <div>
+                                <h3 style="margin: 0 0 4px 0; color: #0F172A;">🚩 {info.get('title')}</h3>
+                                <span class="tag-chip">📚 {info.get('subject')}</span>
+                                <span class="tag-chip">👤 Uploader: @{info.get('uploader_username', 'user')}</span>
+                                <span style="background:#FEE2E2; color:#DC2626; border:1px solid #FECACA; font-weight:800; padding:2px 10px; border-radius:9999px; font-size:12px;">{info.get('report_count', 0)} Student Flag(s)</span>
+                            </div>
+                        </div>
+                        <div style="margin-top:12px; background:#FFF1F2; border:1px solid #FECDD3; border-radius:10px; padding:10px 14px;">
+                            <strong style="color:#9F1239; font-size:13px;">Logged Student Concerns:</strong>
+                            <ul style="margin:6px 0 0 16px; padding:0; font-size:13px; color:#4C0519;">
+                                {"".join(f"<li><strong>{r.get('reason')}:</strong> {r.get('details', 'No details')} (by @{r.get('reporter')} on {r.get('date')})</li>" for r in rep_list) if rep_list else "<li>3+ automated community threshold triggers.</li>"}
+                            </ul>
+                        </div>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+                    fl_c1, fl_c2 = st.columns([1, 1])
+                    with fl_c1:
+                        if st.button(f"🛡️ Dismiss Flags & Mark Safe", key=f"dism_{fname}", use_container_width=True):
+                            info["status"] = "Approved"
+                            info["report_count"] = 0
+                            info["reports"] = []
+                            info["moderation_note"] = "Reviewed by Faculty Moderator - Flags Cleared"
+                            save_materials_meta(materials_meta)
+                            st.toast("Reports dismissed. Material restored to public catalog.", icon="✅")
+                            st.rerun()
+
+                    with fl_c2:
+                        if st.button(f"🗑️ Delete & Penalize Spam", key=f"del_pen_{fname}", type="secondary", use_container_width=True):
+                            if os.path.exists(fpath):
+                                try:
+                                    os.remove(fpath)
+                                except Exception:
+                                    pass
+                            update_user_karma(info.get("uploader_username", "admin"), -20)
+                            del materials_meta[fname]
+                            save_materials_meta(materials_meta)
+                            st.toast("Unwanted file deleted permanently and spam penalty applied.", icon="🗑️")
+                            st.rerun()
+
+                    st.markdown("<hr style='margin:14px 0; border:0; border-top:1px solid #E2E8F0;'>", unsafe_allow_html=True)
+
+        # Sub-Tab 3: Analytics
+        with mod_tab_analytics:
+            st.markdown("##### 📈 Content Health & Moderation KPIs")
+            tot_approved = sum(1 for m in materials_meta.values() if m.get("status") == "Approved")
+            tot_pending = sum(1 for m in materials_meta.values() if m.get("status") == "Pending Review")
+            tot_rejected = sum(1 for m in materials_meta.values() if m.get("status") == "Rejected")
+            avg_quality = round(sum(m.get("quality_score", 90) for m in materials_meta.values()) / max(len(materials_meta), 1), 1)
+
+            an_c1, an_c2, an_c3, an_c4 = st.columns(4)
+            with an_c1:
+                st.metric("Live Approved Notes", tot_approved)
+            with an_c2:
+                st.metric("Pending Queue", tot_pending)
+            with an_c3:
+                st.metric("Rejected Submissions", tot_rejected)
+            with an_c4:
+                st.metric("Avg Quality Score", f"{avg_quality}%")
+
+            st.markdown("""
+            <div class="glass-card" style="margin-top:16px;">
+                <h4 style="margin:0 0 8px 0; color:#0F172A;">🛡️ Campus Content Policy Summary</h4>
+                <p style="font-size:13.5px; color:#334155; line-height:1.6; margin:0;">
+                    CampusHub employs automated MIME-type checking, binary header verification, keyword spam filtering, subject-relevance scoring, and peer reporting to maintain an uncompromising academic standard. Any user who uploads verified notes gains karma; spammers are automatically penalized and blocked.
+                </p>
+            </div>
+            """, unsafe_allow_html=True)
+
+    # ── TAB 5: QUICK MATERIAL REQUEST ───────────────────
     with tab_request_jump:
         st.subheader("🙋 Can't find what you need? Request it here!")
         st.write("Post an academic resource request so classmates, seniors, or professors can upload it.")

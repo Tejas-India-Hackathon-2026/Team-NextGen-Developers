@@ -24,7 +24,10 @@ A modern, interactive web application built with **Streamlit** to help college s
 
 The **Student Resource Sharing Platform** is designed to streamline academic collaboration among college students. The system allows students to:
 - Browse and download course-specific PDF study materials.
-- Upload new academic resources for peer access.
+- Upload new academic resources with automated **PyPDF content scanning** & **relevance verification**.
+- Faculty & Admin **Moderation Center** to approve/reject student submissions and maintain repository quality.
+- Community **reporting & auto-hide protection** against unwanted, spam, or low-quality files.
+- Earn **Academic Karma points** and contributor badges for verified study notes.
 - Check campus and department announcements.
 - Access curated references for coding and technical interview prep.
 - Run auxiliary terminal tools (Hangman Word Guessing Game & Multi-function Calculator).
@@ -35,6 +38,7 @@ The **Student Resource Sharing Platform** is designed to streamline academic col
 
 - **Frontend & Backend Framework**: [Streamlit](https://streamlit.io/)
 - **Programming Language**: Python 3.x
+- **PDF Engine & Security Scanner**: [PyPDF](https://pypdf.readthedocs.io/)
 - **Storage**: Local filesystem storage (`materials/` folder for PDF files)
 
 ---
@@ -43,8 +47,10 @@ The **Student Resource Sharing Platform** is designed to streamline academic col
 
 ```text
 .
-├── app.py               # Main Streamlit application
+├── app.py               # Main Streamlit application with moderation & auth
 ├── materials/           # Storage directory for uploaded PDF study materials
+├── materials_meta.json  # Metadata & moderation states store
+├── users.json           # Student & faculty credentials with karma points
 ├── announcements.json   # College announcements data
 ├── project1.py          # Terminal-based fruit word guessing game
 ├── test/
@@ -66,7 +72,7 @@ Ensure you have **Python 3.8+** installed on your system.
 Clone this repository or download the project files, then install the required dependencies:
 
 ```bash
-pip install streamlit
+pip install streamlit pypdf
 ```
 
 ### 2. Running the Application
