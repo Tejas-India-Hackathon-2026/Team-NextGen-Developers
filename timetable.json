@@ -1,0 +1,232 @@
+{
+    "sarika123": {
+        "Monday": [
+            {
+                "id": "tt_m1",
+                "time": "09:00 AM - 10:00 AM",
+                "subject": "Data Structures & Algorithms",
+                "faculty": "Dr. Ramesh Verma",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_m2",
+                "time": "10:00 AM - 11:00 AM",
+                "subject": "Operating Systems",
+                "faculty": "Prof. Sneha Kulkarni",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_m3",
+                "time": "11:15 AM - 12:15 PM",
+                "subject": "Mathematics-III (Discrete)",
+                "faculty": "Dr. M. S. Iyer",
+                "room": "LH-301",
+                "type": "Tutorial"
+            },
+            {
+                "id": "tt_m4",
+                "time": "01:00 PM - 02:00 PM",
+                "subject": "\ud83e\udd6a Lunch & Refreshment",
+                "faculty": "Campus",
+                "room": "Cafeteria",
+                "type": "Break"
+            },
+            {
+                "id": "tt_m5",
+                "time": "02:00 PM - 04:00 PM",
+                "subject": "Data Structures Lab (Batch A)",
+                "faculty": "Dr. Ramesh Verma",
+                "room": "Computer Lab 4",
+                "type": "Practical"
+            }
+        ],
+        "Tuesday": [
+            {
+                "id": "tt_t1",
+                "time": "09:00 AM - 10:00 AM",
+                "subject": "Python Programming",
+                "faculty": "Dr. Ananya Ray",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_t2",
+                "time": "10:00 AM - 11:00 AM",
+                "subject": "Database Management Systems",
+                "faculty": "Prof. Rajesh Kumar",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_t3",
+                "time": "11:15 AM - 12:15 PM",
+                "subject": "Operating Systems",
+                "faculty": "Prof. Sneha Kulkarni",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_t4",
+                "time": "01:00 PM - 02:00 PM",
+                "subject": "\ud83e\udd6a Lunch & Refreshment",
+                "faculty": "Campus",
+                "room": "Cafeteria",
+                "type": "Break"
+            },
+            {
+                "id": "tt_t5",
+                "time": "02:00 PM - 04:00 PM",
+                "subject": "Python & NumPy Lab (Batch A)",
+                "faculty": "Dr. Ananya Ray",
+                "room": "AI/ML Lab 2",
+                "type": "Practical"
+            }
+        ],
+        "Wednesday": [
+            {
+                "id": "tt_w1",
+                "time": "09:00 AM - 10:00 AM",
+                "subject": "Mathematics-III (Discrete)",
+                "faculty": "Dr. M. S. Iyer",
+                "room": "LH-301",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_w2",
+                "time": "10:00 AM - 11:00 AM",
+                "subject": "Data Structures & Algorithms",
+                "faculty": "Dr. Ramesh Verma",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_w3",
+                "time": "11:15 AM - 12:15 PM",
+                "subject": "Database Management Systems",
+                "faculty": "Prof. Rajesh Kumar",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_w4",
+                "time": "01:00 PM - 02:00 PM",
+                "subject": "\ud83e\udd6a Lunch & Refreshment",
+                "faculty": "Campus",
+                "room": "Cafeteria",
+                "type": "Break"
+            },
+            {
+                "id": "tt_w5",
+                "time": "02:00 PM - 04:00 PM",
+                "subject": "DBMS SQL & Schema Lab",
+                "faculty": "Prof. Rajesh Kumar",
+                "room": "Database Lab 1",
+                "type": "Practical"
+            }
+        ],
+        "Thursday": [
+            {
+                "id": "tt_th1",
+                "time": "09:00 AM - 10:00 AM",
+                "subject": "Operating Systems",
+                "faculty": "Prof. Sneha Kulkarni",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_th2",
+                "time": "10:00 AM - 11:00 AM",
+                "subject": "Python Programming",
+                "faculty": "Dr. Ananya Ray",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_th3",
+                "time": "11:15 AM - 12:15 PM",
+                "subject": "Data Structures & Algorithms",
+                "faculty": "Dr. Ramesh Verma",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_th4",
+                "time": "01:00 PM - 02:00 PM",
+                "subject": "\ud83e\udd6a Lunch & Refreshment",
+                "faculty": "Campus",
+                "room": "Cafeteria",
+                "type": "Break"
+            },
+            {
+                "id": "tt_th5",
+                "time": "02:00 PM - 03:30 PM",
+                "subject": "Technical Communication & Soft Skills",
+                "faculty": "Prof. Meena Sen",
+                "room": "Seminar Hall B",
+                "type": "Seminar"
+            }
+        ],
+        "Friday": [
+            {
+                "id": "tt_f1",
+                "time": "09:00 AM - 10:00 AM",
+                "subject": "Database Management Systems",
+                "faculty": "Prof. Rajesh Kumar",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_f2",
+                "time": "10:00 AM - 11:00 AM",
+                "subject": "Mathematics-III (Discrete)",
+                "faculty": "Dr. M. S. Iyer",
+                "room": "LH-301",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_f3",
+                "time": "11:15 AM - 12:15 PM",
+                "subject": "Python Programming",
+                "faculty": "Dr. Ananya Ray",
+                "room": "LH-302",
+                "type": "Lecture"
+            },
+            {
+                "id": "tt_f4",
+                "time": "01:00 PM - 02:00 PM",
+                "subject": "\ud83e\udd6a Lunch & Refreshment",
+                "faculty": "Campus",
+                "room": "Cafeteria",
+                "type": "Break"
+            },
+            {
+                "id": "tt_f5",
+                "time": "02:00 PM - 04:00 PM",
+                "subject": "OS Linux & Shell Scripting Lab",
+                "faculty": "Prof. Sneha Kulkarni",
+                "room": "Open Source Lab",
+                "type": "Practical"
+            }
+        ],
+        "Saturday": [
+            {
+                "id": "tt_s1",
+                "time": "09:30 AM - 11:00 AM",
+                "subject": "Competitive Coding & Project Mentorship",
+                "faculty": "Tech Society & Seniors",
+                "room": "Incubation Center",
+                "type": "Workshop"
+            },
+            {
+                "id": "tt_s2",
+                "time": "11:15 AM - 01:00 PM",
+                "subject": "Open Hackathon & Doubt Solving Session",
+                "faculty": "Faculty Mentors",
+                "room": "Central Library Hall",
+                "type": "Remedial"
+            }
+        ]
+    }
+}
