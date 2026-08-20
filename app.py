@@ -32,26 +32,68 @@ os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 st.markdown("""
 <style>
     /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    :root {
+        --primary-indigo: #6366F1;
+        --primary-violet: #8B5CF6;
+        --accent-cyan: #06B6D4;
+        --accent-emerald: #10B981;
+        --accent-rose: #F43F5E;
+        --accent-amber: #F59E0B;
+        --bg-dark-1: #0B0F19;
+        --bg-dark-2: #111827;
+        --bg-card: rgba(30, 41, 59, 0.72);
+        --border-glass: rgba(255, 255, 255, 0.08);
+        --text-primary: #F8FAFC;
+        --text-secondary: #94A3B8;
+        --text-muted: #64748B;
+    }
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #E2E8F0;
     }
 
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif !important;
         font-weight: 700;
-        letter-spacing: -0.02em;
+        letter-spacing: -0.025em;
+        color: #F8FAFC;
+    }
+
+    code, pre {
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+
+    /* Sleek Custom Scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: rgba(15, 23, 42, 0.6);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.35);
+        border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: rgba(99, 102, 241, 0.65);
     }
 
     /* Keyframe Animations */
-    @keyframes pulse {
-        0%, 100% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.08); opacity: 0.7; }
+    @keyframes pulseGlow {
+        0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 12px rgba(16, 185, 129, 0.7); }
+        50% { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 20px rgba(16, 185, 129, 0.9); }
     }
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-4px); }
+        50% { transform: translateY(-5px); }
+    }
+    @keyframes shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
     }
 
     /* Live Status Indicator */
@@ -61,165 +103,189 @@ st.markdown("""
         height: 8px;
         border-radius: 50%;
         background: #10B981;
-        box-shadow: 0 0 10px #10B981;
-        animation: pulse 2s infinite ease-in-out;
+        animation: pulseGlow 2.4s infinite ease-in-out;
         margin-right: 6px;
+        vertical-align: middle;
     }
 
-    /* Hero Banner */
+    /* Ultra-Modern Hero Banner */
     .hero-container {
-        background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 40%, #DB2777 100%);
+        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 28%, #7C3AED 68%, #C026D3 100%);
         border-radius: 20px;
-        padding: 30px 34px;
+        padding: 32px 36px;
         color: white;
         margin-bottom: 24px;
-        box-shadow: 0 20px 40px -15px rgba(79, 70, 229, 0.4);
+        box-shadow: 0 20px 45px -15px rgba(79, 70, 229, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
         position: relative;
         overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .hero-container::before {
+        content: '';
+        position: absolute;
+        top: -60%;
+        right: -15%;
+        width: 420px;
+        height: 420px;
+        background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
+        border-radius: 50%;
+        pointer-events: none;
     }
     .hero-container::after {
         content: '';
         position: absolute;
-        top: -50%;
-        right: -20%;
-        width: 350px;
-        height: 350px;
-        background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+        bottom: -40%;
+        left: 20%;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, rgba(192, 38, 211, 0.25) 0%, transparent 70%);
         border-radius: 50%;
         pointer-events: none;
     }
 
-    /* Glassmorphism Cards */
+    /* Premium Glassmorphism Cards */
     .glass-card {
-        background: rgba(30, 41, 59, 0.7);
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 16px;
-        padding: 20px;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 18px;
+        padding: 22px;
         margin-bottom: 16px;
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
     }
     .glass-card:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
-        border-color: rgba(99, 102, 241, 0.4);
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.18);
+        border-color: rgba(99, 102, 241, 0.45);
     }
 
     /* Quick Revision Specific Cards */
     .revision-box {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.95) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.25);
-        border-left: 4px solid #818CF8;
-        border-radius: 14px;
-        padding: 16px 20px;
-        margin-bottom: 14px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.96) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-left: 5px solid #818CF8;
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-bottom: 16px;
+        box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.35);
     }
 
     /* Metric Glass Box */
     .metric-box {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
-        border: 1px solid rgba(148, 163, 184, 0.15);
-        border-radius: 16px;
-        padding: 18px 20px;
+        background: linear-gradient(145deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 18px;
+        padding: 20px;
         display: flex;
         align-items: center;
         gap: 16px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-        transition: transform 0.2s ease;
+        box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .metric-box:hover {
-        transform: translateY(-2px);
-        border-color: rgba(99, 102, 241, 0.5);
+        transform: translateY(-3px);
+        border-color: rgba(99, 102, 241, 0.4);
+        box-shadow: 0 14px 30px -8px rgba(99, 102, 241, 0.25);
     }
     .metric-icon {
-        font-size: 32px;
-        background: rgba(99, 102, 241, 0.12);
-        border-radius: 12px;
-        padding: 10px;
+        font-size: 28px;
+        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 14px;
+        width: 52px;
+        height: 52px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
     }
     .metric-val {
-        font-size: 26px;
+        font-size: 28px;
         font-weight: 800;
         font-family: 'Outfit', sans-serif;
         color: #F8FAFC;
         line-height: 1.1;
+        letter-spacing: -0.02em;
     }
     .metric-label {
-        font-size: 13px;
+        font-size: 12px;
         color: #94A3B8;
-        font-weight: 500;
+        font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.04em;
+        letter-spacing: 0.06em;
+        margin-top: 2px;
     }
 
     /* Badges & Pills */
     .badge-urgent {
         background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
         color: white;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(239, 68, 68, 0.35);
+        box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
+        display: inline-block;
     }
     .badge-important {
         background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
         color: white;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(245, 158, 11, 0.35);
+        box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+        display: inline-block;
     }
     .badge-general {
         background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
         color: white;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
+        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
+        display: inline-block;
     }
     .badge-open {
         background: linear-gradient(135deg, #10B981 0%, #059669 100%);
         color: white;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(16, 185, 129, 0.35);
+        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
+        display: inline-block;
     }
     .badge-fulfilled {
         background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
         color: white;
-        padding: 4px 10px;
+        padding: 4px 12px;
         border-radius: 9999px;
         font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.05em;
+        letter-spacing: 0.06em;
         text-transform: uppercase;
-        box-shadow: 0 2px 8px rgba(139, 92, 246, 0.35);
+        box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
+        display: inline-block;
     }
     .tag-chip {
         display: inline-flex;
         align-items: center;
         background: rgba(99, 102, 241, 0.12);
         color: #A5B4FC;
-        border: 1px solid rgba(99, 102, 241, 0.25);
+        border: 1px solid rgba(99, 102, 241, 0.28);
         border-radius: 8px;
         padding: 3px 10px;
         font-size: 12px;
@@ -230,9 +296,9 @@ st.markdown("""
     .tag-new {
         display: inline-flex;
         align-items: center;
-        background: rgba(16, 185, 129, 0.15);
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%);
         color: #34D399;
-        border: 1px solid rgba(16, 185, 129, 0.35);
+        border: 1px solid rgba(16, 185, 129, 0.38);
         border-radius: 8px;
         padding: 3px 10px;
         font-size: 12px;
@@ -241,154 +307,141 @@ st.markdown("""
         margin-bottom: 4px;
     }
 
-    /* Sidebar profile avatar container */
+    /* Sidebar Profile Card */
     .profile-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        border-radius: 14px;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.98) 100%);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+        border-radius: 16px;
         padding: 16px;
         margin-bottom: 16px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
-    /* Smooth buttons & tabs */
+    /* Streamlit Global Widget Polish */
+    .stButton > button {
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-family: 'Outfit', sans-serif !important;
+        letter-spacing: 0.01em !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+    }
+    .stButton > button:hover {
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 22px rgba(79, 70, 229, 0.5) !important;
+        border-color: rgba(255, 255, 255, 0.3) !important;
+    }
+    .stButton > button:active {
+        transform: translateY(0px) !important;
+    }
+
+    .stDownloadButton > button {
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-family: 'Outfit', sans-serif !important;
+        border: 1px solid rgba(16, 185, 129, 0.35) !important;
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.25) 100%) !important;
+        color: #34D399 !important;
+        transition: all 0.2s ease !important;
+    }
+    .stDownloadButton > button:hover {
+        background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+        color: white !important;
+        box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    /* Tabs Styling */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: rgba(15, 23, 42, 0.4);
+        background: rgba(15, 23, 42, 0.6);
         padding: 6px;
-        border-radius: 12px;
+        border-radius: 14px;
         border: 1px solid rgba(255, 255, 255, 0.08);
     }
     .stTabs [data-baseweb="tab"] {
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 8px 18px;
         font-weight: 600;
+        font-family: 'Outfit', sans-serif;
         color: #94A3B8;
-        transition: all 0.2s ease;
+        transition: all 0.22s ease;
     }
     .stTabs [aria-selected="true"] {
-        background: #4F46E5 !important;
+        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
         color: #FFFFFF !important;
-        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.45);
+    }
+
+    /* Inputs Polish */
+    .stTextInput input, .stTextArea textarea, .stNumberInput input {
+        background: rgba(15, 23, 42, 0.7) !important;
+        border: 1px solid rgba(148, 163, 184, 0.2) !important;
+        border-radius: 12px !important;
+        color: #F1F5F9 !important;
+        transition: all 0.2s ease !important;
+    }
+    .stTextInput input:focus, .stTextArea textarea:focus, .stNumberInput input:focus {
+        border-color: #6366F1 !important;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22) !important;
+    }
+    .stSelectbox > div > div {
+        background: rgba(15, 23, 42, 0.7) !important;
+        border: 1px solid rgba(148, 163, 184, 0.2) !important;
+        border-radius: 12px !important;
+    }
+
+    /* Progress bar */
+    .stProgress > div > div > div > div {
+        background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #10B981 100%) !important;
+        border-radius: 9999px !important;
     }
 
     /* ============================================
-       LOGIN PAGE STYLES
+       LOGIN PAGE PREMIUM STYLES
        ============================================ */
-    .login-page-wrapper {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: radial-gradient(ellipse at 20% 50%, rgba(79,70,229,0.15) 0%, transparent 60%),
-                    radial-gradient(ellipse at 80% 20%, rgba(219,39,119,0.12) 0%, transparent 60%),
-                    radial-gradient(ellipse at 60% 80%, rgba(124,58,237,0.1) 0%, transparent 60%);
-        padding: 40px 20px;
-    }
-    .login-card {
-        background: rgba(15, 23, 42, 0.85);
+    .login-container-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.96) 100%);
         backdrop-filter: blur(24px);
         -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.12);
         border-radius: 24px;
-        padding: 48px 44px;
-        width: 100%;
-        max-width: 460px;
-        box-shadow: 0 32px 64px -16px rgba(0,0,0,0.5),
-                    0 0 0 1px rgba(255,255,255,0.05),
-                    inset 0 1px 0 rgba(255,255,255,0.1);
-        animation: cardEntrance 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        padding: 36px 40px;
+        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.12);
+        position: relative;
+        margin-top: 10px;
     }
-    @keyframes cardEntrance {
-        from { opacity: 0; transform: translateY(30px) scale(0.97); }
-        to   { opacity: 1; transform: translateY(0)   scale(1); }
-    }
-    .login-logo {
-        font-size: 52px;
-        text-align: center;
-        margin-bottom: 8px;
+    .login-crest {
+        font-size: 54px;
+        display: inline-block;
         animation: float 3s ease-in-out infinite;
+        filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.4));
     }
-    .login-title {
+    .login-title-text {
         font-family: 'Outfit', sans-serif;
-        font-size: 28px;
-        font-weight: 800;
-        text-align: center;
+        font-size: 36px;
+        font-weight: 900;
         background: linear-gradient(135deg, #818CF8 0%, #C084FC 50%, #F472B6 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
-        margin-bottom: 4px;
+        letter-spacing: -0.03em;
+        line-height: 1.1;
     }
-    .login-subtitle {
-        text-align: center;
-        font-size: 13px;
-        color: #64748B;
-        margin-bottom: 32px;
-        font-weight: 500;
-    }
-    .auth-tab-btn {
-        flex: 1;
-        padding: 10px;
-        border: none;
-        border-radius: 10px;
-        font-weight: 700;
-        font-size: 14px;
-        cursor: pointer;
-        transition: all 0.25s ease;
-        font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    .auth-tab-active {
-        background: linear-gradient(135deg, #4F46E5, #7C3AED);
-        color: white;
-        box-shadow: 0 4px 16px rgba(79, 70, 229, 0.4);
-    }
-    .auth-tab-inactive {
-        background: rgba(30, 41, 59, 0.5);
-        color: #64748B;
-    }
-    .login-divider {
-        display: flex;
+    .login-feature-pill {
+        display: inline-flex;
         align-items: center;
-        gap: 12px;
-        margin: 24px 0 8px;
-    }
-    .login-divider::before, .login-divider::after {
-        content: '';
-        flex: 1;
-        height: 1px;
-        background: rgba(255,255,255,0.08);
-    }
-    .login-divider span {
+        gap: 6px;
+        background: rgba(30, 41, 59, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 9999px;
+        padding: 6px 14px;
         font-size: 12px;
-        color: #475569;
+        color: #94A3B8;
         font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-    }
-    .login-footer-note {
-        text-align: center;
-        font-size: 12px;
-        color: #334155;
-        margin-top: 24px;
-    }
-    /* Override streamlit input borders on login page */
-    .login-form-area .stTextInput input {
-        background: rgba(30, 41, 59, 0.6) !important;
-        border: 1px solid rgba(99, 102, 241, 0.3) !important;
-        border-radius: 10px !important;
-        color: #F1F5F9 !important;
-        font-size: 14px !important;
-        padding: 10px 14px !important;
-    }
-    .login-form-area .stTextInput input:focus {
-        border-color: #6366F1 !important;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
-    }
-    .login-form-area .stSelectbox > div > div {
-        background: rgba(30, 41, 59, 0.6) !important;
-        border: 1px solid rgba(99, 102, 241, 0.3) !important;
-        border-radius: 10px !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -431,67 +484,107 @@ def save_users(users: dict):
         json.dump(users, f, indent=4)
 
 def show_login_page():
-    """Render the premium login / sign-up page and handle auth logic."""
-    # Hide the sidebar on the login page
+    """Render the ultra-premium executive login / sign-up page and handle auth logic."""
+    # Hide the sidebar and style login container
     st.markdown("""
     <style>
         section[data-testid="stSidebar"] { display: none !important; }
-        .block-container { padding-top: 0 !important; max-width: 100% !important; }
+        .block-container { padding-top: 1.5rem !important; padding-bottom: 2rem !important; max-width: 100% !important; }
+        
+        .auth-container-wrapper {
+            max-width: 520px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        .auth-badge-header {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 9999px;
+            padding: 5px 16px;
+            color: #A5B4FC;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .demo-pill-card {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border: 1px dashed rgba(99, 102, 241, 0.4);
+            border-radius: 12px;
+            padding: 10px 14px;
+            margin-top: 18px;
+            text-align: center;
+        }
+        .auth-feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 24px;
+        }
+        .auth-mini-feat {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 10px 12px;
+            font-size: 12px;
+            color: #94A3B8;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
     </style>
     """, unsafe_allow_html=True)
 
-    # ── Page Header ──────────────────────────────────
-    st.markdown("""
-    <div style="text-align:center; padding: 48px 0 12px;">
-        <div style="font-size:58px; animation: float 3s ease-in-out infinite; display:inline-block;">🎓</div>
-        <div style="
-            font-family:'Outfit',sans-serif;
-            font-size:34px;
-            font-weight:900;
-            background:linear-gradient(135deg,#818CF8 0%,#C084FC 50%,#F472B6 100%);
-            -webkit-background-clip:text;
-            -webkit-text-fill-color:transparent;
-            background-clip:text;
-            line-height:1.1;
-            margin-top:10px;
-        ">CampusHub</div>
-        <div style="font-size:13px;color:#64748B;font-weight:500;margin-top:6px;">
-            Academic Resource Network &amp; Toolkit · AY 2026
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-
-    # ── Tab selector ─────────────────────────────────
-    col_spacer_l, col_center, col_spacer_r = st.columns([1, 2, 1])
+    # ── Centered Container ───────────────────────────
+    col_l, col_center, col_r = st.columns([1, 2.2, 1])
     with col_center:
+        # ── Page Header ──────────────────────────────
+        st.markdown("""
+        <div style="text-align:center; padding: 24px 0 16px;">
+            <div class="auth-badge-header">
+                <span class="live-pulse"></span> Academic Portal · AY 2026
+            </div>
+            <div class="login-crest">🎓</div>
+            <div class="login-title-text">CampusHub</div>
+            <div style="font-size:14px; color:#94A3B8; font-weight:500; margin-top:6px;">
+                Student Resource Network &amp; Academic Toolkit
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        st.markdown("<div class='login-container-card'>", unsafe_allow_html=True)
+
         tab_choice = st.radio(
             "auth_tab",
-            ["🔑  Sign In", "✨  Create Account"],
+            ["🔑  Sign In to CampusHub", "✨  Create New Student Account"],
             horizontal=True,
             label_visibility="collapsed",
             key="auth_tab_radio"
         )
 
-        st.markdown("<div class='login-form-area'>", unsafe_allow_html=True)
+        st.markdown("<div style='height:14px'></div>", unsafe_allow_html=True)
 
-        if tab_choice == "🔑  Sign In":
+        if "Sign In" in tab_choice:
             # ── LOGIN FORM ────────────────────────────
-            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
             with st.form("login_form", clear_on_submit=False):
                 username_in = st.text_input(
-                    "Username",
-                    placeholder="Enter your username",
+                    "👤 Username",
+                    placeholder="Enter your student username (e.g. admin)",
                     key="login_username"
                 )
                 password_in = st.text_input(
-                    "Password",
+                    "🔒 Password",
                     type="password",
-                    placeholder="Enter your password",
+                    placeholder="••••••••••••",
                     key="login_password"
                 )
-                st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+                st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
                 submit_login = st.form_submit_button(
-                    "Sign In →",
+                    "Sign In to CampusHub →",
                     use_container_width=True,
                     type="primary"
                 )
@@ -500,11 +593,11 @@ def show_login_page():
                 users = load_users()
                 uname = username_in.strip().lower()
                 if not uname or not password_in:
-                    st.error("Please fill in both fields.")
+                    st.error("⚠️ Please fill in both your username and password.")
                 elif uname not in users:
-                    st.error("❌ Username not found. Please sign up first.")
+                    st.error("❌ Account not found. Please switch to the 'Create Account' tab.")
                 elif users[uname]["password"] != _hash_password(password_in):
-                    st.error("❌ Incorrect password. Please try again.")
+                    st.error("❌ Incorrect password. Please verify and try again.")
                 else:
                     user_data = users[uname]
                     st.session_state["authenticated"] = True
@@ -513,49 +606,59 @@ def show_login_page():
                     st.session_state["user_branch"] = user_data.get("branch", "Computer Science & Engg")
                     st.session_state["user_semester"] = user_data.get("semester", "3rd Semester")
                     st.session_state["user_role"] = user_data.get("role", "Student")
-                    st.success(f"✅ Welcome back, {user_data['name']}!")
+                    st.toast(f"Welcome back, {user_data['name']}!", icon="🚀")
                     st.rerun()
 
-            # Demo hint
+            # Demo hint badge
             st.markdown("""
-            <div style="text-align:center;margin-top:16px;">
-                <span style="font-size:12px;color:#334155;">Demo account: </span>
-                <code style="font-size:12px;color:#818CF8;background:rgba(99,102,241,0.1);padding:2px 8px;border-radius:6px;">admin / admin123</code>
+            <div class="demo-pill-card">
+                <span style="font-size:12px; color:#CBD5E1; font-weight:600;">⚡ Quick Demo Login:</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#818CF8; font-weight:700; background:rgba(99,102,241,0.2); padding:2px 8px; border-radius:6px; margin-left:6px;">admin</span>
+                <span style="color:#64748B;">/</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#818CF8; font-weight:700; background:rgba(99,102,241,0.2); padding:2px 8px; border-radius:6px;">admin123</span>
             </div>
             """, unsafe_allow_html=True)
 
         else:
             # ── SIGN-UP FORM ──────────────────────────
-            st.markdown("<div style='height:10px'></div>", unsafe_allow_html=True)
             with st.form("signup_form", clear_on_submit=False):
-                full_name_in = st.text_input("Full Name", placeholder="e.g. Alex Kumar", key="signup_name")
-                new_username_in = st.text_input("Choose Username", placeholder="e.g. alexkumar21", key="signup_username")
-                new_pass_in = st.text_input("Password", type="password", placeholder="Min 6 characters", key="signup_pass")
-                confirm_pass_in = st.text_input("Confirm Password", type="password", placeholder="Re-enter password", key="signup_confirm")
-                branch_in = st.selectbox(
-                    "Branch / Department",
-                    [
-                        "Computer Science & Engg",
-                        "Information Technology",
-                        "AI & Data Science",
-                        "Electronics & Comm (ECE)",
-                        "Electrical Engg (EEE)",
-                        "Mechanical Engineering",
-                        "Civil Engineering",
-                        "BCA / MCA / Applied Sci",
-                        "Other"
-                    ],
-                    key="signup_branch"
-                )
-                sem_in = st.selectbox(
-                    "Current Semester",
-                    [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)],
-                    index=2,
-                    key="signup_sem"
-                )
-                st.markdown("<div style='height:4px'></div>", unsafe_allow_html=True)
+                full_name_in = st.text_input("🎓 Full Name *", placeholder="e.g. Rahul Sharma", key="signup_name")
+                new_username_in = st.text_input("👤 Desired Username *", placeholder="e.g. rahul_cs26", key="signup_username")
+                
+                col_p1, col_p2 = st.columns(2)
+                with col_p1:
+                    new_pass_in = st.text_input("🔒 Password *", type="password", placeholder="Min 6 chars", key="signup_pass")
+                with col_p2:
+                    confirm_pass_in = st.text_input("🔒 Confirm Password *", type="password", placeholder="Re-enter password", key="signup_confirm")
+                
+                col_b1, col_b2 = st.columns(2)
+                with col_b1:
+                    branch_in = st.selectbox(
+                        "🏛️ Branch / Department",
+                        [
+                            "Computer Science & Engg",
+                            "Information Technology",
+                            "AI & Data Science",
+                            "Electronics & Comm (ECE)",
+                            "Electrical Engg (EEE)",
+                            "Mechanical Engineering",
+                            "Civil Engineering",
+                            "BCA / MCA / Applied Sci",
+                            "Other"
+                        ],
+                        key="signup_branch"
+                    )
+                with col_b2:
+                    sem_in = st.selectbox(
+                        "📅 Semester",
+                        [f"{i}st Semester" if i == 1 else f"{i}nd Semester" if i == 2 else f"{i}rd Semester" if i == 3 else f"{i}th Semester" for i in range(1, 9)],
+                        index=2,
+                        key="signup_sem"
+                    )
+                
+                st.markdown("<div style='height:6px'></div>", unsafe_allow_html=True)
                 submit_signup = st.form_submit_button(
-                    "Create Account ✨",
+                    "Create Student Account ✨",
                     use_container_width=True,
                     type="primary"
                 )
@@ -564,13 +667,13 @@ def show_login_page():
                 users = load_users()
                 uname = new_username_in.strip().lower()
                 if not full_name_in.strip() or not uname or not new_pass_in:
-                    st.error("Please fill in all required fields.")
+                    st.error("⚠️ Please fill in all required fields marked with *.")
                 elif len(new_pass_in) < 6:
-                    st.error("Password must be at least 6 characters.")
+                    st.error("⚠️ Password must contain at least 6 characters.")
                 elif new_pass_in != confirm_pass_in:
-                    st.error("Passwords do not match.")
+                    st.error("❌ Passwords do not match.")
                 elif uname in users:
-                    st.error("❌ Username already taken. Please choose another.")
+                    st.error("❌ That username is already taken. Please choose another.")
                 else:
                     users[uname] = {
                         "name": full_name_in.strip(),
@@ -587,15 +690,25 @@ def show_login_page():
                     st.session_state["user_branch"] = branch_in
                     st.session_state["user_semester"] = sem_in
                     st.session_state["user_role"] = "Student"
-                    st.success(f"🎉 Account created! Welcome to CampusHub, {full_name_in.strip()}!")
+                    st.toast(f"Welcome to CampusHub, {full_name_in.strip()}!", icon="🎉")
                     st.rerun()
+
+        # Mini Feature Showcase Grid
+        st.markdown("""
+        <div class="auth-feature-grid">
+            <div class="auth-mini-feat">📚 <strong>50+ Verified Notes</strong></div>
+            <div class="auth-mini-feat">⚡ <strong>1-Page Cheatsheets</strong></div>
+            <div class="auth-mini-feat">📊 <strong>SGPA &amp; Attendance Guard</strong></div>
+            <div class="auth-mini-feat">🔒 <strong>SHA-256 Auth Shield</strong></div>
+        </div>
+        """, unsafe_allow_html=True)
 
         st.markdown("</div>", unsafe_allow_html=True)
 
         # Footer
         st.markdown("""
-        <div style="text-align:center;margin-top:32px;">
-            <span style="font-size:11px;color:#1E293B;">🔒 Your credentials are stored securely on this device.</span>
+        <div style="text-align:center; margin-top:24px;">
+            <span style="font-size:12px; color:#64748B;">🔒 CampusHub Platform · Fast, Modern &amp; Encrypted Student Ecosystem</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -812,11 +925,11 @@ material_requests_data = load_material_requests()
 
 with st.sidebar:
     st.markdown("""
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
-        <h2 style="margin: 0; font-size: 24px; color: #818CF8;">🎓 CampusHub</h2>
-        <span style="font-size: 12px; color: #10B981; font-weight: 600;"><span class="live-pulse"></span>Live</span>
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+        <h2 style="margin: 0; font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎓 CampusHub</h2>
+        <span style="font-size: 11px; color: #10B981; font-weight: 700; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); padding: 3px 8px; border-radius: 9999px;"><span class="live-pulse"></span>Live</span>
     </div>
-    <p style="font-size: 13px; color: #94A3B8; margin-top: 0;">Academic Resource Network & Toolkit</p>
+    <p style="font-size: 12px; color: #94A3B8; margin-top: 0; margin-bottom: 14px;">Academic Resource Network &amp; Toolkit</p>
     """, unsafe_allow_html=True)
 
     nav_option = st.radio(
@@ -833,7 +946,7 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    st.markdown("<hr style='margin: 14px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.08);'>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.08);'>", unsafe_allow_html=True)
 
     # Student Profile Card (auto-populated from login session)
     student_name = st.session_state.get("student_name", "Student Scholar")
@@ -848,12 +961,12 @@ with st.sidebar:
     st.markdown(f"""
     <div class="profile-card">
         <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="font-size: 26px; background: rgba(99,102,241,0.2); border-radius: 50%; padding: 6px 10px;">👨‍🎓</div>
+            <div style="font-size: 26px; background: linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(139,92,246,0.2) 100%); border: 1px solid rgba(99,102,241,0.4); border-radius: 12px; padding: 6px 10px;">👨‍🎓</div>
             <div style="flex:1;">
                 <div style="font-weight: 700; color: #F1F5F9; font-size: 14px;">{student_name}</div>
                 <div style="font-size: 12px; color: #94A3B8;">{semester} • {branch.split('(')[0].strip()}</div>
-                <div style="margin-top:4px;">
-                    <span style="font-size:11px;font-weight:700;color:{role_color};background:rgba(16,185,129,0.1);padding:2px 8px;border-radius:6px;">@{username_display} · {user_role}</span>
+                <div style="margin-top:5px;">
+                    <span style="font-size:11px; font-weight:700; color:{role_color}; background:rgba(245,158,11,0.12) if '{user_role}'=='Admin' else rgba(16,185,129,0.12); border: 1px solid rgba(255,255,255,0.08); padding:2px 8px; border-radius:6px;">@{username_display} · {user_role}</span>
                 </div>
             </div>
         </div>
@@ -861,12 +974,12 @@ with st.sidebar:
     """, unsafe_allow_html=True)
 
     # Logout button
-    if st.button("🚪 Sign Out", use_container_width=True, key="sidebar_logout_btn"):
+    if st.button("🚪 Sign Out of Session", use_container_width=True, key="sidebar_logout_btn"):
         for key in ["authenticated", "username", "student_name", "user_branch", "user_semester", "user_role"]:
             st.session_state.pop(key, None)
         st.rerun()
 
-    st.caption("🚀 **Contribute notes or fulfill requests** to earn campus recognition and help fellow peers succeed.")
+    st.caption("✨ **Campus Tip:** Upload lecture notes or fulfill peer requests to earn contributor badges and academic karma points.")
 
 
 # ==================================================
@@ -883,10 +996,10 @@ if "Home Dashboard" in nav_option:
     <div class="hero-container">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
             <div>
-                <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em;">Campus Portal • Academic Year 2026</span>
-                <h1 style="margin: 10px 0 6px 0; font-size: 32px; font-weight: 800;">{time_greeting}, {student_name}! 🚀</h1>
-                <p style="margin: 0; opacity: 0.95; font-size: 15px; max-width: 650px; line-height: 1.5;">
-                    Your centralized college hub for <strong>{semester}</strong> ({branch}). Discover peer-reviewed notes, rapid exam revision cheatsheets, request needed materials, and never miss an official notice.
+                <span style="background: rgba(255,255,255,0.18); backdrop-filter: blur(8px); padding: 4px 14px; border-radius: 9999px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border: 1px solid rgba(255,255,255,0.2);">Campus Portal · AY 2026</span>
+                <h1 style="margin: 12px 0 6px 0; font-size: 32px; font-weight: 900; letter-spacing: -0.02em;">{time_greeting}, {student_name}! 🚀</h1>
+                <p style="margin: 0; opacity: 0.95; font-size: 15px; max-width: 680px; line-height: 1.55; color: #E0E7FF;">
+                    Your centralized college workspace for <strong>{semester}</strong> ({branch}). Access verified notes, rapid cheatsheets, post missing material requests, and track campus updates in real time.
                 </p>
             </div>
         </div>
@@ -903,7 +1016,7 @@ if "Home Dashboard" in nav_option:
     with kpi1:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">📚</div>
+            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(99,102,241,0.25) 0%, rgba(79,70,229,0.15) 100%); border-color:rgba(99,102,241,0.4);">📚</div>
             <div>
                 <div class="metric-val">{total_materials}</div>
                 <div class="metric-label">Study Materials</div>
@@ -913,17 +1026,17 @@ if "Home Dashboard" in nav_option:
     with kpi2:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">⚡</div>
+            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(245,158,11,0.25) 0%, rgba(217,119,6,0.15) 100%); border-color:rgba(245,158,11,0.4);">⚡</div>
             <div>
                 <div class="metric-val">5</div>
-                <div class="metric-label">Quick Revision Decks</div>
+                <div class="metric-label">Revision Decks</div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     with kpi3:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">🙋</div>
+            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(14,165,233,0.15) 100%); border-color:rgba(6,182,212,0.4);">🙋</div>
             <div>
                 <div class="metric-val">{open_requests_count}</div>
                 <div class="metric-label">Open Requests</div>
@@ -933,7 +1046,7 @@ if "Home Dashboard" in nav_option:
     with kpi4:
         st.markdown(f"""
         <div class="metric-box">
-            <div class="metric-icon">❤️</div>
+            <div class="metric-icon" style="background:linear-gradient(135deg, rgba(244,63,94,0.25) 0%, rgba(225,29,72,0.15) 100%); border-color:rgba(244,63,94,0.4);">❤️</div>
             <div>
                 <div class="metric-val">{total_likes}</div>
                 <div class="metric-label">Peer Upvotes</div>
