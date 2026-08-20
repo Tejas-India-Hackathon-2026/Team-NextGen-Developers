@@ -27,43 +27,90 @@ USERS_FILE = "users.json"
 os.makedirs(MATERIAL_FOLDER, exist_ok=True)
 
 # ==================================================
-# 💎 ULTRA-PREMIUM MODERN DESIGN SYSTEM (CSS)
+# 💎 ULTRA-PREMIUM MODERN LIGHT THEME DESIGN SYSTEM (CSS)
 # ==================================================
 st.markdown("""
 <style>
     /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap');
 
     :root {
-        --primary-indigo: #6366F1;
-        --primary-violet: #8B5CF6;
-        --accent-cyan: #06B6D4;
-        --accent-emerald: #10B981;
-        --accent-rose: #F43F5E;
-        --accent-amber: #F59E0B;
-        --bg-dark-1: #0B0F19;
-        --bg-dark-2: #111827;
-        --bg-card: rgba(30, 41, 59, 0.72);
-        --border-glass: rgba(255, 255, 255, 0.08);
-        --text-primary: #F8FAFC;
-        --text-secondary: #94A3B8;
+        --primary-indigo: #4F46E5;
+        --primary-violet: #7C3AED;
+        --accent-cyan: #0284C7;
+        --accent-emerald: #059669;
+        --accent-rose: #E11D48;
+        --accent-amber: #D97706;
+        --bg-main: #F8FAFC;
+        --bg-card: #FFFFFF;
+        --border-card: #E2E8F0;
+        --text-primary: #0F172A;
+        --text-secondary: #334155;
         --text-muted: #64748B;
+    }
+
+    /* Light Theme Global Canvas */
+    .stApp {
+        background: #F8FAFC !important;
+        color: #1E293B !important;
     }
 
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        color: #E2E8F0;
+        color: #1E293B;
+        font-size: 15px;
     }
 
-    h1, h2, h3, h4, h5, h6 {
+    /* Increased Typography Hierarchy */
+    h1 {
         font-family: 'Outfit', sans-serif !important;
+        font-weight: 800 !important;
+        font-size: 34px !important;
+        letter-spacing: -0.03em !important;
+        color: #0F172A !important;
+        margin-bottom: 8px !important;
+    }
+
+    h2 {
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 800 !important;
+        font-size: 28px !important;
+        letter-spacing: -0.025em !important;
+        color: #0F172A !important;
+        margin-top: 14px !important;
+        margin-bottom: 8px !important;
+    }
+
+    h3 {
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 22px !important;
+        letter-spacing: -0.02em !important;
+        color: #0F172A !important;
+    }
+
+    h4 {
+        font-family: 'Outfit', sans-serif !important;
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        color: #0F172A !important;
+    }
+
+    p, span, label, div {
+        color: #334155;
+    }
+
+    strong, b {
+        color: #0F172A;
         font-weight: 700;
-        letter-spacing: -0.025em;
-        color: #F8FAFC;
     }
 
     code, pre {
         font-family: 'JetBrains Mono', monospace !important;
+        background: #F1F5F9 !important;
+        color: #4338CA !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 6px !important;
     }
 
     /* Sleek Custom Scrollbar */
@@ -72,28 +119,24 @@ st.markdown("""
         height: 8px;
     }
     ::-webkit-scrollbar-track {
-        background: rgba(15, 23, 42, 0.6);
+        background: #F1F5F9;
     }
     ::-webkit-scrollbar-thumb {
-        background: rgba(99, 102, 241, 0.35);
+        background: #CBD5E1;
         border-radius: 9999px;
     }
     ::-webkit-scrollbar-thumb:hover {
-        background: rgba(99, 102, 241, 0.65);
+        background: #94A3B8;
     }
 
     /* Keyframe Animations */
     @keyframes pulseGlow {
-        0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 12px rgba(16, 185, 129, 0.7); }
-        50% { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 20px rgba(16, 185, 129, 0.9); }
+        0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 10px rgba(16, 185, 129, 0.6); }
+        50% { transform: scale(1.15); opacity: 0.85; box-shadow: 0 0 16px rgba(16, 185, 129, 0.8); }
     }
     @keyframes float {
         0%, 100% { transform: translateY(0px); }
         50% { transform: translateY(-5px); }
-    }
-    @keyframes shimmer {
-        0% { background-position: -200% 0; }
-        100% { background-position: 200% 0; }
     }
 
     /* Live Status Indicator */
@@ -108,17 +151,70 @@ st.markdown("""
         vertical-align: middle;
     }
 
-    /* Ultra-Modern Hero Banner */
+    /* Clean Sidebar Styling with Enlarged Nav Menu */
+    section[data-testid="stSidebar"] {
+        background: #FFFFFF !important;
+        border-right: 1px solid #E2E8F0 !important;
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.03) !important;
+    }
+
+    /* Enlarged Navigation Radio Buttons in Sidebar */
+    section[data-testid="stSidebar"] .stRadio > div {
+        gap: 6px !important;
+    }
+    section[data-testid="stSidebar"] .stRadio label {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        font-family: 'Outfit', sans-serif !important;
+        color: #334155 !important;
+        padding: 10px 14px !important;
+        border-radius: 12px !important;
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        margin-bottom: 4px !important;
+        display: flex !important;
+        align-items: center !important;
+        cursor: pointer !important;
+    }
+    section[data-testid="stSidebar"] .stRadio label:hover {
+        background: #EEF2FF !important;
+        border-color: #C7D2FE !important;
+        color: #4338CA !important;
+        transform: translateX(3px) !important;
+    }
+    section[data-testid="stSidebar"] .stRadio label[data-checked="true"],
+    section[data-testid="stSidebar"] .stRadio div[aria-checked="true"] {
+        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+        color: #FFFFFF !important;
+        border-color: #4F46E5 !important;
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+    }
+
+    /* Sidebar Profile Card (Light) */
+    .profile-card {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    }
+
+    /* Ultra-Modern Hero Banner (Light Contrast Gradient) */
     .hero-container {
-        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 28%, #7C3AED 68%, #C026D3 100%);
+        background: linear-gradient(135deg, #312E81 0%, #4338CA 30%, #6366F1 70%, #7C3AED 100%);
         border-radius: 20px;
-        padding: 32px 36px;
-        color: white;
+        padding: 36px 40px;
+        color: white !important;
         margin-bottom: 24px;
-        box-shadow: 0 20px 45px -15px rgba(79, 70, 229, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        box-shadow: 0 16px 36px -10px rgba(79, 70, 229, 0.35);
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .hero-container h1, .hero-container p, .hero-container span {
+        color: white !important;
     }
     .hero-container::before {
         content: '';
@@ -127,168 +223,153 @@ st.markdown("""
         right: -15%;
         width: 420px;
         height: 420px;
-        background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 70%);
-        border-radius: 50%;
-        pointer-events: none;
-    }
-    .hero-container::after {
-        content: '';
-        position: absolute;
-        bottom: -40%;
-        left: 20%;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(192, 38, 211, 0.25) 0%, transparent 70%);
+        background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
         border-radius: 50%;
         pointer-events: none;
     }
 
-    /* Premium Glassmorphism Cards */
+    /* Premium Light Cards */
     .glass-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.75) 0%, rgba(15, 23, 42, 0.85) 100%);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 18px;
-        padding: 22px;
-        margin-bottom: 16px;
-        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06);
-        transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        padding: 24px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+        transition: all 0.26s cubic-bezier(0.4, 0, 0.2, 1);
         position: relative;
     }
     .glass-card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 0 20px rgba(99, 102, 241, 0.18);
-        border-color: rgba(99, 102, 241, 0.45);
+        box-shadow: 0 14px 30px -4px rgba(0, 0, 0, 0.1), 0 0 15px rgba(99, 102, 241, 0.12);
+        border-color: #C7D2FE;
     }
 
-    /* Quick Revision Specific Cards */
+    /* Quick Revision Specific Cards (Light) */
     .revision-box {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.96) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-left: 5px solid #818CF8;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-left: 6px solid #4F46E5;
         border-radius: 16px;
-        padding: 18px 22px;
-        margin-bottom: 16px;
-        box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.35);
+        padding: 20px 24px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.04);
     }
 
-    /* Metric Glass Box */
+    /* Enlarged Metric KPI Box */
     .metric-box {
-        background: linear-gradient(145deg, rgba(30, 41, 59, 0.85) 0%, rgba(15, 23, 42, 0.92) 100%);
-        border: 1px solid rgba(148, 163, 184, 0.12);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 18px;
-        padding: 20px;
+        padding: 22px 20px;
         display: flex;
         align-items: center;
-        gap: 16px;
-        box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+        gap: 18px;
+        box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.05);
         transition: all 0.24s cubic-bezier(0.4, 0, 0.2, 1);
     }
     .metric-box:hover {
         transform: translateY(-3px);
-        border-color: rgba(99, 102, 241, 0.4);
-        box-shadow: 0 14px 30px -8px rgba(99, 102, 241, 0.25);
+        border-color: #C7D2FE;
+        box-shadow: 0 10px 25px -4px rgba(79, 70, 229, 0.15);
     }
     .metric-icon {
-        font-size: 28px;
-        background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.15) 100%);
-        border: 1px solid rgba(99, 102, 241, 0.3);
-        border-radius: 14px;
-        width: 52px;
-        height: 52px;
+        font-size: 30px;
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
         display: flex;
         align-items: center;
         justify-content: center;
         flex-shrink: 0;
     }
     .metric-val {
-        font-size: 28px;
+        font-size: 32px;
         font-weight: 800;
         font-family: 'Outfit', sans-serif;
-        color: #F8FAFC;
+        color: #0F172A;
         line-height: 1.1;
         letter-spacing: -0.02em;
     }
     .metric-label {
-        font-size: 12px;
-        color: #94A3B8;
-        font-weight: 600;
+        font-size: 13px;
+        color: #64748B;
+        font-weight: 700;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        margin-top: 2px;
+        margin-top: 3px;
     }
 
-    /* Badges & Pills */
+    /* Vibrant Badges & Pills */
     .badge-urgent {
-        background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-        color: white;
-        padding: 4px 12px;
+        background: #FEE2E2;
+        color: #DC2626;
+        border: 1px solid #FECACA;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        box-shadow: 0 2px 10px rgba(239, 68, 68, 0.4);
         display: inline-block;
     }
     .badge-important {
-        background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-        color: white;
-        padding: 4px 12px;
+        background: #FEF3C7;
+        color: #D97706;
+        border: 1px solid #FDE68A;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
         display: inline-block;
     }
     .badge-general {
-        background: linear-gradient(135deg, #3B82F6 0%, #2563EB 100%);
-        color: white;
-        padding: 4px 12px;
+        background: #DBEAFE;
+        color: #1D4ED8;
+        border: 1px solid #BFDBFE;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4);
         display: inline-block;
     }
     .badge-open {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%);
-        color: white;
-        padding: 4px 12px;
+        background: #D1FAE5;
+        color: #059669;
+        border: 1px solid #A7F3D0;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        box-shadow: 0 2px 10px rgba(16, 185, 129, 0.4);
         display: inline-block;
     }
     .badge-fulfilled {
-        background: linear-gradient(135deg, #8B5CF6 0%, #6D28D9 100%);
-        color: white;
-        padding: 4px 12px;
+        background: #EDE9FE;
+        color: #6D28D9;
+        border: 1px solid #DDD6FE;
+        padding: 5px 14px;
         border-radius: 9999px;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.05em;
         text-transform: uppercase;
-        box-shadow: 0 2px 10px rgba(139, 92, 246, 0.4);
         display: inline-block;
     }
     .tag-chip {
         display: inline-flex;
         align-items: center;
-        background: rgba(99, 102, 241, 0.12);
-        color: #A5B4FC;
-        border: 1px solid rgba(99, 102, 241, 0.28);
+        background: #EEF2FF;
+        color: #4338CA;
+        border: 1px solid #C7D2FE;
         border-radius: 8px;
-        padding: 3px 10px;
-        font-size: 12px;
+        padding: 4px 12px;
+        font-size: 13px;
         font-weight: 600;
         margin-right: 6px;
         margin-bottom: 4px;
@@ -296,43 +377,34 @@ st.markdown("""
     .tag-new {
         display: inline-flex;
         align-items: center;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.15) 100%);
-        color: #34D399;
-        border: 1px solid rgba(16, 185, 129, 0.38);
+        background: #ECFDF5;
+        color: #047857;
+        border: 1px solid #A7F3D0;
         border-radius: 8px;
-        padding: 3px 10px;
-        font-size: 12px;
+        padding: 4px 12px;
+        font-size: 13px;
         font-weight: 700;
         margin-right: 6px;
         margin-bottom: 4px;
-    }
-
-    /* Sidebar Profile Card */
-    .profile-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.92) 0%, rgba(15, 23, 42, 0.98) 100%);
-        border: 1px solid rgba(148, 163, 184, 0.18);
-        border-radius: 16px;
-        padding: 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
 
     /* Streamlit Global Widget Polish */
     .stButton > button {
         border-radius: 12px !important;
         font-weight: 700 !important;
+        font-size: 15px !important;
         font-family: 'Outfit', sans-serif !important;
-        letter-spacing: 0.01em !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        border: 1px solid rgba(255, 255, 255, 0.12) !important;
+        padding: 10px 22px !important;
+        border: 1px solid #4F46E5 !important;
         background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
         color: white !important;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35) !important;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3) !important;
+        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
     }
     .stButton > button:hover {
         transform: translateY(-2px) !important;
-        box-shadow: 0 8px 22px rgba(79, 70, 229, 0.5) !important;
-        border-color: rgba(255, 255, 255, 0.3) !important;
+        box-shadow: 0 8px 20px rgba(79, 70, 229, 0.45) !important;
+        background: linear-gradient(135deg, #4338CA 0%, #4F46E5 100%) !important;
     }
     .stButton > button:active {
         transform: translateY(0px) !important;
@@ -341,90 +413,132 @@ st.markdown("""
     .stDownloadButton > button {
         border-radius: 12px !important;
         font-weight: 700 !important;
+        font-size: 15px !important;
         font-family: 'Outfit', sans-serif !important;
-        border: 1px solid rgba(16, 185, 129, 0.35) !important;
-        background: linear-gradient(135deg, rgba(16, 185, 129, 0.18) 0%, rgba(5, 150, 105, 0.25) 100%) !important;
-        color: #34D399 !important;
+        padding: 10px 22px !important;
+        border: 1px solid #059669 !important;
+        background: linear-gradient(135deg, #059669 0%, #10B981 100%) !important;
+        color: white !important;
+        box-shadow: 0 4px 14px rgba(5, 150, 105, 0.25) !important;
         transition: all 0.2s ease !important;
     }
     .stDownloadButton > button:hover {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-        color: white !important;
-        box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4) !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 8px 20px rgba(5, 150, 105, 0.4) !important;
+    }
+
+    .stLinkButton > a {
+        border-radius: 12px !important;
+        font-weight: 700 !important;
+        font-size: 14px !important;
+        font-family: 'Outfit', sans-serif !important;
+        border: 1px solid #CBD5E1 !important;
+        background: #FFFFFF !important;
+        color: #4F46E5 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        transition: all 0.2s ease !important;
+    }
+    .stLinkButton > a:hover {
+        background: #EEF2FF !important;
+        border-color: #818CF8 !important;
         transform: translateY(-2px) !important;
     }
 
-    /* Tabs Styling */
+    /* Enlarged Tabs Styling (Light) */
     .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-        background: rgba(15, 23, 42, 0.6);
+        background: #F1F5F9;
         padding: 6px;
         border-radius: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        border: 1px solid #E2E8F0;
     }
     .stTabs [data-baseweb="tab"] {
         border-radius: 10px;
-        padding: 8px 18px;
-        font-weight: 600;
+        padding: 10px 20px;
+        font-weight: 700;
+        font-size: 15px;
         font-family: 'Outfit', sans-serif;
-        color: #94A3B8;
-        transition: all 0.22s ease;
+        color: #64748B;
+        transition: all 0.2s ease;
     }
     .stTabs [aria-selected="true"] {
-        background: linear-gradient(135deg, #4F46E5 0%, #6366F1 100%) !important;
+        background: #4F46E5 !important;
         color: #FFFFFF !important;
-        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.45);
+        box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
     }
 
-    /* Inputs Polish */
+    /* Inputs Polish (Light Theme) */
     .stTextInput input, .stTextArea textarea, .stNumberInput input {
-        background: rgba(15, 23, 42, 0.7) !important;
-        border: 1px solid rgba(148, 163, 184, 0.2) !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
         border-radius: 12px !important;
-        color: #F1F5F9 !important;
+        color: #0F172A !important;
+        font-size: 15px !important;
+        padding: 10px 14px !important;
         transition: all 0.2s ease !important;
     }
     .stTextInput input:focus, .stTextArea textarea:focus, .stNumberInput input:focus {
-        border-color: #6366F1 !important;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22) !important;
+        border-color: #4F46E5 !important;
+        box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.18) !important;
     }
     .stSelectbox > div > div {
-        background: rgba(15, 23, 42, 0.7) !important;
-        border: 1px solid rgba(148, 163, 184, 0.2) !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
         border-radius: 12px !important;
+        font-size: 15px !important;
     }
 
     /* Progress bar */
     .stProgress > div > div > div > div {
-        background: linear-gradient(90deg, #6366F1 0%, #8B5CF6 50%, #10B981 100%) !important;
+        background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 50%, #059669 100%) !important;
         border-radius: 9999px !important;
     }
 
+    /* Tables in Cheatsheets & Revision (Light) */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        background: #FFFFFF;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    table th {
+        background: #F1F5F9;
+        color: #0F172A;
+        font-weight: 700;
+        padding: 10px 14px;
+        border-bottom: 2px solid #E2E8F0;
+        text-align: left;
+    }
+    table td {
+        padding: 10px 14px;
+        border-bottom: 1px solid #F1F5F9;
+        color: #334155;
+    }
+
     /* ============================================
-       LOGIN PAGE PREMIUM STYLES
+       LOGIN PAGE LIGHT THEME STYLES
        ============================================ */
     .login-container-card {
-        background: linear-gradient(135deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.96) 100%);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border: 1px solid rgba(255, 255, 255, 0.12);
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
         border-radius: 24px;
-        padding: 36px 40px;
-        box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.12);
+        padding: 38px 44px;
+        box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.08), 0 0 25px rgba(79, 70, 229, 0.06);
         position: relative;
         margin-top: 10px;
     }
     .login-crest {
-        font-size: 54px;
+        font-size: 58px;
         display: inline-block;
         animation: float 3s ease-in-out infinite;
-        filter: drop-shadow(0 8px 16px rgba(99, 102, 241, 0.4));
+        filter: drop-shadow(0 8px 16px rgba(79, 70, 229, 0.25));
     }
     .login-title-text {
         font-family: 'Outfit', sans-serif;
-        font-size: 36px;
+        font-size: 38px;
         font-weight: 900;
-        background: linear-gradient(135deg, #818CF8 0%, #C084FC 50%, #F472B6 100%);
+        background: linear-gradient(135deg, #3730A3 0%, #4F46E5 50%, #7C3AED 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -435,12 +549,12 @@ st.markdown("""
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        background: rgba(30, 41, 59, 0.6);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
         border-radius: 9999px;
         padding: 6px 14px;
-        font-size: 12px;
-        color: #94A3B8;
+        font-size: 13px;
+        color: #475569;
         font-weight: 600;
     }
 </style>
@@ -500,11 +614,11 @@ def show_login_page():
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(99, 102, 241, 0.15);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: #EEF2FF;
+            border: 1px solid #C7D2FE;
             border-radius: 9999px;
             padding: 5px 16px;
-            color: #A5B4FC;
+            color: #4338CA;
             font-size: 12px;
             font-weight: 700;
             letter-spacing: 0.05em;
@@ -512,10 +626,10 @@ def show_login_page():
             margin-bottom: 12px;
         }
         .demo-pill-card {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.1) 100%);
-            border: 1px dashed rgba(99, 102, 241, 0.4);
+            background: #F8FAFC;
+            border: 1.5px dashed #C7D2FE;
             border-radius: 12px;
-            padding: 10px 14px;
+            padding: 12px 16px;
             margin-top: 18px;
             text-align: center;
         }
@@ -526,15 +640,16 @@ def show_login_page():
             margin-top: 24px;
         }
         .auth-mini-feat {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
             border-radius: 12px;
             padding: 10px 12px;
             font-size: 12px;
-            color: #94A3B8;
+            color: #334155;
             display: flex;
             align-items: center;
             gap: 8px;
+            font-weight: 500;
         }
     </style>
     """, unsafe_allow_html=True)
@@ -550,7 +665,7 @@ def show_login_page():
             </div>
             <div class="login-crest">🎓</div>
             <div class="login-title-text">CampusHub</div>
-            <div style="font-size:14px; color:#94A3B8; font-weight:500; margin-top:6px;">
+            <div style="font-size:15px; color:#475569; font-weight:600; margin-top:6px;">
                 Student Resource Network &amp; Academic Toolkit
             </div>
         </div>
@@ -612,10 +727,10 @@ def show_login_page():
             # Demo hint badge
             st.markdown("""
             <div class="demo-pill-card">
-                <span style="font-size:12px; color:#CBD5E1; font-weight:600;">⚡ Quick Demo Login:</span>
-                <span style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#818CF8; font-weight:700; background:rgba(99,102,241,0.2); padding:2px 8px; border-radius:6px; margin-left:6px;">admin</span>
-                <span style="color:#64748B;">/</span>
-                <span style="font-family:'JetBrains Mono', monospace; font-size:12px; color:#818CF8; font-weight:700; background:rgba(99,102,241,0.2); padding:2px 8px; border-radius:6px;">admin123</span>
+                <span style="font-size:13px; color:#334155; font-weight:600;">⚡ Quick Demo Login:</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:13px; color:#4338CA; font-weight:700; background:#EEF2FF; border:1px solid #C7D2FE; padding:2px 8px; border-radius:6px; margin-left:6px;">admin</span>
+                <span style="color:#94A3B8;">/</span>
+                <span style="font-family:'JetBrains Mono', monospace; font-size:13px; color:#4338CA; font-weight:700; background:#EEF2FF; border:1px solid #C7D2FE; padding:2px 8px; border-radius:6px;">admin123</span>
             </div>
             """, unsafe_allow_html=True)
 
@@ -708,7 +823,7 @@ def show_login_page():
         # Footer
         st.markdown("""
         <div style="text-align:center; margin-top:24px;">
-            <span style="font-size:12px; color:#64748B;">🔒 CampusHub Platform · Fast, Modern &amp; Encrypted Student Ecosystem</span>
+            <span style="font-size:13px; color:#64748B;">🔒 CampusHub Platform · Fast, Modern &amp; Encrypted Student Ecosystem</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -926,10 +1041,10 @@ material_requests_data = load_material_requests()
 with st.sidebar:
     st.markdown("""
     <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
-        <h2 style="margin: 0; font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #818CF8 0%, #C084FC 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">🎓 CampusHub</h2>
-        <span style="font-size: 11px; color: #10B981; font-weight: 700; background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); padding: 3px 8px; border-radius: 9999px;"><span class="live-pulse"></span>Live</span>
+        <h2 style="margin: 0; font-size: 24px; font-weight: 800; color: #4F46E5;">🎓 CampusHub</h2>
+        <span style="font-size: 11px; color: #059669; font-weight: 700; background: #D1FAE5; border: 1px solid #A7F3D0; padding: 3px 8px; border-radius: 9999px;"><span class="live-pulse"></span>Live</span>
     </div>
-    <p style="font-size: 12px; color: #94A3B8; margin-top: 0; margin-bottom: 14px;">Academic Resource Network &amp; Toolkit</p>
+    <p style="font-size: 13px; color: #64748B; margin-top: 0; margin-bottom: 14px; font-weight: 500;">Academic Resource Network &amp; Toolkit</p>
     """, unsafe_allow_html=True)
 
     nav_option = st.radio(
@@ -946,7 +1061,7 @@ with st.sidebar:
         label_visibility="collapsed"
     )
 
-    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid rgba(255,255,255,0.08);'>", unsafe_allow_html=True)
+    st.markdown("<hr style='margin: 16px 0; border: 0; border-top: 1px solid #E2E8F0;'>", unsafe_allow_html=True)
 
     # Student Profile Card (auto-populated from login session)
     student_name = st.session_state.get("student_name", "Student Scholar")
@@ -955,18 +1070,20 @@ with st.sidebar:
     user_role = st.session_state.get("user_role", "Student")
     username_display = st.session_state.get("username", "user")
 
-    role_color = "#F59E0B" if user_role == "Admin" else "#10B981"
+    role_bg = "#FEF3C7" if user_role == "Admin" else "#D1FAE5"
+    role_color = "#D97706" if user_role == "Admin" else "#059669"
+    role_border = "#FDE68A" if user_role == "Admin" else "#A7F3D0"
 
-    # Visual Profile Badge
+    # Visual Profile Badge (Light Theme)
     st.markdown(f"""
     <div class="profile-card">
         <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="font-size: 26px; background: linear-gradient(135deg, rgba(99,102,241,0.3) 0%, rgba(139,92,246,0.2) 100%); border: 1px solid rgba(99,102,241,0.4); border-radius: 12px; padding: 6px 10px;">👨‍🎓</div>
+            <div style="font-size: 26px; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 12px; padding: 6px 10px;">👨‍🎓</div>
             <div style="flex:1;">
-                <div style="font-weight: 700; color: #F1F5F9; font-size: 14px;">{student_name}</div>
-                <div style="font-size: 12px; color: #94A3B8;">{semester} • {branch.split('(')[0].strip()}</div>
+                <div style="font-weight: 700; color: #0F172A; font-size: 15px;">{student_name}</div>
+                <div style="font-size: 13px; color: #64748B; font-weight: 500;">{semester} • {branch.split('(')[0].strip()}</div>
                 <div style="margin-top:5px;">
-                    <span style="font-size:11px; font-weight:700; color:{role_color}; background:rgba(245,158,11,0.12) if '{user_role}'=='Admin' else rgba(16,185,129,0.12); border: 1px solid rgba(255,255,255,0.08); padding:2px 8px; border-radius:6px;">@{username_display} · {user_role}</span>
+                    <span style="font-size:11px; font-weight:700; color:{role_color}; background:{role_bg}; border: 1px solid {role_border}; padding:2px 8px; border-radius:6px;">@{username_display} · {user_role}</span>
                 </div>
             </div>
         </div>
@@ -1066,11 +1183,11 @@ if "Home Dashboard" in nav_option:
     st.markdown("""
     <div class="revision-box" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
         <div>
-            <h4 style="margin: 0 0 4px 0; color: #818CF8; font-size: 17px;">⚡ Need Rapid Exam Prep?</h4>
-            <p style="margin: 0; font-size: 13px; color: #CBD5E1;">Review 1-page formula summaries, sorting complexity matrices, and core OOP cheatsheets.</p>
+            <h4 style="margin: 0 0 4px 0; color: #4338CA; font-size: 19px; font-weight: 800;">⚡ Need Rapid Exam Prep?</h4>
+            <p style="margin: 0; font-size: 14px; color: #475569;">Review 1-page formula summaries, sorting complexity matrices, and core OOP cheatsheets.</p>
         </div>
         <div>
-            <span class="tag-new">🔥 2026 Batch Cheatsheets Ready</span>
+            <span class="tag-new" style="font-size: 14px; padding: 6px 14px;">🔥 2026 Batch Cheatsheets Ready</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -1093,21 +1210,21 @@ if "Home Dashboard" in nav_option:
                 file_path = os.path.join(MATERIAL_FOLDER, filename)
                 with st.container():
                     st.markdown(f"""
-                    <div class="glass-card" style="padding: 16px; margin-bottom: 12px;">
+                    <div class="glass-card" style="padding: 18px; margin-bottom: 14px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                             <div>
-                                <h4 style="margin: 0 0 6px 0; color: #F1F5F9; font-size: 16px;">📄 {info.get('title', filename)}</h4>
+                                <h4 style="margin: 0 0 6px 0; color: #0F172A; font-size: 18px; font-weight: 800;">📄 {info.get('title', filename)}</h4>
                                 <span class="tag-new">🆕 Latest</span>
                                 <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
                                 <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
                                 <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
                             </div>
-                            <div style="text-align: right; font-size: 12px; color: #94A3B8;">
+                            <div style="text-align: right; font-size: 13px; color: #64748B; font-weight: 600;">
                                 💾 {info.get('size_kb', 0)} KB<br>
                                 ❤️ {info.get('likes', 0)} Upvotes
                             </div>
                         </div>
-                        <p style="font-size: 13px; color: #CBD5E1; margin: 8px 0 10px 0;">{info.get('description', '')}</p>
+                        <p style="font-size: 14px; color: #334155; margin: 10px 0 12px 0; line-height: 1.5;">{info.get('description', '')}</p>
                     </div>
                     """, unsafe_allow_html=True)
 
@@ -1142,13 +1259,13 @@ if "Home Dashboard" in nav_option:
             for req in sorted_requests:
                 with st.container():
                     st.markdown(f"""
-                    <div class="glass-card" style="padding: 14px; margin-bottom: 10px; border-left: 3px solid #818CF8;">
+                    <div class="glass-card" style="padding: 16px; margin-bottom: 12px; border-left: 4px solid #4F46E5;">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <strong style="color: #F8FAFC; font-size: 14px;">📌 {req.get('title')}</strong>
-                            <span class="tag-chip" style="margin: 0;">👍 {req.get('upvotes', 0)}</span>
+                            <strong style="color: #0F172A; font-size: 16px;">📌 {req.get('title')}</strong>
+                            <span class="tag-chip" style="margin: 0; font-weight:700;">👍 {req.get('upvotes', 0)}</span>
                         </div>
-                        <div style="font-size: 12px; color: #94A3B8; margin-top: 4px;">
-                            📚 {req.get('subject')} • 🎓 {req.get('semester')} • Requested by {req.get('requester')}
+                        <div style="font-size: 13px; color: #64748B; margin-top: 6px;">
+                            📚 {req.get('subject')} • 🎓 {req.get('semester')} • Requested by <strong>{req.get('requester')}</strong>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -1161,17 +1278,17 @@ if "Home Dashboard" in nav_option:
         st.markdown("<br>", unsafe_allow_html=True)
         st.subheader("💡 Contributor Leaderboard")
         st.markdown("""
-        <div class="glass-card" style="padding: 14px;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span>🥇 <strong>Rohan S.</strong> (CS 5th Sem)</span>
+        <div class="glass-card" style="padding: 18px;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:15px;">
+                <span>🥇 <strong style="color:#0F172A;">Rohan S.</strong> (CS 5th Sem)</span>
                 <span class="tag-chip">14 Uploads • 82 ❤️</span>
             </div>
-            <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                <span>🥈 <strong>Ananya M.</strong> (IT 3rd Sem)</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:10px; font-size:15px;">
+                <span>🥈 <strong style="color:#0F172A;">Ananya M.</strong> (IT 3rd Sem)</span>
                 <span class="tag-chip">9 Uploads • 54 ❤️</span>
             </div>
-            <div style="display:flex; justify-content:space-between;">
-                <span>🥉 <strong>Vikram P.</strong> (ECE 7th Sem)</span>
+            <div style="display:flex; justify-content:space-between; font-size:15px;">
+                <span>🥉 <strong style="color:#0F172A;">Vikram P.</strong> (ECE 7th Sem)</span>
                 <span class="tag-chip">6 Uploads • 39 ❤️</span>
             </div>
         </div>
@@ -1247,18 +1364,18 @@ elif "Study Materials" in nav_option:
                         <div class="glass-card">
                             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
                                 <div>
-                                    <h3 style="margin: 0 0 6px 0; font-size: 18px; color: #F8FAFC;">📄 {info.get('title', filename)}</h3>
+                                    <h3 style="margin: 0 0 6px 0; font-size: 20px; font-weight: 800; color: #0F172A;">📄 {info.get('title', filename)}</h3>
                                     <span class="tag-new">🆕 Latest Notes</span>
                                     <span class="tag-chip">📚 {info.get('subject', 'General')}</span>
                                     <span class="tag-chip">🎓 {info.get('semester', 'All')}</span>
                                     <span class="tag-chip">📑 {info.get('type', 'Notes')}</span>
                                 </div>
                             </div>
-                            <p style="font-size: 13px; color: #CBD5E1; margin: 10px 0 12px 0; line-height: 1.4;">
+                            <p style="font-size: 14px; color: #334155; margin: 10px 0 14px 0; line-height: 1.5;">
                                 {info.get('description', 'Comprehensive reference study materials.')}
                             </p>
-                            <div style="font-size: 12px; color: #94A3B8; margin-bottom: 12px; display: flex; justify-content: space-between; flex-wrap: wrap;">
-                                <span>👤 Contributor: <strong>{info.get('uploader', 'Peer')}</strong></span>
+                            <div style="font-size: 13px; color: #64748B; margin-bottom: 14px; display: flex; justify-content: space-between; flex-wrap: wrap; font-weight: 500;">
+                                <span>👤 Contributor: <strong style="color:#0F172A;">{info.get('uploader', 'Peer')}</strong></span>
                                 <span>💾 {info.get('size_kb', 0)} KB • ❤️ {info.get('likes', 0)} Upvotes</span>
                             </div>
                         </div>
@@ -1448,18 +1565,18 @@ elif "Quick Revision" in nav_option:
         with py_c1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#818CF8; margin-top:0;">📦 Python Core Collections</h4>
-                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                <h4 style="color:#4338CA; margin-top:0; font-size:18px;">📦 Python Core Collections</h4>
+                <table>
+                    <tr>
                         <th>Type</th><th>Syntax</th><th>Mutable?</th><th>Lookup Time</th>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><strong>List</strong></td><td><code>[1, 2, 3]</code></td><td>✅ Yes</td><td>O(1) index, O(n) search</td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><strong>Tuple</strong></td><td><code>(1, 2, 3)</code></td><td>❌ No</td><td>O(1) index, O(n) search</td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><strong>Dict</strong></td><td><code>{'k': 'v'}</code></td><td>✅ Yes</td><td>O(1) Avg (Hash Map)</td>
                     </tr>
                     <tr>
@@ -1471,8 +1588,8 @@ elif "Quick Revision" in nav_option:
 
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#34D399; margin-top:0;">⚡ List & Dict Comprehension</h4>
-                <p style="font-size:13px; color:#CBD5E1; margin-bottom:8px;">Fast syntax shortcuts:</p>
+                <h4 style="color:#059669; margin-top:0; font-size:18px;">⚡ List & Dict Comprehension</h4>
+                <p style="font-size:14px; color:#334155; margin-bottom:8px;">Fast syntax shortcuts:</p>
             </div>
             """, unsafe_allow_html=True)
             st.code("""# Squares of even numbers
@@ -1487,8 +1604,8 @@ transpose = [[row[i] for row in matrix] for i in range(len(matrix[0]))]""", lang
         with py_c2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#F472B6; margin-top:0;">🎯 OOP & Magic / Dunder Methods</h4>
-                <p style="font-size:13px; color:#CBD5E1;">Quick reference for object customisation:</p>
+                <h4 style="color:#7C3AED; margin-top:0; font-size:18px;">🎯 OOP & Magic / Dunder Methods</h4>
+                <p style="font-size:14px; color:#334155;">Quick reference for object customisation:</p>
             </div>
             """, unsafe_allow_html=True)
             st.code("""class Account:
@@ -1520,18 +1637,18 @@ print(acc)  # Calls __str__""", language="python")
         with cpp_c1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#818CF8; margin-top:0;">📌 Pointers & Memory Management</h4>
-                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                <h4 style="color:#4338CA; margin-top:0; font-size:18px;">📌 Pointers & Memory Management</h4>
+                <table>
+                    <tr>
                         <th>Feature</th><th>C Language</th><th>C++ Language</th>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td>Heap Alloc</td><td><code>malloc(size)</code> / <code>calloc</code></td><td><code>new Type[size]</code></td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td>Heap Free</td><td><code>free(ptr)</code></td><td><code>delete / delete[] ptr</code></td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td>I/O Speed</td><td><code>printf / scanf</code></td><td><code>cin / cout</code> (use fast I/O)</td>
                     </tr>
                     <tr>
@@ -1554,21 +1671,21 @@ int main() {
         with cpp_c2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#34D399; margin-top:0;">⚡ C++ STL Container Complexity Matrix</h4>
-                <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+                <h4 style="color:#059669; margin-top:0; font-size:18px;">⚡ C++ STL Container Complexity Matrix</h4>
+                <table>
+                    <tr>
                         <th>STL Container</th><th>Internal Structure</th><th>Access Time</th><th>Insert / Delete</th>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><code>vector</code></td><td>Dynamic Array</td><td>O(1)</td><td>O(1) Back, O(n) Middle</td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><code>deque</code></td><td>Chunked Arrays</td><td>O(1)</td><td>O(1) Front & Back</td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><code>set / map</code></td><td>Red-Black Tree</td><td>O(log n)</td><td>O(log n)</td>
                     </tr>
-                    <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                    <tr>
                         <td><code>unordered_map</code></td><td>Hash Table</td><td>O(1) Avg</td><td>O(1) Avg</td>
                     </tr>
                     <tr>
@@ -1588,21 +1705,21 @@ int main() {
         
         st.markdown("""
         <div class="glass-card">
-            <h4 style="color:#818CF8; margin-top:0;">📊 Master Sorting Algorithms Comparison</h4>
-            <table style="width:100%; font-size:13px; color:#E2E8F0; border-collapse:collapse;">
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.1); color:#94A3B8;">
+            <h4 style="color:#4338CA; margin-top:0; font-size:18px;">📊 Master Sorting Algorithms Comparison</h4>
+            <table>
+                <tr>
                     <th>Algorithm</th><th>Best Time</th><th>Average Time</th><th>Worst Time</th><th>Space</th><th>Stable?</th>
                 </tr>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr>
                     <td><strong>Quick Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n²)</td><td>O(log n)</td><td>❌ No</td>
                 </tr>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr>
                     <td><strong>Merge Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(n)</td><td>✅ Yes</td>
                 </tr>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr>
                     <td><strong>Heap Sort</strong></td><td>O(n log n)</td><td>O(n log n)</td><td>O(n log n)</td><td>O(1)</td><td>❌ No</td>
                 </tr>
-                <tr style="border-bottom:1px solid rgba(255,255,255,0.05);">
+                <tr>
                     <td><strong>Insertion Sort</strong></td><td>O(n)</td><td>O(n²)</td><td>O(n²)</td><td>O(1)</td><td>✅ Yes</td>
                 </tr>
                 <tr>
@@ -1616,8 +1733,8 @@ int main() {
         with dsa_col1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#34D399; margin-top:0;">🌲 Tree Traversals</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#059669; margin-top:0; font-size:18px;">🌲 Tree Traversals</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>Inorder:</strong> Left -> Root -> Right (Yields sorted order in BST)<br>
                     • <strong>Preorder:</strong> Root -> Left -> Right (Used for serialization)<br>
                     • <strong>Postorder:</strong> Left -> Right -> Root (Used for deleting/bottom-up DP)<br>
@@ -1629,8 +1746,8 @@ int main() {
         with dsa_col2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#F472B6; margin-top:0;">🕸️ Graph Algorithms</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#E11D48; margin-top:0; font-size:18px;">🕸️ Graph Algorithms</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>BFS:</strong> Queue, Shortest Path in unweighted graph — <code>O(V + E)</code><br>
                     • <strong>DFS:</strong> Stack/Recursion, Connected components & cycles — <code>O(V + E)</code><br>
                     • <strong>Dijkstra:</strong> Min-Heap, Single-source shortest path — <code>O((V+E) log V)</code><br>
@@ -1651,14 +1768,14 @@ int main() {
         with os_c1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#EF4444; margin-top:0;">🚨 4 Coffman Deadlock Conditions</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#DC2626; margin-top:0; font-size:18px;">🚨 4 Coffman Deadlock Conditions</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     1. <strong>Mutual Exclusion:</strong> At least one resource must be held non-shareably.<br>
                     2. <strong>Hold and Wait:</strong> Process holds ≥1 resource and waits for others.<br>
                     3. <strong>No Preemption:</strong> Resources cannot be forcibly taken from a process.<br>
                     4. <strong>Circular Wait:</strong> P0 waits for P1, P1 waits for P2... Pn waits for P0.
                 </p>
-                <div style="background:rgba(239,68,68,0.1); border-left:3px solid #EF4444; padding:8px 12px; border-radius:6px; font-size:12px;">
+                <div style="background:#FEE2E2; border-left:4px solid #DC2626; padding:10px 14px; border-radius:8px; font-size:13px; color:#991B1B; font-weight:500;">
                     💡 <em>Deadlock Prevention breaks at least ONE of these four conditions.</em>
                 </div>
             </div>
@@ -1667,8 +1784,8 @@ int main() {
         with os_c2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#34D399; margin-top:0;">📊 CPU Scheduling & Memory Formulae</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#059669; margin-top:0; font-size:18px;">📊 CPU Scheduling & Memory Formulae</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>Turnaround Time (TAT)</strong> = Completion Time (CT) - Arrival Time (AT)<br>
                     • <strong>Waiting Time (WT)</strong> = Turnaround Time (TAT) - Burst Time (BT)<br>
                     • <strong>Banker's Algorithm:</strong> <code>Need[i][j] = Max[i][j] - Allocation[i][j]</code><br>
@@ -1689,8 +1806,8 @@ int main() {
         with db_c1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#818CF8; margin-top:0;">💎 ACID Properties of Transactions</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#4338CA; margin-top:0; font-size:18px;">💎 ACID Properties of Transactions</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>A - Atomicity:</strong> "All or Nothing" — transaction completes wholly or rolls back.<br>
                     • <strong>C - Consistency:</strong> State transitions preserve integrity constraints.<br>
                     • <strong>I - Isolation:</strong> Concurrent transactions execute as if isolated.<br>
@@ -1702,8 +1819,8 @@ int main() {
         with db_c2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="color:#FACC15; margin-top:0;">📐 Normalization Quick Checklist</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.6;">
+                <h4 style="color:#D97706; margin-top:0; font-size:18px;">📐 Normalization Quick Checklist</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>1NF:</strong> Atomic column values, no repeating groups.<br>
                     • <strong>2NF:</strong> 1NF + No partial dependency (all non-key attributes fully depend on primary key).<br>
                     • <strong>3NF:</strong> 2NF + No transitive dependency (X -> Y, Y -> Z where Z is non-prime).<br>
@@ -1748,8 +1865,8 @@ int main() {
         for idx, fc in enumerate(flashcards):
             with st.expander(f"🃏 Flashcard {idx+1} [{fc['topic']}]: {fc['q']}"):
                 st.markdown(f"""
-                <div style="background: rgba(99,102,241,0.1); border-left: 3px solid #818CF8; padding: 12px; border-radius: 8px; font-size: 14px; color: #F1F5F9;">
-                    💡 <strong>Answer & Concept:</strong><br>{fc['a']}
+                <div style="background: #EEF2FF; border-left: 4px solid #4F46E5; padding: 14px; border-radius: 10px; font-size: 14px; color: #1E293B;">
+                    💡 <strong>Answer &amp; Concept:</strong><br>{fc['a']}
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -1882,10 +1999,10 @@ elif "Request Materials" in nav_option:
 
                 with st.container():
                     st.markdown(f"""
-                    <div class="glass-card" style="border-left: 4px solid {border_color};">
+                    <div class="glass-card" style="border-left: 5px solid {border_color}; padding: 22px;">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 8px;">
                             <div>
-                                <h3 style="margin: 0 0 6px 0; font-size: 19px; color: #F8FAFC;">📌 {req.get('title')}</h3>
+                                <h3 style="margin: 0 0 6px 0; font-size: 20px; font-weight: 800; color: #0F172A;">📌 {req.get('title')}</h3>
                                 <span class="tag-chip">📚 {req.get('subject')}</span>
                                 <span class="tag-chip">🎓 {req.get('semester')}</span>
                                 <span class="tag-chip">📑 {req.get('type', 'Notes')}</span>
@@ -1895,12 +2012,12 @@ elif "Request Materials" in nav_option:
                                 <span class="{status_badge}">{status_text}</span>
                             </div>
                         </div>
-                        <p style="margin: 12px 0 10px 0; font-size: 14px; color: #E2E8F0; line-height: 1.5;">
+                        <p style="margin: 12px 0 10px 0; font-size: 15px; color: #334155; line-height: 1.5;">
                             {req.get('description')}
                         </p>
-                        <div style="font-size: 12px; color: #94A3B8; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px;">
-                            <span>👤 Requested by: <strong>{req.get('requester', 'Student')}</strong> on {req.get('date', 'Recent')}</span>
-                            <span>👍 <strong>{req.get('upvotes', 0)}</strong> student(s) need this</span>
+                        <div style="font-size: 13px; color: #64748B; display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 12px; font-weight: 500;">
+                            <span>👤 Requested by: <strong style="color:#0F172A;">{req.get('requester', 'Student')}</strong> on {req.get('date', 'Recent')}</span>
+                            <span>👍 <strong style="color:#4F46E5;">{req.get('upvotes', 0)}</strong> student(s) need this</span>
                         </div>
                     </div>
                     """, unsafe_allow_html=True)
@@ -1925,7 +2042,7 @@ elif "Request Materials" in nav_option:
 
                                     if fulfill_btn:
                                         if not f_note.strip():
-                                            st.error("Please provide a note or file location to help the student find it.")
+                                             st.error("Please provide a note or file location to help the student find it.")
                                         else:
                                             req["status"] = "Fulfilled"
                                             req["fulfilled_by"] = f_author.strip() if f_author.strip() else "Helpful Contributor"
@@ -1996,17 +2113,17 @@ elif "Request Materials" in nav_option:
         with hof_col1:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="margin-top:0; color:#818CF8;">🌟 Top Request Solvers</h4>
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span>🥇 <strong>Rohan Sharma</strong> (CS 5th Sem)</span>
+                <h4 style="margin-top:0; color:#4338CA; font-size:18px;">🌟 Top Request Solvers</h4>
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:15px;">
+                    <span>🥇 <strong style="color:#0F172A;">Rohan Sharma</strong> (CS 5th Sem)</span>
                     <span class="tag-chip">8 Requests Resolved</span>
                 </div>
-                <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-                    <span>🥈 <strong>Ananya Mishra</strong> (IT 3rd Sem)</span>
+                <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:15px;">
+                    <span>🥈 <strong style="color:#0F172A;">Ananya Mishra</strong> (IT 3rd Sem)</span>
                     <span class="tag-chip">5 Requests Resolved</span>
                 </div>
-                <div style="display:flex; justify-content:space-between;">
-                    <span>🥉 <strong>Vikram Patel</strong> (ECE 7th Sem)</span>
+                <div style="display:flex; justify-content:space-between; font-size:15px;">
+                    <span>🥉 <strong style="color:#0F172A;">Vikram Patel</strong> (ECE 7th Sem)</span>
                     <span class="tag-chip">4 Requests Resolved</span>
                 </div>
             </div>
@@ -2015,11 +2132,11 @@ elif "Request Materials" in nav_option:
         with hof_col2:
             st.markdown("""
             <div class="glass-card">
-                <h4 style="margin-top:0; color:#34D399;">💡 How to Earn Contributor Badges</h4>
-                <p style="font-size:13px; color:#CBD5E1; line-height:1.5;">
+                <h4 style="margin-top:0; color:#059669; font-size:18px;">💡 How to Earn Contributor Badges</h4>
+                <p style="font-size:14px; color:#334155; line-height:1.6;">
                     • <strong>Bronze Contributor:</strong> Fulfill 2 community requests.<br>
-                    • <strong>Silver Contributor:</strong> Fulfill 5 requests & maintain 4+ upvotes.<br>
-                    • <strong>Gold Contributor:</strong> Top 3 contributors of the semester receive campus hackathon credits & certificates.
+                    • <strong>Silver Contributor:</strong> Fulfill 5 requests &amp; maintain 4+ upvotes.<br>
+                    • <strong>Gold Contributor:</strong> Top 3 contributors of the semester receive campus hackathon credits &amp; certificates.
                 </p>
             </div>
             """, unsafe_allow_html=True)
@@ -2083,16 +2200,16 @@ elif "Student Tools" in nav_option:
             with res_c1:
                 st.markdown(f"""
                 <div class="glass-card" style="text-align:center;">
-                    <div style="font-size:13px; color:#94A3B8; text-transform:uppercase;">Calculated SGPA</div>
-                    <div style="font-size:32px; font-weight:800; color:#818CF8; margin:6px 0;">{calculated_sgpa} / 10.0</div>
+                    <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Calculated SGPA</div>
+                    <div style="font-size:36px; font-weight:800; color:#4338CA; margin:8px 0;">{calculated_sgpa} / 10.0</div>
                     <span class="tag-chip">Total Credits: {total_credits}</span>
                 </div>
                 """, unsafe_allow_html=True)
             with res_c2:
                 st.markdown(f"""
                 <div class="glass-card" style="text-align:center;">
-                    <div style="font-size:13px; color:#94A3B8; text-transform:uppercase;">Approximate Percentage</div>
-                    <div style="font-size:32px; font-weight:800; color:#34D399; margin:6px 0;">{max(calculated_pct, 0.0)}%</div>
+                    <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Approximate Percentage</div>
+                    <div style="font-size:36px; font-weight:800; color:#059669; margin:8px 0;">{max(calculated_pct, 0.0)}%</div>
                     <span class="tag-chip">AICTE / UGC Formula</span>
                 </div>
                 """, unsafe_allow_html=True)
@@ -2100,8 +2217,8 @@ elif "Student Tools" in nav_option:
                 classification = "🥇 First Class with Distinction" if calculated_sgpa >= 8.5 else "🥈 First Class" if calculated_sgpa >= 6.75 else "🥉 Second Class" if calculated_sgpa >= 5.0 else "⚠️ Pass / Reappear"
                 st.markdown(f"""
                 <div class="glass-card" style="text-align:center;">
-                    <div style="font-size:13px; color:#94A3B8; text-transform:uppercase;">Academic Standing</div>
-                    <div style="font-size:18px; font-weight:700; color:#FACC15; margin:12px 0;">{classification}</div>
+                    <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Academic Standing</div>
+                    <div style="font-size:20px; font-weight:800; color:#D97706; margin:14px 0;">{classification}</div>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -2132,10 +2249,10 @@ elif "Student Tools" in nav_option:
             safe_bunks = int((total_attended / target_ratio) - total_held)
             with g_c1:
                 st.markdown(f"""
-                <div class="glass-card" style="border-left: 4px solid #10B981;">
-                    <h3 style="color:#34D399; margin:0 0 6px 0;">✅ Safe Attendance Buffer</h3>
-                    <p style="font-size:14px; margin:0; color:#E2E8F0;">
-                        You can safely miss up to <strong style="font-size:18px; color:#34D399;">{safe_bunks}</strong> upcoming lecture(s) without dropping below {target_pct}%.
+                <div class="glass-card" style="border-left: 5px solid #059669;">
+                    <h3 style="color:#059669; margin:0 0 6px 0; font-size:20px;">✅ Safe Attendance Buffer</h3>
+                    <p style="font-size:15px; margin:0; color:#1E293B; line-height:1.5;">
+                        You can safely miss up to <strong style="font-size:20px; color:#059669;">{safe_bunks}</strong> upcoming lecture(s) without dropping below {target_pct}%.
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -2145,10 +2262,10 @@ elif "Student Tools" in nav_option:
             must_attend = int(((target_ratio * total_held) - total_attended) / (1.0 - target_ratio)) + 1
             with g_c1:
                 st.markdown(f"""
-                <div class="glass-card" style="border-left: 4px solid #EF4444;">
-                    <h3 style="color:#F87171; margin:0 0 6px 0;">⚠️ Attendance Warning Zone</h3>
-                    <p style="font-size:14px; margin:0; color:#E2E8F0;">
-                        You must attend the next <strong style="font-size:18px; color:#F87171;">{must_attend}</strong> consecutive lecture(s) without missing any to restore eligibility.
+                <div class="glass-card" style="border-left: 5px solid #DC2626;">
+                    <h3 style="color:#DC2626; margin:0 0 6px 0; font-size:20px;">⚠️ Attendance Warning Zone</h3>
+                    <p style="font-size:15px; margin:0; color:#1E293B; line-height:1.5;">
+                        You must attend the next <strong style="font-size:20px; color:#DC2626;">{must_attend}</strong> consecutive lecture(s) without missing any to restore eligibility.
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -2165,8 +2282,8 @@ elif "Student Tools" in nav_option:
         with p_col1:
             st.markdown("""
             <div class="glass-card" style="text-align:center;">
-                <div style="font-size:13px; color:#94A3B8; text-transform:uppercase;">Focus Interval</div>
-                <div style="font-size:48px; font-weight:800; font-family:'Outfit'; color:#818CF8; margin:8px 0;">25:00</div>
+                <div style="font-size:13px; color:#64748B; font-weight:700; text-transform:uppercase;">Focus Interval</div>
+                <div style="font-size:52px; font-weight:800; font-family:'Outfit'; color:#4338CA; margin:8px 0;">25:00</div>
                 <span class="tag-chip">🍅 Deep Work Cycle</span>
             </div>
             """, unsafe_allow_html=True)
@@ -2183,10 +2300,10 @@ elif "Student Tools" in nav_option:
             st.markdown("#### 🎧 Curated Focus Soundscapes")
             st.markdown("""
             <div class="glass-card">
-                <p style="margin:0 0 10px 0; font-size:14px;">Boost focus and block background noise:</p>
-                <div style="margin-bottom:8px;">• 🎧 <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" style="color:#818CF8; font-weight:600;">Lofi Girl Study Stream (YouTube)</a></div>
-                <div style="margin-bottom:8px;">• 🌧️ <a href="https://rainymood.com/" target="_blank" style="color:#818CF8; font-weight:600;">Rainymood (Ambient Rain & Thunder)</a></div>
-                <div style="margin-bottom:0;">• ☕ <a href="https://coffitivity.com/" target="_blank" style="color:#818CF8; font-weight:600;">Coffitivity (Ambient Cafe Sounds)</a></div>
+                <p style="margin:0 0 12px 0; font-size:15px; color:#334155;">Boost focus and block background noise:</p>
+                <div style="margin-bottom:10px;">• 🎧 <a href="https://www.youtube.com/watch?v=jfKfPfyJRdk" target="_blank" style="color:#4338CA; font-weight:700;">Lofi Girl Study Stream (YouTube)</a></div>
+                <div style="margin-bottom:10px;">• 🌧️ <a href="https://rainymood.com/" target="_blank" style="color:#4338CA; font-weight:700;">Rainymood (Ambient Rain &amp; Thunder)</a></div>
+                <div style="margin-bottom:0;">• ☕ <a href="https://coffitivity.com/" target="_blank" style="color:#4338CA; font-weight:700;">Coffitivity (Ambient Cafe Sounds)</a></div>
             </div>
             """, unsafe_allow_html=True)
 
@@ -2369,10 +2486,10 @@ elif "Useful Resources" in nav_option:
                 st.markdown(f"""
                 <div class="glass-card">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <h4 style="margin: 0; color: #818CF8; font-size: 18px;">{item['title']}</h4>
+                        <h4 style="margin: 0; color: #4338CA; font-size: 20px; font-weight: 800;">{item['title']}</h4>
                         <span class="tag-chip">{item['tag']}</span>
                     </div>
-                    <p style="font-size: 13px; color: #CBD5E1; margin: 10px 0 14px 0; line-height: 1.4;">{item['desc']}</p>
+                    <p style="font-size: 14px; color: #334155; margin: 10px 0 14px 0; line-height: 1.5;">{item['desc']}</p>
                 </div>
                 """, unsafe_allow_html=True)
                 st.link_button(f"🚀 Open {item['title']}", item["url"], use_container_width=True)
@@ -2420,16 +2537,17 @@ elif "Announcements" in nav_option:
             for item in filtered_announcements:
                 pri = item.get("priority", "General").title()
                 badge_class = "badge-urgent" if pri.lower() == "urgent" else "badge-important" if pri.lower() == "important" else "badge-general"
+                border_color = "#DC2626" if pri.lower() == "urgent" else "#D97706" if pri.lower() == "important" else "#2563EB"
                 
                 with st.container():
                     st.markdown(f"""
-                    <div class="glass-card" style="border-left: 4px solid {'#EF4444' if pri.lower()=='urgent' else '#F59E0B' if pri.lower()=='important' else '#3B82F6'};">
+                    <div class="glass-card" style="border-left: 5px solid {border_color};">
                         <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <h3 style="margin: 0; font-size: 18px; color: #F8FAFC;">📌 {item.get('title', 'Untitled Notice')}</h3>
+                            <h3 style="margin: 0; font-size: 20px; font-weight: 800; color: #0F172A;">📌 {item.get('title', 'Untitled Notice')}</h3>
                             <span class="{badge_class}">{pri}</span>
                         </div>
-                        <p style="margin: 10px 0; font-size: 14px; color: #E2E8F0; line-height: 1.5;">{item.get('message', '')}</p>
-                        <div style="font-size: 12px; color: #94A3B8;">
+                        <p style="margin: 10px 0; font-size: 15px; color: #334155; line-height: 1.6;">{item.get('message', '')}</p>
+                        <div style="font-size: 13px; color: #64748B; font-weight: 500;">
                             🏛️ <strong>Department:</strong> {item.get('department', 'General')} &nbsp;|&nbsp; 
                             👤 <strong>Posted By:</strong> {item.get('author', 'Admin')} &nbsp;|&nbsp; 
                             📅 <strong>Date:</strong> {item.get('date', 'Recent')}
