@@ -1,0 +1,54 @@
+[
+    {
+        "id": "prod_1",
+        "title": "Complete DSA & LeetCode Visual Patterns Master-Deck (250+ Solved in C++ & Python)",
+        "author": "Rohan Sharma (Placed at Microsoft / 9.6 CGPA)",
+        "author_branch": "Computer Science 7th Sem",
+        "price_inr": 149,
+        "category": "Coding & DSA Vault",
+        "rating": 4.9,
+        "sales_count": 64,
+        "description": "Comprehensive visual roadmap with patterns (Two Pointers, Sliding Window, Monotonic Stack, DP States) with clean interview-ready code templates.",
+        "includes": "PDF Cheatsheet (120 Pages) + GitHub Repo Access + 15 Video Breakdowns",
+        "file": "materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"
+    },
+    {
+        "id": "prod_2",
+        "title": "GATE CS 2026 Topper's 1-Page Formula Sheets & Rapid Revision Numerical Vault",
+        "author": "Ananya Mishra (GATE Rank 42)",
+        "author_branch": "Information Technology Alumna",
+        "price_inr": 99,
+        "category": "Competitive Exams",
+        "rating": 4.8,
+        "sales_count": 112,
+        "description": "High-yield formula compilation covering all 10 core subjects with previous 15-year numerical shortcut tricks.",
+        "includes": "10 Subject PDF Cheatcards + 3 Full-Length Mock Question PDFs",
+        "file": "materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf"
+    },
+    {
+        "id": "prod_3",
+        "title": "Operating Systems & DBMS End-Sem Solved Answer Banks (With 10-Year Subjective Questions)",
+        "author": "Prof. Sneha Kulkarni & Academic Scholars",
+        "author_branch": "Core CS Faculty",
+        "price_inr": 79,
+        "category": "Semester PYQs",
+        "rating": 4.9,
+        "sales_count": 89,
+        "description": "Step-by-step solved answers with architectural diagrams for Deadlock prevention, Banker's algorithm, Paging numericals, and BCNF decompositions.",
+        "includes": "5 Complete Solved Paper PDFs + Diagram Mastersheet",
+        "file": "materials/OS_and_DBMS_Exam_CheatSheet.pdf"
+    },
+    {
+        "id": "prod_4",
+        "title": "Production-Ready Full-Stack MERN + Stripe Authentication SaaS Starter Template",
+        "author": "Vikram Patel (Full-Stack Dev)",
+        "author_branch": "ECE 7th Sem",
+        "price_inr": 199,
+        "category": "Software Starter Packs",
+        "rating": 5.0,
+        "sales_count": 38,
+        "description": "Clean, scalable boilerplate with JWT auth, payment gateway integration, responsive UI components, and Docker containerization.",
+        "includes": "Complete Source Code ZIP + Architecture Documentation + Deployment Guide",
+        "file": "materials/Python_Complete_Programming_Handbook.pdf"
+    }
+]

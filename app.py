@@ -4950,6 +4950,96 @@ elif "Student Tools" in nav_option:
                 st.caption(f"ℹ️ {eval_error}")
 
             # ── Keypad Grid ──────────────────────────────
+            st.markdown("""
+            <style>
+                /* Ultra-Clear High-Contrast Light Keypad Styling */
+                .calc-keypad-wrapper .stButton > button {
+                    background: #FFFFFF !important;
+                    color: #0F172A !important;
+                    border: 2px solid #CBD5E1 !important;
+                    border-radius: 14px !important;
+                    font-size: 22px !important;
+                    font-weight: 900 !important;
+                    font-family: 'Outfit', -apple-system, sans-serif !important;
+                    min-height: 54px !important;
+                    padding: 10px 4px !important;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+                    transition: all 0.16s ease !important;
+                    letter-spacing: 0.02em !important;
+                }
+                
+                .calc-keypad-wrapper .stButton > button:hover {
+                    background: #EFF6FF !important;
+                    color: #1D4ED8 !important;
+                    border-color: #2563EB !important;
+                    transform: translateY(-2px) !important;
+                    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.18) !important;
+                }
+
+                .calc-keypad-wrapper .stButton > button:active {
+                    transform: translateY(1px) !important;
+                    background: #DBEAFE !important;
+                }
+
+                /* Scientific Row Styling (Light Violet with Sharp Purple text) */
+                .calc-sci-row .stButton > button {
+                    background: #F5F3FF !important;
+                    color: #6D28D9 !important;
+                    border: 1.5px solid #DDD6FE !important;
+                    font-size: 16px !important;
+                    font-weight: 800 !important;
+                    min-height: 44px !important;
+                }
+                .calc-sci-row .stButton > button:hover {
+                    background: #EDE9FE !important;
+                    border-color: #7C3AED !important;
+                    color: #5B21B6 !important;
+                }
+
+                /* Operator Buttons (Light Blue with Sharp Royal Blue text) */
+                .calc-op-btn .stButton > button {
+                    background: #EFF6FF !important;
+                    color: #1D4ED8 !important;
+                    border: 2px solid #BFDBFE !important;
+                    font-size: 22px !important;
+                    font-weight: 900 !important;
+                }
+                .calc-op-btn .stButton > button:hover {
+                    background: #DBEAFE !important;
+                    border-color: #2563EB !important;
+                }
+
+                /* Clear & Delete (Light Rose with Crimson text) */
+                .calc-clear-btn .stButton > button {
+                    background: #FEE2E2 !important;
+                    color: #DC2626 !important;
+                    border: 2px solid #FECACA !important;
+                    font-size: 17px !important;
+                    font-weight: 900 !important;
+                }
+                .calc-clear-btn .stButton > button:hover {
+                    background: #FECDCD !important;
+                    border-color: #EF4444 !important;
+                    color: #B91C1C !important;
+                }
+
+                /* Equal Button (Vibrant Royal Blue) */
+                .calc-eq-btn .stButton > button {
+                    background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+                    color: #FFFFFF !important;
+                    border: 2px solid #1D4ED8 !important;
+                    font-size: 18px !important;
+                    font-weight: 900 !important;
+                    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4) !important;
+                }
+                .calc-eq-btn .stButton > button:hover {
+                    background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%) !important;
+                    box-shadow: 0 8px 22px rgba(37, 99, 235, 0.55) !important;
+                    color: #FFFFFF !important;
+                }
+            </style>
+            """, unsafe_allow_html=True)
+
             st.markdown("##### ⌨️ Interactive Keypad:")
 
             def append_to_calc(token):
@@ -4973,7 +5063,10 @@ elif "Student Tools" in nav_option:
                     st.session_state["calc_expr"] += str(token)
                 st.rerun()
 
+            st.markdown("<div class='calc-keypad-wrapper'>", unsafe_allow_html=True)
+
             # Scientific Row
+            st.markdown("<div class='calc-sci-row'>", unsafe_allow_html=True)
             s1, s2, s3, s4, s5, s6 = st.columns(6)
             with s1:
                 if st.button("√", key="btn_sqrt", use_container_width=True):
@@ -4993,23 +5086,32 @@ elif "Student Tools" in nav_option:
             with s6:
                 if st.button("cos", key="btn_cos", use_container_width=True):
                     append_to_calc("cos(")
+            st.markdown("</div>", unsafe_allow_html=True)
 
-            # Row 1
+            # Row 1 (C, (, ), ÷)
             k1, k2, k3, k4 = st.columns(4)
             with k1:
+                st.markdown("<div class='calc-clear-btn'>", unsafe_allow_html=True)
                 if st.button("C", key="btn_c", use_container_width=True):
                     append_to_calc("C")
+                st.markdown("</div>", unsafe_allow_html=True)
             with k2:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button("(", key="btn_lp", use_container_width=True):
                     append_to_calc("(")
+                st.markdown("</div>", unsafe_allow_html=True)
             with k3:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button(")", key="btn_rp", use_container_width=True):
                     append_to_calc(")")
+                st.markdown("</div>", unsafe_allow_html=True)
             with k4:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button("÷", key="btn_div", use_container_width=True):
                     append_to_calc(" / ")
+                st.markdown("</div>", unsafe_allow_html=True)
 
-            # Row 2
+            # Row 2 (7, 8, 9, ×)
             k5, k6, k7, k8 = st.columns(4)
             with k5:
                 if st.button("7", key="btn_7", use_container_width=True):
@@ -5021,10 +5123,12 @@ elif "Student Tools" in nav_option:
                 if st.button("9", key="btn_9", use_container_width=True):
                     append_to_calc("9")
             with k8:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button("×", key="btn_mul", use_container_width=True):
                     append_to_calc(" * ")
+                st.markdown("</div>", unsafe_allow_html=True)
 
-            # Row 3
+            # Row 3 (4, 5, 6, −)
             k9, k10, k11, k12 = st.columns(4)
             with k9:
                 if st.button("4", key="btn_4", use_container_width=True):
@@ -5036,10 +5140,12 @@ elif "Student Tools" in nav_option:
                 if st.button("6", key="btn_6", use_container_width=True):
                     append_to_calc("6")
             with k12:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button("−", key="btn_sub", use_container_width=True):
                     append_to_calc(" - ")
+                st.markdown("</div>", unsafe_allow_html=True)
 
-            # Row 4
+            # Row 4 (1, 2, 3, +)
             k13, k14, k15, k16 = st.columns(4)
             with k13:
                 if st.button("1", key="btn_1", use_container_width=True):
@@ -5051,10 +5157,12 @@ elif "Student Tools" in nav_option:
                 if st.button("3", key="btn_3", use_container_width=True):
                     append_to_calc("3")
             with k16:
+                st.markdown("<div class='calc-op-btn'>", unsafe_allow_html=True)
                 if st.button("+", key="btn_add", use_container_width=True):
                     append_to_calc(" + ")
+                st.markdown("</div>", unsafe_allow_html=True)
 
-            # Row 5
+            # Row 5 (0, ., DEL, =)
             k17, k18, k19, k20 = st.columns(4)
             with k17:
                 if st.button("0", key="btn_0", use_container_width=True):
@@ -5063,11 +5171,17 @@ elif "Student Tools" in nav_option:
                 if st.button(".", key="btn_dot", use_container_width=True):
                     append_to_calc(".")
             with k19:
+                st.markdown("<div class='calc-clear-btn'>", unsafe_allow_html=True)
                 if st.button("DEL ⌫", key="btn_del", use_container_width=True):
                     append_to_calc("DEL")
+                st.markdown("</div>", unsafe_allow_html=True)
             with k20:
-                if st.button("= Calculate", key="btn_eq", use_container_width=True, type="primary"):
+                st.markdown("<div class='calc-eq-btn'>", unsafe_allow_html=True)
+                if st.button("= Calculate", key="btn_eq", use_container_width=True):
                     append_to_calc("=")
+                st.markdown("</div>", unsafe_allow_html=True)
+
+            st.markdown("</div>", unsafe_allow_html=True)
 
         with calc_col_side:
             # ── Quick Utility 1: Percentage & Marks ───

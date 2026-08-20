@@ -1,0 +1,32 @@
+[
+    {
+        "id": "mentor_1",
+        "name": "Rohan Sharma",
+        "expertise": "DSA, LeetCode Hard, System Design & Tech Interviews",
+        "fee_inr": 99,
+        "duration": "30 Minutes",
+        "rating": 4.9,
+        "sessions_completed": 28,
+        "available_slots": [
+            "Tomorrow 6:00 PM",
+            "Tomorrow 8:00 PM",
+            "Saturday 11:00 AM"
+        ],
+        "bio": "Placed at Tier-1 tech company. Can review your resume, debug DSA approaches, and run mock technical interviews."
+    },
+    {
+        "id": "mentor_2",
+        "name": "Ananya Mishra",
+        "expertise": "GATE CS Preparation Strategy & Engineering Mathematics",
+        "fee_inr": 129,
+        "duration": "45 Minutes",
+        "rating": 5.0,
+        "sessions_completed": 45,
+        "available_slots": [
+            "Friday 5:30 PM",
+            "Saturday 4:00 PM",
+            "Sunday 10:00 AM"
+        ],
+        "bio": "GATE AIR 42. I help you build realistic 90-day study schedules, tackle weak subjects, and master previous year papers."
+    }
+]

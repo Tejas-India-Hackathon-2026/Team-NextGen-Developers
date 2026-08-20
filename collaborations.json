@@ -1,0 +1,89 @@
+[
+    {
+        "id": "collab_1",
+        "title": "Full-Stack Campus Food & Snack Delivery Platform",
+        "category": "Web & Mobile Dev",
+        "type": "Revenue Share + Bounty",
+        "compensation": "\u20b98,000 Bounty + 15% Monthly Net Profit Split",
+        "posted_by": "Aman Verma (CS 6th Sem)",
+        "date": "2026-08-15",
+        "deadline": "2026-09-30",
+        "skills_required": [
+            "React",
+            "FastAPI / Node.js",
+            "PostgreSQL",
+            "Razorpay Integration"
+        ],
+        "description": "Building a hyperlocal quick-commerce snack & night-canteen delivery app for hostel students. Seeking a frontend lead and backend engineer to ship MVP before mid-sems.",
+        "team_size": "2 / 4 Members Joined",
+        "status": "Recruiting",
+        "applicants": [
+            {
+                "name": "Siddharth Rao",
+                "role": "Frontend Dev",
+                "quote": "Experienced in React Native & Tailwind",
+                "date": "2026-08-16"
+            }
+        ]
+    },
+    {
+        "id": "collab_2",
+        "title": "AI Mid-Sem Question Generator & Automated Grading SaaS",
+        "category": "AI / Machine Learning",
+        "type": "Fixed Bounty + Token Royalty",
+        "compensation": "\u20b912,500 Milestone Bounty + 20% Subscription Royalty",
+        "posted_by": "Prof. S. Narayanan & Tech Club",
+        "date": "2026-08-18",
+        "deadline": "2026-10-15",
+        "skills_required": [
+            "Python",
+            "LangChain / LlamaIndex",
+            "FastAPI",
+            "OpenAI / Gemini API"
+        ],
+        "description": "Developing an automated syllabus parser that generates high-yield unit mock papers from uploaded professor lecture notes. Need an ML enthusiast to fine-tune prompts and RAG pipeline.",
+        "team_size": "1 / 3 Members Joined",
+        "status": "Recruiting",
+        "applicants": []
+    },
+    {
+        "id": "collab_3",
+        "title": "College Fest 'TechKrithi 2026' Official Merchandise & Ticketing Portal",
+        "category": "UI/UX & Web Dev",
+        "type": "Fixed Project Bounty",
+        "compensation": "\u20b96,000 Flat Bounty + 5% Merch Revenue Split",
+        "posted_by": "Cultural & Tech Committee",
+        "date": "2026-08-12",
+        "deadline": "2026-09-10",
+        "skills_required": [
+            "Figma UI/UX",
+            "Next.js / HTML5",
+            "Payment Gateway",
+            "QR Code Generation"
+        ],
+        "description": "Design dynamic high-converting landing page, pass booking system with dynamic QR generation for entry gates, and official merchandise e-store.",
+        "team_size": "3 / 3 Members Joined",
+        "status": "Active Project",
+        "applicants": []
+    },
+    {
+        "id": "collab_4",
+        "title": "Autonomous Drone Path-Planning for Campus Security & Surveillance",
+        "category": "Robotics & Embedded",
+        "type": "Hackathon Prize Pool Share",
+        "compensation": "50-50 Split on \u20b91,00,000 Hackathon Grand Prize + Patent Co-Inventorship",
+        "posted_by": "Devika Nair (ECE 7th Sem)",
+        "date": "2026-08-19",
+        "deadline": "2026-09-25",
+        "skills_required": [
+            "ROS / ROS2",
+            "Computer Vision (OpenCV)",
+            "YOLOv8",
+            "C++ / Python"
+        ],
+        "description": "Collaborate to build an obstacle avoidance & person tracking drone system for Smart India Hackathon 2026. Hardware prototype already assembled, need CV/ROS engineer.",
+        "team_size": "2 / 4 Members Joined",
+        "status": "Recruiting",
+        "applicants": []
+    }
+]
