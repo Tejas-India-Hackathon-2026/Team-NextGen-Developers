@@ -1,0 +1,5 @@
+[
+  {"code": "CSE", "name": "Computer Science & Engineering", "students": 480},
+  {"code": "IT", "name": "Information Technology", "students": 240},
+  {"code": "AIDS", "name": "Artificial Intelligence & Data Science", "students": 180}
+]
