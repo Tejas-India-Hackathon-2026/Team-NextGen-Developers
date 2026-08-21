@@ -1,0 +1,21 @@
+{
+  "grading_scale": [
+    {"grade": "O", "description": "Outstanding", "grade_point": 10, "marks_range": "90 - 100"},
+    {"grade": "A+", "description": "Excellent", "grade_point": 9, "marks_range": "80 - 89"},
+    {"grade": "A", "description": "Very Good", "grade_point": 8, "marks_range": "70 - 79"},
+    {"grade": "B+", "description": "Good", "grade_point": 7, "marks_range": "60 - 69"},
+    {"grade": "B", "description": "Above Average", "grade_point": 6, "marks_range": "50 - 59"},
+    {"grade": "C", "description": "Average", "grade_point": 5, "marks_range": "40 - 49"},
+    {"grade": "F", "description": "Fail", "grade_point": 0, "marks_range": "Below 40"}
+  ],
+  "attendance_policy": {
+    "mandatory_minimum_percentage": 75.0,
+    "medical_relaxation_limit": 65.0,
+    "consequence_of_shortage": "Debarred from appearing in end-semester examinations"
+  },
+  "credit_system": {
+    "btech_total_credits_required": 160,
+    "mtech_total_credits_required": 68,
+    "max_backlogs_allowed_for_promotion": 4
+  }
+}
