@@ -1,0 +1,69 @@
+{
+  "generated_at": "2026-08-21T10:26:11.850942",
+  "total": 9,
+  "urls": [
+    {
+      "loc": "/materials/DSA_and_Core_CS_Quick_Revision_Cheatsheet.pdf",
+      "title": "DSA & Algorithms 1-Page Rapid Revision Cheatsheet",
+      "subject": "Data Structures",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/OS_and_DBMS_Exam_CheatSheet.pdf",
+      "title": "OS & DBMS Core Concepts Exam Revision Sheet",
+      "subject": "Operating Systems",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/C_Programming_Complete_Notes.pdf",
+      "title": "C Programming Complete Reference & Notes",
+      "subject": "C Programming",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/CPP_OOPs_and_STL_Guide.pdf",
+      "title": "C++ Object-Oriented Programming & STL Master Guide",
+      "subject": "C++ Programming",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/Python_Complete_Programming_Handbook.pdf",
+      "title": "Python Complete Programming Handbook",
+      "subject": "Python",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/Lecture1_py.pdf",
+      "title": "Python Core Architecture & Variables",
+      "subject": "Python",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/Lecture2_py.pdf",
+      "title": "Python Control Flow & Functions",
+      "subject": "Python",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/Lecture3_py.pdf",
+      "title": "Python Data Structures & Collections",
+      "subject": "Python",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    },
+    {
+      "loc": "/materials/Lecture4_py.pdf",
+      "title": "Python OOP & Exception Handling",
+      "subject": "Python",
+      "lastmod": "2026-08-21",
+      "rating": 5.0
+    }
+  ]
+}
