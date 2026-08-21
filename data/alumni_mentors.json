@@ -1,0 +1,32 @@
+[
+  {
+    "id": "ALUM-01",
+    "name": "Rohan Gupta",
+    "batch": "2023",
+    "current_company": "Uber India",
+    "role": "Software Engineer II",
+    "expertise": ["System Design", "Backend (Go/Java)", "Mock Interviews"],
+    "linkedin": "https://linkedin.com/in/example-rohan-uber",
+    "available_slots": ["Saturday 04:00 PM - 06:00 PM", "Sunday 11:00 AM - 01:00 PM"]
+  },
+  {
+    "id": "ALUM-02",
+    "name": "Sneha Mukhopadhyay",
+    "batch": "2022",
+    "current_company": "Microsoft",
+    "role": "Data & Applied Scientist",
+    "expertise": ["AI/ML Research", "Master's Prep Abroad", "Resume Reviews"],
+    "linkedin": "https://linkedin.com/in/example-sneha-msft",
+    "available_slots": ["Sunday 05:00 PM - 07:00 PM"]
+  },
+  {
+    "id": "ALUM-03",
+    "name": "Aditya Sengupta",
+    "batch": "2024",
+    "current_company": "Atlassian",
+    "role": "Associate Product Manager",
+    "expertise": ["Product Management", "Hackathons & Ideation", "Case Studies"],
+    "linkedin": "https://linkedin.com/in/example-aditya-atlassian",
+    "available_slots": ["Friday 07:00 PM - 08:30 PM"]
+  }
+]
