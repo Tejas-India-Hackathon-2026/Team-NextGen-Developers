@@ -1,0 +1,32 @@
+[
+  {
+    "id": "FAC-001",
+    "name": "Dr. Ramesh Sharma",
+    "department": "Computer Science & Engineering",
+    "designation": "Professor & Head of Department",
+    "email": "r.sharma@university.edu.in",
+    "cabin": "Block A, Room 304",
+    "office_hours": "Mon, Wed (02:00 PM - 04:00 PM)",
+    "specialization": ["Distributed Systems", "Cloud Computing"]
+  },
+  {
+    "id": "FAC-002",
+    "name": "Dr. Ananya Verma",
+    "department": "Artificial Intelligence & Data Science",
+    "designation": "Associate Professor",
+    "email": "a.verma@university.edu.in",
+    "cabin": "Block B, Room 212",
+    "office_hours": "Tue, Thu (11:00 AM - 01:00 PM)",
+    "specialization": ["Deep Learning", "Computer Vision", "NLP"]
+  },
+  {
+    "id": "FAC-003",
+    "name": "Prof. Vikram Malhotra",
+    "department": "Information Technology",
+    "designation": "Assistant Professor",
+    "email": "v.malhotra@university.edu.in",
+    "cabin": "Block A, Room 118",
+    "office_hours": "Fri (10:00 AM - 12:00 PM)",
+    "specialization": ["Cybersecurity", "Network Protocols"]
+  }
+]
