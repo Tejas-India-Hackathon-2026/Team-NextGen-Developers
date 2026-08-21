@@ -1,0 +1,26 @@
+[
+  {
+    "id": "PRJ-001",
+    "title": "AI-Powered Smart Campus Navigation & Crowd Density Estimator",
+    "domain": "Computer Vision & IoT",
+    "difficulty": "Advanced",
+    "stack": ["Python", "YOLOv8", "OpenCV", "FastAPI", "React Native"],
+    "description": "Estimates real-time cafeteria/library queue lengths and suggests optimal low-congestion transit paths on campus."
+  },
+  {
+    "id": "PRJ-002",
+    "title": "Decentralized Academic Credential & Certificate Verification",
+    "domain": "Blockchain & Web3",
+    "difficulty": "Intermediate",
+    "stack": ["Solidity", "Ethereum / Polygon", "Ethers.js", "IPFS", "Next.js"],
+    "description": "Tamper-proof storage and instant cryptographic validation of student degrees, transcripts, and event certificates."
+  },
+  {
+    "id": "PRJ-003",
+    "title": "Automated Audio Lecture Summarizer & Mind-Map Generator",
+    "domain": "Natural Language Processing",
+    "difficulty": "Intermediate",
+    "stack": ["Whisper AI", "LangChain", "OpenAI / HuggingFace", "Streamlit"],
+    "description": "Converts classroom audio recordings into structured bullet notes, key formula cheatsheets, and concept diagrams."
+  }
+]
