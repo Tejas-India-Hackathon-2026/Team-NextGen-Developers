@@ -1,0 +1,30 @@
+[
+  {
+    "facility": "Central University Library",
+    "location": "Knowledge Hub Building, 1st & 2nd Floor",
+    "timings": "08:00 AM - 10:00 PM (Mon-Sat), 09:00 AM - 05:00 PM (Sun)",
+    "services": ["Book Lending", "E-Library Terminals", "Silent Study Pods", "Photocopy & Printing"],
+    "contact": "library@university.edu.in"
+  },
+  {
+    "facility": "High Performance Computing Lab",
+    "location": "Block C, 3rd Floor, Room 301",
+    "timings": "09:00 AM - 08:00 PM (Mon-Fri)",
+    "services": ["GPU Clusters (NVIDIA RTX 4090)", "Cloud Sandbox", "Research Workstations"],
+    "contact": "hpclab@university.edu.in"
+  },
+  {
+    "facility": "Campus Health & First Aid Center",
+    "location": "Student Activity Center, Ground Floor",
+    "timings": "24x7 Emergency Services, Doctor Available 09:00 AM - 05:00 PM",
+    "services": ["Basic Medical Aid", "Ambulance", "Doctor Consultation", "Pharmacy"],
+    "contact": "healthcenter@university.edu.in"
+  },
+  {
+    "facility": "Central Cafeteria & Food Court",
+    "location": "Near Central Sports Ground",
+    "timings": "07:30 AM - 09:30 PM",
+    "services": ["Breakfast & Meal Plans", "Snacks & Beverages", "Digital UPI Payments"],
+    "contact": "canteen@university.edu.in"
+  }
+]
