@@ -1,0 +1,34 @@
+[
+  {
+    "id": "Q-DSA-01",
+    "subject": "Data Structures & Algorithms",
+    "question": "What is the worst-case time complexity of QuickSort?",
+    "options": ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"],
+    "correct_option_index": 2,
+    "explanation": "QuickSort degrades to O(n^2) when the pivot choice always partitions the array into size 0 and size n-1 (e.g., sorted array with first element as pivot)."
+  },
+  {
+    "id": "Q-OS-01",
+    "subject": "Operating Systems",
+    "question": "Which scheduling algorithm is non-preemptive?",
+    "options": ["Round Robin", "Shortest Job First (non-preemptive)", "SRTF", "Priority (Preemptive)"],
+    "correct_option_index": 1,
+    "explanation": "Standard SJF allows a process to run to completion once CPU is allocated."
+  },
+  {
+    "id": "Q-DBMS-01",
+    "subject": "Database Management Systems",
+    "question": "Which normal form removes partial dependency on the primary key?",
+    "options": ["1NF", "2NF", "3NF", "BCNF"],
+    "correct_option_index": 1,
+    "explanation": "2NF requires the relation to be in 1NF and have no non-prime attribute partially dependent on any candidate key."
+  },
+  {
+    "id": "Q-CN-01",
+    "subject": "Computer Networks",
+    "question": "Which OSI layer is responsible for end-to-end reliable delivery and flow control?",
+    "options": ["Network Layer", "Transport Layer", "Data Link Layer", "Application Layer"],
+    "correct_option_index": 1,
+    "explanation": "The Transport Layer (TCP) provides end-to-end error recovery, flow control, and data stream multiplexing."
+  }
+]
