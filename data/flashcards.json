@@ -1,0 +1,32 @@
+[
+  {
+    "id": "FC-01",
+    "subject": "Data Structures",
+    "term": "Binary Search Tree (BST) Inorder Traversal",
+    "definition": "Traversing a BST in Inorder (Left -> Root -> Right) always produces elements in strictly ascending sorted order."
+  },
+  {
+    "id": "FC-02",
+    "subject": "Operating Systems",
+    "term": "Thrashing",
+    "definition": "A condition where CPU spends excessive time swapping pages into and out of memory rather than executing instructions, caused by insufficient allocated physical frames."
+  },
+  {
+    "id": "FC-03",
+    "subject": "DBMS",
+    "term": "ACID Properties",
+    "definition": "Atomicity (all or nothing), Consistency (preserves validity), Isolation (concurrent safety), Durability (committed changes persist across power failure)."
+  },
+  {
+    "id": "FC-04",
+    "subject": "Computer Networks",
+    "term": "TCP 3-Way Handshake",
+    "definition": "The connection establishment protocol using SYN -> SYN-ACK -> ACK before actual payload bytes are transmitted."
+  },
+  {
+    "id": "FC-05",
+    "subject": "Python",
+    "term": "Global Interpreter Lock (GIL)",
+    "definition": "A mutex in CPython that protects access to Python objects, preventing multiple native threads from executing Python bytecodes simultaneously in a single process."
+  }
+]
